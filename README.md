@@ -4,7 +4,7 @@ Aplicação web estática e autocontida de demonstração (**segunda versão**) 
 
 O arquivo único reúne duas frentes na mesma página, sem servidor, sem frameworks externos e com operação completa offline:
 
-1. **Apresentação do projeto (10 seções):** narrativa estruturada em bandas visuais alternadas e menu fixo de âncoras cobrindo abertura executiva, fragmentação da jornada pré-procedimento, público-alvo inicial (marcado como hipótese), proposta do painel único com analogia ao painel de voos do aeroporto, arquitetura de integração em duas rotas (HL7 FHIR simulado e questionário do paciente), escopo fora da primeira versão (incluindo fronteira regulatória Anvisa RDC 657/2022 e LGPD), hipótese de modelo de negócio B2B sem preço fixado, histórico com os 6 pontos de mentoria e matriz de riscos, próximos passos de validação e composição do time (**Augusto Linhares**, **Marcelo Teles** e **Karina**).
+1. **Apresentação do projeto (10 seções):** narrativa estruturada em bandas visuais alternadas e menu fixo de âncoras cobrindo abertura executiva, fragmentação da jornada pré-procedimento com evidência científica mapeada, público-alvo inicial (marcado como hipótese), proposta do painel único com analogia ao painel de voos do aeroporto, arquitetura de integração em duas rotas (HL7 FHIR simulado e questionário do paciente), escopo fora da primeira versão (incluindo fronteira regulatória Anvisa RDC 657/2022 e LGPD), hipótese de modelo de negócio B2B sem preço fixado, medida de tração, evolução do projeto e seis pilares arquiteturais, matriz de riscos, próximos passos externos de validação e composição do time (**Augusto Linhares**, **Marcelo Teles** e **Karina**).
 2. **Demonstração conceitual (PoC):** protótipo navegável que comprova a leitura imediata do estado do paciente em uma única tela, mantendo o estado apenas em memória.
 
 ---
@@ -13,7 +13,7 @@ O arquivo único reúne duas frentes na mesma página, sem servidor, sem framewo
 
 | Arquivo | Descrição |
 |---|---|
-| `index.html` | Aplicação web completa (HTML, CSS e JavaScript puro no mesmo arquivo, com 4.866 linhas e 183.925 bytes). |
+| `index.html` | Aplicação web completa (HTML, CSS e JavaScript puro no mesmo arquivo, com 4.972 linhas e 190.681 bytes). |
 | `README.md` | Guia de abertura, edição dos dados fictícios e resumo da estrutura. |
 | `roteiro-demo.md` | Roteiro cronometrado de 90 segundos para conduzir a demonstração ao vivo. |
 | `relatorio-agentes.md` | Registro das etapas executadas, auditorias técnicas e correções aplicadas. |
@@ -30,7 +30,7 @@ O arquivo único reúne duas frentes na mesma página, sem servidor, sem framewo
 
 ## Como editar os dados fictícios sem programar
 
-Todo o bloco editável fica isolado no topo do `<script>`, na seção **`1. CONFIGURAÇÕES EDITÁVEIS (ALTERE AQUI SEM PRECISAR PROGRAMAR)`**, a partir da **linha 3071** de `index.html`.
+Todo o bloco editável fica isolado no topo do `<script>`, na seção **`1. CONFIGURAÇÕES EDITÁVEIS (ALTERE AQUI SEM PRECISAR PROGRAMAR)`**, a partir da **linha 3177** de `index.html`.
 
 Principais constantes disponíveis para ajuste rápido:
 

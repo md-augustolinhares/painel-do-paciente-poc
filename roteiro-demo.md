@@ -43,5 +43,5 @@
 ## 75 a 90 segundos — Governança e encerramento
 - **Na tela:** detalhe atualizado em memória e botões **Iniciar tour** / **Reiniciar demonstração**.
 - **O que falar:**
-  > "Toda a demonstração usa dados fictícios, não armazena dados fora da memória do navegador e não emite recomendação clínica — mantendo nosso recorte informativo alinhado às cautelas regulatórias da RDC 657/2022 da Anvisa e da LGPD. Como próximos passos, vamos validar estes dados críticos com a anestesiologia do time — Karina, Marcelo Teles e Augusto Linhares — e testar o protótipo com 3 clínicas e 3 a 5 pessoas. Obrigado."
+  > "Toda a demonstração usa dados fictícios, não armazena dados fora da memória do navegador e não emite recomendação clínica — mantendo nosso recorte informativo alinhado às cautelas regulatórias da RDC 657/2022 da Anvisa e da LGPD. Nos próximos passos externos, o time — Augusto Linhares, Marcelo Teles e Karina — vai submeter o protocolo clínico à validação de especialistas convidados, conduzir descoberta comercial com 3 clínicas parceiras e testar esta demonstração em campo mirando leitura completa abaixo de 30 segundos com zero digitação adicional. Obrigado."
 - **Ação opcional para perguntas:** caso a banca queira explorar passo a passo após a apresentação, acione **Iniciar tour** para percorrer automaticamente os 8 cenários-chave.

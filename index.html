@@ -2194,6 +2194,31 @@
       margin: 8px 0 10px;
     }
 
+    .subtitulo-secao--com-grid {
+      margin: 24px 0 12px;
+    }
+
+    .tracao-bloco {
+      margin: 14px 0 24px;
+    }
+
+    .tracao-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .marco-titulo {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
     .motor-titulo {
       margin: 0 0 6px;
       font-size: 15px;
@@ -2365,7 +2390,7 @@
           <a class="anchor-link" href="#secao-5">5. Integração</a>
           <a class="anchor-link" href="#secao-6">6. Fora da primeira versão</a>
           <a class="anchor-link" href="#secao-7">7. Negócio</a>
-          <a class="anchor-link" href="#secao-8">8. Histórico e riscos</a>
+          <a class="anchor-link" href="#secao-8">8. Tração e riscos</a>
           <a class="anchor-link" href="#secao-9">9. Próximos passos</a>
           <a class="anchor-link" href="#secao-10">10. Time</a>
         </div>
@@ -2450,7 +2475,7 @@
             Na jornada pré-procedimento, o paciente repete as mesmas informações para profissionais diferentes e frequentemente esquece alergias ou medicações de uso contínuo por memória e ansiedade — nunca por má-fé. Enquanto isso, cada equipe anota em sua própria ferramenta sem visibilidade do todo.
           </p>
           <div class="callout-clinico">
-            <strong>Perda de tempo clínico relatada pela equipe:</strong> na estimativa prática da anestesiologia do grupo (ainda sem estudo cronometrado), uma consulta pré-anestésica de cerca de <strong>10 minutos</strong> é consumida coletando dados básicos do zero em vez de explicar a sedação, tirar dúvidas e acolher o paciente.
+            <strong>Gargalo operacional e assistencial na consulta pré-anestésica:</strong> na prática ambulatorial (estimativa operacional de rotina em cerca de <strong>10 minutos</strong>, a aferir em piloto), o tempo curto de avaliação acaba consumido coletando dados básicos do zero em vez de explicar a sedação, alinhar o preparo e acolher o paciente.
           </div>
           <div class="diagram-isoladas" role="region" aria-label="Diagrama mostrando quatro áreas isoladas sem conexão entre si: Recepção, Enfermagem, Anestesiologia e Médico executor.">
             <article class="caixa-isolada">
@@ -2477,7 +2502,7 @@
                 <p class="silo-campo"><strong>O que registra:</strong> alergias, medicações em uso (como anticoagulantes), jejum e avaliação para sedação.</p>
                 <p class="silo-campo"><strong>Onde fica preso:</strong> ficha pré-anestésica ou avaliação realizada apenas no momento do atendimento.</p>
               </div>
-              <div class="caixa-isolada-sem">Risco: tempo curto de consulta (estimado pela equipe em cerca de 10 minutos) gasto investigando histórico do zero ou surpresa crítica de alergia na hora do procedimento.</div>
+              <div class="caixa-isolada-sem">Risco: tempo curto de consulta (estimado na rotina em cerca de 10 minutos) gasto investigando histórico do zero ou surpresa crítica de alergia na hora do procedimento.</div>
             </article>
 
             <article class="caixa-isolada">
@@ -2487,6 +2512,42 @@
                 <p class="silo-campo"><strong>Onde fica preso:</strong> evolução médica individual e comunicação verbal com o time.</p>
               </div>
               <div class="caixa-isolada-sem">Risco: falta de visão única da prontidão do paciente antes de iniciar o procedimento.</div>
+            </article>
+          </div>
+
+          <h3 class="subtitulo-secao subtitulo-secao--com-grid">Evidência mapeada na literatura científica</h3>
+          <div class="grid-2">
+            <article class="mini-box mini-box--subtle">
+              <div class="tracao-topo">
+                <span class="frente-num">BURDA ET AL. · 79 PRONTUÁRIOS</span>
+                <span class="tag-tipo tag-tipo--fato">Fato publicado</span>
+              </div>
+              <h4>73% de divergência entre registros</h4>
+              <p>Comparação entre histórico cirúrgico e anestésico identificou discrepâncias em 73% dos casos, incluindo 56% em medicações e 23% em alergias.</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <div class="tracao-topo">
+                <span class="frente-num">REVISTA BRASILEIRA DE ANESTESIOLOGIA · 212 PACIENTES</span>
+                <span class="tag-tipo tag-tipo--fato">Fato publicado</span>
+              </div>
+              <h4>51,4% de acréscimo de informação clínica</h4>
+              <p>Aplicação de questionário prévio à consulta adicionou dados clínicos relevantes em mais da metade dos atendimentos (valor preditivo negativo de 94,4%).</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <div class="tracao-topo">
+                <span class="frente-num">ESTUDO PATCH · 228 PACIENTES</span>
+                <span class="tag-tipo tag-tipo--fato">Fato publicado</span>
+              </div>
+              <h4>93,4% de concordância na autoavaliação digital</h4>
+              <p>Respostas preenchidas digitalmente pelo próprio paciente demonstraram alta consistência frente à triagem presencial realizada pela enfermagem.</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <div class="tracao-topo">
+                <span class="frente-num">REVISÃO SOBECC 2024 · 28 ESTUDOS</span>
+                <span class="tag-tipo tag-tipo--fato">Fato publicado</span>
+              </div>
+              <h4>Causas recorrentes de suspensão eletiva</h4>
+              <p>Na síntese brasileira de cancelamentos ligados ao paciente, condição clínica pendente figurou em 26 estudos, quebra de jejum em 19 e ausência de exames em 16.</p>
             </article>
           </div>
         </div>
@@ -2503,7 +2564,7 @@
             <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
           </div>
           <p class="sec-lead">
-            Após a mentoria de 19/10 apontar amplitude excessiva no escopo inicial, recortamos um público específico para validar utilidade e simplicidade antes de qualquer expansão.
+            Delimitamos um segmento inicial de entrada onde a falha de coordenação pré-procedimento é diária, a decisão de compra é ágil e o painel entrega valor imediato sem exigir integração hospitalar pesada.
           </p>
           <div class="bento-para-quem">
             <article class="mini-box">
@@ -2536,7 +2597,7 @@
                     <ul class="lista-limpa">
                       <li>Ciclo comercial longo e múltiplas camadas de aprovação institucional.</li>
                       <li>Alta barreira de interoperabilidade entre sistemas legados de bloco cirúrgico, internação e faturamento.</li>
-                      <li>Risco apontado pelas mentoras em 19/10 de exigir mudança profunda de fluxo antes de provar valor.</li>
+                      <li>Exige mudança profunda de fluxo entre múltiplos setores hospitalares antes de demonstrar retorno operacional.</li>
                     </ul>
                   </div>
                 </div>
@@ -2625,7 +2686,7 @@
             <span class="tag-tipo tag-tipo--hipotese">Arquitetura da primeira versão</span>
           </div>
           <p class="sec-lead">
-            A interoperabilidade foi apontada na mentoria como o ponto mais sensível. Para não depender de inteligência artificial lendo texto livre nem exigir digitação dupla, o painel opera por duas rotas complementares de entrada.
+            A interoperabilidade é a principal barreira técnica em saúde digital. Para entregar visão única sem depender de inteligência artificial interpretando texto livre e sem exigir redigitação pela clínica, desenhamos uma arquitetura prática com duas rotas complementares de entrada de dados — exatamente como o produto funciona na demonstração.
           </p>
 
           <div class="diagram-rotas">
@@ -2752,7 +2813,7 @@
             <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
           </div>
           <p class="sec-lead">
-            Estrutura desenhada para o mercado B2B após o feedback da mentoria, deixando a definição de faixa de preço vinculada a entrevistas reais com clínicas.
+            Modelo de assinatura B2B voltado a clínicas ambulatoriais que posicionam segurança assistencial, previsibilidade de agenda e experiência do paciente como diferenciais competitivos.
           </p>
           <div class="grid-3">
             <article class="mini-box">
@@ -2787,37 +2848,82 @@
         </div>
       </section>
 
-      <!-- Seção 8: O que já fizemos, respostas à mentoria e riscos mapeados -->
+      <!-- Seção 8: Tração, evolução do projeto e riscos mapeados -->
       <section id="secao-8" class="banda-secao banda-secao--branca">
         <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">8</span>
-              <h2>O que já fizemos e o que falta</h2>
+              <h2>Tração, evolução do projeto e riscos</h2>
             </div>
-            <span class="tag-tipo tag-tipo--fato">Fato</span>
+            <span class="tag-tipo tag-tipo--fato">Fato e metas</span>
           </div>
 
+          <div class="double-bezel tracao-bloco">
+            <div class="double-bezel-core">
+              <h3 class="subtitulo-bloco subtitulo-bloco--espacado">Medida de tração e estágio de validação</h3>
+              <div class="grid-2">
+                <article class="mini-box mini-box--subtle">
+                  <div class="tracao-topo">
+                    <span class="frente-num">ATUAL · PROVA DE CONCEITO</span>
+                    <span class="tag-tipo tag-tipo--fato">Entregue (Fato)</span>
+                  </div>
+                  <h4>Protótipo funcional ponta a ponta</h4>
+                  <p>Aplicação navegável operando com 3 visões integradas (Quadro da Clínica, Detalhe do Paciente e Visão do Paciente no Celular), 5 perfis de leitura, jornada em 8 etapas e pacote HL7 FHIR simulado.</p>
+                </article>
+                <article class="mini-box mini-box--subtle">
+                  <div class="tracao-topo">
+                    <span class="frente-num">BASE CLÍNICA · ESCOPO</span>
+                    <span class="tag-tipo tag-tipo--fato">Estruturado (Fato)</span>
+                  </div>
+                  <h4>Protocolo clínico e blindagem regulatória</h4>
+                  <p>Conjunto inicial de 6 dados críticos de sedação e 7 perguntas de triagem desenhado pela competência clínica e anestesiológica do time fundador, alinhado aos limites da RDC 657/2022 da Anvisa e da LGPD.</p>
+                </article>
+                <article class="mini-box mini-box--subtle">
+                  <div class="tracao-topo">
+                    <span class="frente-num">TRAÇÃO DE MERCADO · META</span>
+                    <span class="tag-tipo tag-tipo--hipotese">Meta (3 a 5 clínicas)</span>
+                  </div>
+                  <h4>Descoberta comercial e intenção de piloto</h4>
+                  <p>Entrevistas estruturadas com gestores e diretores técnicos de clínicas ambulatoriais com sedação para confirmar a dor em pelo menos 3 serviços independentes e captar interesse em piloto assistido.</p>
+                </article>
+                <article class="mini-box mini-box--subtle">
+                  <div class="tracao-topo">
+                    <span class="frente-num">TRAÇÃO DE USO · META</span>
+                    <span class="tag-tipo tag-tipo--hipotese">Meta (abaixo de 30 segundos)</span>
+                  </div>
+                  <h4>Eficiência de leitura e taxa de resposta</h4>
+                  <p>Teste prático da demonstração com 3 a 5 profissionais assistenciais e pacientes convidados, aferindo leitura completa da prontidão em menos de 30 segundos, zero digitação extra e conclusão do formulário móvel.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="subtitulo-secao subtitulo-secao--topo">Evolução do desenho do produto</h3>
           <div class="timeline-marcos">
             <article class="marco-card">
               <span class="marco-data">02/10</span>
-              <p>Ponto de partida com as dores iniciais e visão de questionário pré-procedimento gerando um relatório único para a equipe.</p>
+              <span class="marco-titulo">Diagnóstico da dor assistencial</span>
+              <p>Mapeamento da fragmentação de dados no pré-procedimento e concepção da coleta prévia em relatório único.</p>
             </article>
             <article class="marco-card">
               <span class="marco-data">19/10</span>
-              <p>Plantão de dúvidas da mentoria destacando os 6 pontos de atenção sobre escopo, cliente ideal, integração e negócio.</p>
+              <span class="marco-titulo">Refinamento estratégico de escopo</span>
+              <p>Análise de viabilidade em seis dimensões: foco assistencial, cliente ideal, interoperabilidade, processo sem atrito, modelo B2B e checagem antecipada.</p>
             </article>
             <article class="marco-card">
               <span class="marco-data">26/10</span>
-              <p>Reunião de Augusto Linhares e Marcelo Teles redirecionando o produto para um painel executivo em clínicas pequenas.</p>
+              <span class="marco-titulo">Arquitetura executiva enxuta</span>
+              <p>Direcionamento do produto para clínicas de pequeno e médio porte com sedação, operando como camada de leitura acima do prontuário.</p>
             </article>
             <article class="marco-card">
               <span class="marco-data">15/11</span>
-              <p>Estruturação da proposta de apresentação com recorte em sedação e construção desta prova de conceito navegável.</p>
+              <span class="marco-titulo">Prova de conceito funcional em duas rotas</span>
+              <p>Entrega da demonstração interativa combinando leitura estruturada HL7 FHIR e questionário direto do paciente.</p>
             </article>
           </div>
 
-          <h3 class="subtitulo-secao subtitulo-secao--topo">Como respondemos aos 6 pontos da mentoria (19/10)</h3>
+          <h3 class="subtitulo-secao subtitulo-secao--topo">Seis pilares de desenho do projeto (por que esta arquitetura funciona)</h3>
           <div class="mentoria-grid">
             <div class="mentoria-item">
               <strong>1. Escopo amplo demais</strong>
@@ -2891,7 +2997,7 @@
         </div>
       </section>
 
-      <!-- Seção 9: Próximos passos (3 Frentes + CTA Final) -->
+      <!-- Seção 9: Próximos passos (3 Frentes externas + CTA Final) -->
       <section id="secao-9" class="banda-secao banda-secao--ardosia">
         <div class="banda-inner revelar-scroll">
           <div class="sec-header">
@@ -2899,23 +3005,23 @@
               <span class="sec-num">9</span>
               <h2>Próximos passos</h2>
             </div>
-            <span class="tag-tipo tag-tipo--hipotese">Plano imediato</span>
+            <span class="tag-tipo tag-tipo--hipotese">Plano de validação em campo</span>
           </div>
           <div class="frentes-grid">
             <article class="mini-box">
               <span class="frente-num">FRENTE 01</span>
-              <h3>Validação clínica com Karina</h3>
-              <p>Confirmar a lista final dos 6 dados críticos, as 7 perguntas do questionário e o texto das orientações ilustrativas de pré-procedimento e pós-procedimento.</p>
+              <h3>Validação clínica externa com especialistas</h3>
+              <p>Submeter o protocolo dos 6 dados críticos de sedação, as 7 perguntas de triagem e as orientações perioperatórias (estruturados pela equipe médica do projeto) à avaliação de anestesiologistas e médicos executores externos em clínicas ambulatoriais.</p>
             </article>
             <article class="mini-box">
               <span class="frente-num">FRENTE 02</span>
-              <h3>Entrevistas com 3 clínicas</h3>
-              <p>Conversar com gestores de 3 clínicas de pequeno e médio porte sobre o fluxo atual de informações, ferramentas usadas e modelo de assinatura B2B.</p>
+              <h3>Descoberta comercial e piloto com 3 clínicas</h3>
+              <p>Apresentar a solução a gestores e diretores técnicos de 3 clínicas de pequeno e médio porte para mapear sistemas em uso, validar o modelo de assinatura B2B e qualificar clínicas interessadas em piloto assistido.</p>
             </article>
             <article class="mini-box">
               <span class="frente-num">FRENTE 03</span>
-              <h3>Teste prático com 3 a 5 pessoas</h3>
-              <p>Aplicar esta demonstração interativa medindo objetivamente o tempo de compreensão da prontidão do paciente (meta abaixo de 30 segundos).</p>
+              <h3>Teste de usabilidade e aferição de leitura (abaixo de 30 segundos)</h3>
+              <p>Aplicar esta demonstração navegável com 3 a 5 profissionais assistenciais e pacientes convidados, medindo em campo o tempo de compreensão da prontidão em tela única e a experiência de preenchimento no celular.</p>
             </article>
           </div>
 
@@ -2950,7 +3056,7 @@
                 <span class="time-papel-tag">Arquitetura técnica e dados</span>
                 <h3>Augusto Linhares</h3>
                 <p class="time-bio">
-                  Médico generalista, pós-graduando em inteligência artificial e ciência de dados. Conduz a modelagem dos dados estruturados, regras determinísticas de prontidão e construção da prova de conceito.
+                  Médico generalista, pós-graduando em inteligência artificial e ciência de dados. Lidera a arquitetura técnica, a modelagem de interoperabilidade em padrão HL7 FHIR, as regras determinísticas de reconciliação e o desenvolvimento da aplicação.
                 </p>
               </div>
             </article>
@@ -2959,7 +3065,7 @@
                 <span class="time-papel-tag">Visão de produto e decisões</span>
                 <h3>Marcelo Teles</h3>
                 <p class="time-bio">
-                  Médico do trabalho e gestor em saúde, com experiência em produtos corporativos baseados em dados. Conduz a estratégia de recorte, a tese B2B e o fechamento das decisões do grupo.
+                  Médico do trabalho e gestor em saúde, com experiência em produtos corporativos baseados em dados. Lidera a estratégia de produto, o posicionamento comercial B2B e o desenho de viabilidade operacional para clínicas.
                 </p>
               </div>
             </article>
@@ -2968,7 +3074,7 @@
                 <span class="time-papel-tag">Segurança clínica e anestesia</span>
                 <h3>Karina</h3>
                 <p class="time-bio">
-                  Médica anestesiologista atuante no acompanhamento pré-operatório, transoperatório e pós-operatório. Traz a vivência prática da sedação e lidera a validação dos dados críticos de segurança.
+                  Médica anestesiologista atuante no acompanhamento pré-operatório, transoperatório e pós-operatório. Lidera a definição do protocolo clínico de segurança da sedação, os critérios de prontidão e a jornada assistencial do paciente.
                 </p>
               </div>
             </article>
