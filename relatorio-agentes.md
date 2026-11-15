@@ -1,6 +1,6 @@
 # Relatório de Execução e Revisão de Agentes
 
-Registro consolidado de quem executou e quem auditou cada etapa da construção desta prova de conceito (**primeira versão** e evolução completa da **segunda versão**), assegurando o cumprimento das restrições éticas, clínicas, visuais, de segurança e de qualidade de código.
+Registro consolidado de quem executou e quem auditou cada etapa da construção desta prova de conceito (**primeira iteração**, **segunda iteração** e **terceira iteração**), assegurando o cumprimento das restrições éticas, clínicas, visuais, de segurança, de acessibilidade e de qualidade de código.
 
 ---
 
@@ -8,45 +8,38 @@ Registro consolidado de quem executou e quem auditou cada etapa da construção 
 
 | Etapa | Responsável pela execução | Responsável pela revisão | Resultado após última revisão |
 |---|---|---|---|
-| Definição de arquitetura, regras do projeto e plano por etapas | Orquestrador (`Antigravity`) | Aprovação do usuário após Fase 1 e revisão periódica do plano | Aprovado |
-| Construção da primeira versão autocontida (`index.html`, `README.md`, `roteiro-demo.md`) | `Especialista Frontend UI/UX` (`self`) | `Revisor de Qualidade e Clean Code` (`research`) + `Revisor de Segurança e Conformidade` (`research`) | Aprovado na primeira versão após ajustes iniciais |
-| Reconstrução completa da segunda versão (design com bandas alternadas, conteúdo ampliado dos documentos do Grupo 3 e remoção integral de apelidos e abreviações) | `Especialista Frontend UI/UX` (`self` — conversa `aecb4ece-a217-467c-b252-c3c02676aaec`) | `Revisor de Qualidade e Clean Code` (`research` — conversa `eba61031-a6da-4efb-88dd-c3476256d75a`) + `Revisor de Segurança e Conformidade` (`research` — conversa `0130f97b-df87-432d-926a-7f7374d74eca`) | Aprovado por ambos os revisores (zero achados Críticos ou Altos) |
-| Correções pós-auditoria da segunda versão, refinamento de pitch externo/tração, atualização da documentação e preparação final para publicação | Orquestrador (`Antigravity`) | Verificação estática e bateria automatizada em navegador real (`Playwright`) | Aprovado em verificação completa (`4.972` linhas, `190.681` bytes, `82` funções até `36` linhas, zero erros ou avisos) |
+| Definição de arquitetura, regras do projeto e plano por etapas | Orquestrador (`Antigravity`) | Aprovação do usuário após Fase 1 e revisões periódicas | Aprovado |
+| Construção da primeira versão autocontida (`index.html`, `README.md`, `roteiro-demo.md`) | `Especialista Frontend UI/UX` (`self`) | `Revisor de Qualidade e Clean Code` (`research`) + `Revisor de Segurança e Conformidade` (`research`) | Aprovado na primeira iteração após ajustes iniciais |
+| Reconstrução da segunda iteração (bandas alternadas, conteúdo ampliado e remoção integral de apelidos e abreviações) | `Especialista Frontend UI/UX` (`self` — conversa `aecb4ece-a217-467c-b252-c3c02676aaec`) | `Revisor de Qualidade e Clean Code` (`research` — conversa `eba61031-a6da-4efb-88dd-c3476256d75a`) + `Revisor de Segurança e Conformidade` (`research` — conversa `0130f97b-df87-432d-926a-7f7374d74eca`) | Aprovado por ambos os revisores (zero achados Críticos ou Altos) |
+| Terceira iteração (mercado TAM, SAM e SOM com base CNES e DATASUS, simulador bottom-up, 3 horizontes e 3 pivôs, acionamento e edição pelos 4 perfis clínicos via modal, questionário simplificado com botões amplos e chips, mais correções WAI-ARIA e DCB) | Orquestrador (`Antigravity`) | `Revisor de Segurança e Conformidade` (`research` — conversa `0130f97b-df87-432d-926a-7f7374d74eca`) + `Revisor de Qualidade e Clean Code` (`research` — conversa `eba61031-a6da-4efb-88dd-c3476256d75a`) + bateria automatizada (`Playwright`) | **Aprovado** por ambos os revisores após correções finais e aprovado em todas as verificações estáticas e em navegador (`6.126` linhas, `246.372` bytes, zero achados Críticos, Altos ou Médios) |
 
 ---
 
-## 2. Vereditos das auditorias na segunda versão (`index.html`)
+## 2. Vereditos das auditorias na terceira iteração (`poc-painel/`)
 
-### 2.1 Auditoria de Qualidade e Clean Code (`Revisor de Qualidade e Clean Code`)
-- **Veredito:** **`APROVADO`** (zero achados **Crítico** ou **Alto**; 3 melhorias **Médio** e recomendações **Baixo** endereçadas na sequência pelo orquestrador).
-- **Pontos validados pelo revisor:**
-  - Modularidade JavaScript com todas as funções pequenas e coesas (`<= 40` linhas), sem estilos inline (`style="..."`) e sem duplicação da data simulada (`"15/11"` isolada em `DATA_SIMULADA_HOJE`).
-  - Padronização linguística estrita: zero apelidos (nenhuma ocorrência do apelido usado anteriormente para `Karina`) e zero abreviações em nomes, cargos fictícios e interface (`Augusto Linhares`, `Marcelo Teles`, `Karina`, `Beatriz Moura — Médica anestesiologista`, `Marcos Oliveira — Enfermeiro`, `Henrique Azevedo — Médico executor`, `Questionário enviado`, `Etapa X de 8`).
-  - Contraste acima dos limites mínimos em botões principais, sub-abas, filtros, seletores, badges de status e seção escura (`#0f172a`), além de respeito a `prefers-reduced-motion`.
-- **Ajustes executados após o relatório:**
-  1. Corrigida transição imediata (`.btn-tab-main`) e especificidade de `:hover` na aba principal ativa para eliminar estados intermediários apagados durante trocas rápidas de aba.
-  2. Substituído `role="img"` por `role="region"` nos diagramas HTML estruturados das Seções 2 e 4 para permitir leitura por tecnologias assistivas.
-  3. Qualificada a referência a `10 minutos` na Seção 2 como estimativa prática relatada pela anestesiologia do grupo, ainda sem estudo cronometrado.
-  4. Adicionado `scroll-behavior: auto` e `transition: none` em `@media (prefers-reduced-motion: reduce), print`, e ajustados os subtítulos do bloco regulatório na Seção 6 (`<h4>` com estilo alinhado a `.mini-box h4`).
-  5. Completados atributos WAI-ARIA (`role="tabpanel"`, `aria-labelledby`, `aria-controls`), navegação por teclado (`ArrowLeft` e `ArrowRight`) em `[role="tablist"]` e inclusão dos botões do balão `#tour-popover` no ciclo de `Tab` quando modal HL7 FHIR e Tour Passo 7 estão abertos juntos.
+### 2.1 Auditoria de Segurança e Conformidade (`Revisor de Segurança e Conformidade`)
+- **Veredito inicial:** Reprovado por 1 achado **Médio** de governança (marcas comerciais de medicamentos na ajuda da pergunta 3 da Tela C) + recomendações **Baixo**.
+- **Veredito final pós-correções:** **`APROVADO`** (zero achados **Crítico**, **Alto** ou **Médio** em aberto).
+- **Pontos validados após ajustes:**
+  - Política estrita offline via `<meta http-equiv="Content-Security-Policy">` (`default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none';`), zero chamadas externas e zero persistência (`localStorage`, `sessionStorage`, `document.cookie`, `indexedDB`).
+  - Substituição integral das marcas comerciais na Tela C por princípios ativos genéricos da DCB (`AAS (ácido acetilsalicílico), Varfarina, Rivaroxabana, Apixabana, Dabigatrana ou Clopidogrel`).
+  - Sanitização via `higienizarTextoEntrada(..., 180)` em todos os inputs novos do modal `#modal-intervencao-perfil` (`Recepção`, `Enfermagem`, `Anestesista`, `Médico executor`), validadores numéricos compartilhados (`validarPesoNumerico`, `validarAlturaNumerica`), allowlists nos seletores secundários e fronteira estritamente informativa alinhada à Anvisa RDC 657/2022 e LGPD.
 
-### 2.2 Auditoria de Segurança e Conformidade (`Revisor de Segurança e Conformidade`)
-- **Veredito:** **`APROVADO`** (zero achados **Crítico**, **Alto** ou **Médio**).
-- **Pontos validados pelo revisor:**
-  - Política rígida offline via `<meta http-equiv="Content-Security-Policy">` (`default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none';`) e fontes exclusivamente do sistema operacional.
-  - Zero chamadas externas (`fetch`, `XMLHttpRequest`, CDNs) e zero DOM sinks perigosos (`innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `eval`, `new Function`); construção integral via `document.createElement`, `textContent` e `createElementNS`.
-  - Sanitização de entrada (`higienizarTextoEntrada`) removendo caracteres de controle ASCII e direcionais Unicode, filtragem sem expressão regular dinâmica e zero persistência (`localStorage`, `sessionStorage`, `document.cookie`, `indexedDB`).
-  - Conformidade integral com a Seção 3.4, LGPD e fronteira da Anvisa RDC 657/2022: dados 100% fictícios, aviso fixo `"Demonstração com dados fictícios"`, zero nomes de empresas empregadoras ou concorrentes, zero recomendação de conduta clínica e selo `"Conteúdo ilustrativo — a validar pela equipe clínica"` em todos os blocos clínicos.
-- **Hardening adicional aplicado:**
-  - Validação numérica estrita por expressão regular explícita para peso e altura em `validarDadosQuestionario`, bloqueando notação exponencial e altura decimal.
+### 2.2 Auditoria de Qualidade, Arquitetura e Acessibilidade (`Revisor de Qualidade e Clean Code`)
+- **Veredito inicial:** Ajustes necessários por 1 achado **Alto** (associação WAI-ARIA em controles Sim/Não e inputs/chips da Tela C) e 3 achados **Médio** (`<dialog open>`, `role="alert"` com preservação de foco em filtros/envio, e remoção de barras informais substituídas por `"peso e altura"` e `"início e término"`).
+- **Veredito final pós-correções:** **`APROVADO`** (zero achados **Crítico**, **Alto** ou **Médio** em aberto).
+- **Pontos validados após ajustes:**
+  - Associação WAI-ARIA via `role="group"` e `aria-labelledby` em `criarGrupoSimNaoBotoes`, além de `aria-label` e grupo nomeado em `criarBlocoCampoComChips`.
+  - Gerenciamento explícito do atributo `open` nos elementos `<dialog>` `#modal-fhir` e `#modal-intervencao`, `role="alert"` com retorno de foco em erros, atualização parcial em `#quadro-lista-slot` sem perda de foco ao filtrar na Tela A e remoção de código e estilos mortos (`fecharModalFhir`, `.form-check-label`, `.radio-row`).
+  - Limite estrito de modularidade cumprido em toda a base (`117` funções avaliadas pela verificação estática com máximo de `37` linhas não vazias, zero `innerHTML`, zero estilos inline e consistência matemática integral no simulador bottom-up da Seção 7).
 
 ---
 
 ## 3. Verificações obrigatórias em navegador real (`Playwright`) e estáticas
 
 A bateria automatizada após as edições finais valida simultaneamente todos os 4 arquivos de `poc-painel/` (`index.html`, `README.md`, `roteiro-demo.md` e `relatorio-agentes.md`):
-1. Ausência total de apelidos, abreviações informais, estilos inline, DOM sinks inseguros, persistência em navegador e funções JavaScript acima de 40 linhas.
-2. Zero erros ou avisos de console no carregamento inicial, navegação nas 10 seções e interações completas da demonstração.
+1. Ausência total de apelidos, abreviações proibidas, marcas comerciais de medicamentos, expressões com barra informal no lugar de `"e"`, estilos inline, DOM sinks inseguros, persistência em navegador e funções JavaScript acima dos limites configurados (`38` linhas não vazias e `40` linhas totais).
+2. Zero erros ou avisos de console no carregamento inicial, navegação nas 10 seções e simulação de cenários no `#simulador-tam-sam-som` (Anos 1, 3, Meta 5% e faixas intermediárias).
 3. Enquadramento da Tela B (`B. Detalhe do Paciente`) dentro de `1366×768` sem rolagem vertical (`scrollHeight <= 768`) em todas as 40 combinações possíveis (5 pacientes × 4 perfis clínicos × 2 cenários de integração).
-4. Fluxos de busca, filtro, atalhos rápidos, modal HL7 FHIR simulado, ciclo de foco e teclas de seta em `tablist`, questionário interativo com teste contra XSS e texto longo sem quebra, tour guiado de 8 passos e botão `Reiniciar demonstração`.
-5. Layout responsivo móvel (`375×812`) sem rolagem horizontal (`scrollWidth <= 375`) e contraste nítido das abas principais após troca imediata de tela.
+4. Fluxos de filtro por perfil acionado (`#filtro-perfil-acionado`), botão `Atender`, intervenções em memória pelos 4 perfis clínicos (`Enfermagem`, `Anestesista`, `Recepção` e `Médico executor`) com abertura/fechamento `<dialog open>` e trap de foco, conciliação da divergência de látex transformando `Atenção` em `Pronto`, questionário simplificado de 1 toque na Tela C, tour guiado de 8 passos e botão `Reiniciar demonstração`.
+5. Layout responsivo móvel (`375×812`) sem rolagem horizontal (`scrollWidth <= 375`).

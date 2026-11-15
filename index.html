@@ -1544,8 +1544,8 @@
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 6px 12px;
-      margin-bottom: 6px;
+      padding: 5px 12px;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1595,8 +1595,8 @@
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 5px 12px 6px;
-      margin-bottom: 6px;
+      padding: 4px 12px 5px;
+      margin-bottom: 5px;
     }
 
     .jornada-topo {
@@ -1692,7 +1692,7 @@
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 8px 11px;
+      padding: 7px 11px;
       display: flex;
       flex-direction: column;
     }
@@ -2006,21 +2006,6 @@
       gap: 8px;
     }
 
-    .form-check-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      cursor: pointer;
-    }
-
-    .radio-row {
-      display: flex;
-      gap: 14px;
-      margin-top: 2px;
-    }
-
     .form-erro {
       font-size: 12px;
       font-weight: 600;
@@ -2246,6 +2231,347 @@
       color: var(--text-secondary);
     }
 
+    /* Seção 7: Âncora de ROI, Funil TAM/SAM/SOM, Simulador, Horizontes e Pivotagem */
+    .roi-anchor-banner {
+      margin: 14px 0 18px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--accent-border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .roi-anchor-banner strong {
+      color: var(--text-primary);
+    }
+
+    .tam-sam-som-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .tam-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tam-card--sam {
+      border-top-color: var(--accent-dark);
+    }
+
+    .tam-card--som {
+      border-top-color: #0369a1;
+      background-color: #f8fafc;
+    }
+
+    .tam-sigla {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .tam-valor {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+    }
+
+    .tam-base {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .tam-formula {
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-soft);
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.4;
+    }
+
+    .simulador-tam-box {
+      margin-top: 16px;
+    }
+
+    .simulador-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .simulador-controles {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .simulador-range-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .simulador-range-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .simulador-range-val {
+      font-family: var(--font-mono);
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .simulador-range {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .simulador-presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .simulador-saidas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .simulador-metrica {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .simulador-metrica-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+    }
+
+    .simulador-metrica-val {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.25;
+    }
+
+    .pivot-nota {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+
+    /* Quadro (Tela A) e Detalhe (Tela B): Selos de Acionamento por Perfil */
+    .acionamento-celula {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 185px;
+    }
+
+    .acionamento-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .acionamento-badge--Recepcao {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .acionamento-badge--Enfermagem {
+      background-color: #f0fdfa;
+      color: #0f766e;
+      border-color: #99f6e4;
+    }
+
+    .acionamento-badge--Anestesista {
+      background-color: #fef3c7;
+      color: #92400e;
+      border-color: #fcd34d;
+    }
+
+    .acionamento-badge--MedicoExecutor {
+      background-color: #f5f3ff;
+      color: #6d28d9;
+      border-color: #ddd6fe;
+    }
+
+    .acionamento-badge--Concluido {
+      background-color: var(--status-pronto-bg);
+      color: var(--status-pronto-text);
+      border-color: var(--status-pronto-border);
+    }
+
+    .acionamento-instrucao {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .acionamento-acoes-card {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 5px;
+    }
+
+    .acionamento-banner-estado {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .acionamento-banner-estado--ativo {
+      background-color: #0f766e;
+      color: #ffffff;
+    }
+
+    .acionamento-banner-estado--aguardo {
+      background-color: #e2e8f0;
+      color: #334155;
+    }
+
+    /* Modal de Intervenção e Chips de Seleção (Usado na Tela B e Tela C) */
+    .modal-intervencao {
+      max-width: 580px;
+      overflow-y: auto;
+    }
+
+    .chips-selecao {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 3px;
+      margin-bottom: 4px;
+    }
+
+    .chip-opcao {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-default);
+      background-color: var(--bg-page);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .chip-opcao[aria-pressed="true"] {
+      background-color: var(--accent-dark);
+      border-color: var(--accent-dark);
+      color: #ffffff;
+    }
+
+    .quest-simnao-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 3px;
+    }
+
+    .btn-simnao {
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-simnao[aria-pressed="true"] {
+      background-color: var(--accent);
+      border-color: var(--accent-dark);
+      color: #ffffff;
+    }
+
+    .quest-ajuda {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .modal-div-bloco {
+      background-color: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 12px;
+      color: #78350f;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .modal-rodape-acoes {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
     /* =====================================================
        RESPONSIVIDADE (TABLET E MOBILE 375x812)
        ===================================================== */
@@ -2253,14 +2579,16 @@
       .hero-split,
       .comparativo-2col,
       .escopo-split,
-      .motor-deterministico {
+      .motor-deterministico,
+      .simulador-grid {
         grid-template-columns: 1fr;
       }
       .diagram-isoladas,
       .timeline-marcos {
         grid-template-columns: repeat(2, 1fr);
       }
-      .matriz-papeis {
+      .matriz-papeis,
+      .tam-sam-som-grid {
         grid-template-columns: repeat(2, 1fr);
       }
       .diagram-aeroporto {
@@ -2304,7 +2632,10 @@
       .timeline-marcos,
       .mentoria-grid,
       .frentes-grid,
-      .matriz-papeis {
+      .matriz-papeis,
+      .tam-sam-som-grid,
+      .simulador-saidas,
+      .quest-simnao-grid {
         grid-template-columns: 1fr;
       }
       .risco-cabecalho {
@@ -2802,15 +3133,15 @@
         </div>
       </section>
 
-      <!-- Seção 7: Modelo de negócio + Indicadores de valor -->
+      <!-- Seção 7: Modelo de negócio, TAM/SAM/SOM, escala e pivotagem -->
       <section id="secao-7" class="banda-secao banda-secao--menta">
         <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">7</span>
-              <h2>Modelo de negócio</h2>
+              <h2>Modelo de negócio, mercado e plano de escala</h2>
             </div>
-            <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
+            <span class="tag-tipo tag-tipo--hipotese">Hipótese de dimensionamento</span>
           </div>
           <p class="sec-lead">
             Modelo de assinatura B2B voltado a clínicas ambulatoriais que posicionam segurança assistencial, previsibilidade de agenda e experiência do paciente como diferenciais competitivos.
@@ -2818,7 +3149,7 @@
           <div class="grid-3">
             <article class="mini-box">
               <h3>Cliente pagante (modelo B2B)</h3>
-              <p>A clínica ambulatorial é quem contrata e paga pelo painel — não há cobrança ao paciente final.</p>
+              <p>A clínica ambulatorial contrata e paga pelo painel — não há cobrança ao paciente final.</p>
             </article>
             <article class="mini-box">
               <h3>Posicionamento</h3>
@@ -2826,22 +3157,160 @@
             </article>
             <article class="mini-box">
               <h3>Formato de receita</h3>
-              <p>Assinatura mensal recorrente por clínica — <strong>valor a validar em conversas com clínicas, sem preço fixado nesta etapa</strong>.</p>
+              <p>Assinatura mensal recorrente por clínica — <strong>valores de mensalidade abaixo são hipóteses de dimensionamento, a validar em entrevistas com gestores</strong>.</p>
+            </article>
+          </div>
+
+          <div class="roi-anchor-banner" role="note" aria-label="Hipótese de retorno operacional para a clínica">
+            <strong>Âncora de retorno operacional (hipótese a validar):</strong> um único procedimento sob sedação suspenso em cima da hora por falha evitável (quebra de jejum, anticoagulante não comunicado ou falta de acompanhante adulto) representa perda estimada entre <strong>R$ 3.000 e R$ 15.000</strong> em hora de sala ociosa e equipe mobilizada. Evitar um único cancelamento por mês justifica múltiplos da assinatura B2B.
+          </div>
+
+          <div class="sec-header">
+            <h3 class="subtitulo-secao subtitulo-secao--topo">Dimensionamento de mercado (TAM, SAM e SOM)</h3>
+            <span class="tag-tipo tag-tipo--hipotese">Base CNES e DATASUS · Receita em hipótese</span>
+          </div>
+          <div class="tam-sam-som-grid">
+            <article class="tam-card">
+              <div class="tracao-topo">
+                <span class="tam-sigla">TAM · BRASIL</span>
+                <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
+              </div>
+              <div class="tam-valor">R$ 1,57 bilhão por ano</div>
+              <p class="tam-base">
+                <strong>~109.000 estabelecimentos ambulatoriais especializados</strong> (referência CNES e DATASUS: aproximadamente 95.000 Clínicas e Centros de Especialidade Tipo 36, 12.800 Policlínicas e 1.120 Hospitais-Dia Isolados), além de mais de 229.000 consultórios isolados fora deste recorte inicial.
+              </p>
+              <div class="tam-formula">
+                Cálculo da hipótese: 109.000 unidades × assinatura média ponderada de R$ 1.200 por mês (R$ 14.400 por ano).
+              </div>
+            </article>
+
+            <article class="tam-card tam-card--sam">
+              <div class="tracao-topo">
+                <span class="tam-sigla">SAM · ATENDÍVEL</span>
+                <span class="tag-tipo tag-tipo--hipotese">Hipótese (~23% do TAM)</span>
+              </div>
+              <div class="tam-valor">R$ 504 milhões por ano</div>
+              <p class="tam-base">
+                <strong>~25.000 clínicas e centros privados de procedimentos</strong> com jornada multiprofissional pré-procedimento (sedação ambulatorial pela Resolução CFM nº 1.886/2008, endoscopia, plástica ambulatorial, dermatologia cirúrgica, oftalmologia, vascular, urologia, odontologia cirúrgica e Hospitais-Dia).
+              </p>
+              <div class="tam-formula">
+                Cálculo da hipótese: 25.000 clínicas × assinatura média B2B de R$ 1.680 por mês (R$ 20.160 por ano).
+              </div>
+            </article>
+
+            <article class="tam-card tam-card--som">
+              <div class="tracao-topo">
+                <span class="tam-sigla">SOM · META 36 A 60 MESES</span>
+                <span class="tag-tipo tag-tipo--hipotese">Hipótese (5% do SAM)</span>
+              </div>
+              <div class="tam-valor">R$ 33,0 milhões por ano</div>
+              <p class="tam-base">
+                <strong>1.250 clínicas assinantes em escala progressiva:</strong> Ano 1 com 60 clínicas na cunha inicial (R$ 1,2 milhão por ano a R$ 1.680 por mês); Anos 2 a 3 com 450 clínicas em redes (R$ 9,7 milhões por ano a R$ 1.800 por mês); Anos 4 a 5 com 1.250 clínicas e módulos HL7 FHIR.
+              </p>
+              <div class="tam-formula">
+                Cálculo da meta SOM: 1.250 clínicas × assinatura média expandida de R$ 2.200 por mês (R$ 26.400 por ano).
+              </div>
+            </article>
+          </div>
+
+          <div class="double-bezel simulador-tam-box" id="simulador-tam-sam-som">
+            <div class="double-bezel-core">
+              <div class="tracao-topo">
+                <h3 class="subtitulo-bloco">Simulador interativo de receita (Bottom-Up · Hipótese)</h3>
+                <div class="simulador-presets" role="group" aria-label="Cenários rápidos de crescimento">
+                  <button type="button" class="btn btn-sm" id="btn-preset-ano1" data-clinicas="60" data-ticket="1680">Cenário Ano 1 (60 clínicas)</button>
+                  <button type="button" class="btn btn-sm" id="btn-preset-ano3" data-clinicas="450" data-ticket="1800">Cenário Ano 3 (450 clínicas)</button>
+                  <button type="button" class="btn btn-sm btn-outline-accent" id="btn-preset-som" data-clinicas="1250" data-ticket="2200">Meta SOM 5% (1.250 clínicas)</button>
+                </div>
+              </div>
+              <div class="simulador-grid">
+                <div class="simulador-controles">
+                  <div class="simulador-range-row">
+                    <div class="simulador-range-head">
+                      <label for="range-som-clinicas">Clínicas assinantes no SOM</label>
+                      <span class="simulador-range-val" id="out-som-clinicas">1.250 clínicas</span>
+                    </div>
+                    <input type="range" id="range-som-clinicas" class="simulador-range" min="30" max="2500" step="10" value="1250">
+                  </div>
+                  <div class="simulador-range-row">
+                    <div class="simulador-range-head">
+                      <label for="range-som-ticket">Assinatura mensal média por clínica (hipótese)</label>
+                      <span class="simulador-range-val" id="out-som-ticket">R$ 2.200 por mês</span>
+                    </div>
+                    <input type="range" id="range-som-ticket" class="simulador-range" min="500" max="3500" step="10" value="2200">
+                  </div>
+                </div>
+                <div class="simulador-saidas" role="status" aria-live="polite">
+                  <div class="simulador-metrica">
+                    <span class="simulador-metrica-lbl">Receita mensal (MRR)</span>
+                    <span class="simulador-metrica-val" id="out-som-mrr">R$ 2,75 milhões</span>
+                  </div>
+                  <div class="simulador-metrica">
+                    <span class="simulador-metrica-lbl">Receita anual (ARR)</span>
+                    <span class="simulador-metrica-val" id="out-som-arr">R$ 33,0 milhões</span>
+                  </div>
+                  <div class="simulador-metrica">
+                    <span class="simulador-metrica-lbl">Parcela do SAM</span>
+                    <span class="simulador-metrica-val" id="out-som-share">5,0% do SAM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="subtitulo-secao subtitulo-secao--com-grid">Plano de crescimento em 3 horizontes (Land and Expand)</h3>
+          <div class="grid-3">
+            <article class="mini-box">
+              <span class="frente-num">HORIZONTE 1 · MESES 1 A 12</span>
+              <h4>Cunha de entrada sem fricção</h4>
+              <p>Clínicas pequenas e médias com sedação ambulatorial entrando pela Rota 2 (questionário simplificado do paciente), validando retenção e redução de cancelamentos.</p>
+            </article>
+            <article class="mini-box">
+              <span class="frente-num">HORIZONTE 2 · MESES 12 A 30</span>
+              <h4>Hospitais-Dia, redes e conectores FHIR</h4>
+              <p>Expansão para Day Clinics, redes de franquias de estética, oftalmologia e endoscopia, com ativação de leitura estruturada HL7 FHIR (Rota 1) e planos multissalas.</p>
+            </article>
+            <article class="mini-box">
+              <span class="frente-num">HORIZONTE 3 · MESES 30 A 60</span>
+              <h4>Escala hospitalar e ecossistema</h4>
+              <p>Entrada em centros cirúrgicos ambulatoriais de hospitais gerais e programas de coordenação pré-operatória de operadoras de saúde.</p>
+            </article>
+          </div>
+
+          <h3 class="subtitulo-secao subtitulo-secao--com-grid">Matriz de pivotagem estratégica (rotas pré-mapeadas)</h3>
+          <div class="grid-3">
+            <article class="mini-box mini-box--subtle">
+              <span class="frente-num">PIVÔ 1 · DISTRIBUIÇÃO VIRAL</span>
+              <h4>Venda para grupos de anestesiologia</h4>
+              <p class="pivot-nota"><strong>Gatilho:</strong> se clínicas individuais tiverem ciclo lento de compra.</p>
+              <p class="pivot-nota"><strong>Mudança:</strong> vender diretamente a equipes e cooperativas de anestesia que atuam em 10 a 20 clínicas e levam o painel como padrão próprio.</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <span class="frente-num">PIVÔ 2 · PROPOSTA DE VALOR</span>
+              <h4>Motor financeiro de giro de sala</h4>
+              <p class="pivot-nota"><strong>Gatilho:</strong> se o ganho de receita pesar mais que a dor clínica.</p>
+              <p class="pivot-nota"><strong>Mudança:</strong> acoplar o status de prontidão a uma fila inteligente que antecipa pacientes já classificados como Pronto quando outro apresenta impedimento.</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <span class="frente-num">PIVÔ 3 · ARQUITETURA</span>
+              <h4>API HL7 FHIR e módulo white-label</h4>
+              <p class="pivot-nota"><strong>Gatilho:</strong> se clínicas resistirem a operar uma tela adicional.</p>
+              <p class="pivot-nota"><strong>Mudança:</strong> licenciar o formulário simplificado e o motor de reconciliação como componente embarcável dentro de sistemas médicos existentes.</p>
             </article>
           </div>
 
           <h3 class="subtitulo-secao">Indicadores de valor a testar</h3>
           <div class="indicadores-grid">
             <article class="mini-box mini-box--subtle">
-              <h3>Tempo de leitura clínica</h3>
+              <h4>Tempo de leitura clínica</h4>
               <p>Meta de compreensão completa do estado e pendências do paciente em <strong>menos de 30 segundos</strong>.</p>
             </article>
             <article class="mini-box mini-box--subtle">
-              <h3>Esforço operacional zero</h3>
+              <h4>Esforço operacional zero</h4>
               <p>Nenhuma etapa da rotina pode exigir redigitação pela equipe para alimentar o painel.</p>
             </article>
             <article class="mini-box mini-box--subtle">
-              <h3>Experiência relatada (PREMs)</h3>
+              <h4>Experiência relatada (PREMs)</h4>
               <p>Avaliar com pacientes a clareza de comunicação e acolhimento percebidos ao longo da jornada.</p>
             </article>
           </div>
@@ -2917,7 +3386,7 @@
               <p>Direcionamento do produto para clínicas de pequeno e médio porte com sedação, operando como camada de leitura acima do prontuário.</p>
             </article>
             <article class="marco-card">
-              <span class="marco-data">15/11</span>
+              <span class="marco-data" id="marco-data-hoje">15/11</span>
               <span class="marco-titulo">Prova de conceito funcional em duas rotas</span>
               <p>Entrega da demonstração interativa combinando leitura estruturada HL7 FHIR e questionário direto do paciente.</p>
             </article>
@@ -3140,7 +3609,7 @@
 
   <!-- Modal HL7 FHIR Simulado -->
   <div id="modal-fhir-backdrop" class="modal-backdrop" hidden>
-    <dialog id="modal-fhir" class="modal-fhir" role="dialog" aria-modal="true" aria-labelledby="modal-fhir-titulo">
+    <dialog id="modal-fhir" class="modal-fhir" aria-modal="true" aria-labelledby="modal-fhir-titulo">
       <div class="modal-fhir-head">
         <h2 id="modal-fhir-titulo">Dado bruto simulado (HL7 FHIR)</h2>
         <div class="detalhe-acoes">
@@ -3150,6 +3619,25 @@
       </div>
       <p class="fhir-nota" id="modal-fhir-nota">Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS)</p>
       <pre class="fhir-pre" id="modal-fhir-json" tabindex="0"></pre>
+    </dialog>
+  </div>
+
+  <!-- Modal de Intervenção e Registro por Perfil -->
+  <div id="modal-intervencao-backdrop" class="modal-backdrop" hidden>
+    <dialog id="modal-intervencao" class="modal-fhir modal-intervencao" aria-modal="true" aria-labelledby="modal-intervencao-titulo">
+      <div class="modal-fhir-head">
+        <h2 id="modal-intervencao-titulo">Registrar intervenção do perfil</h2>
+        <button type="button" class="btn btn-sm" id="btn-fechar-intervencao">Fechar</button>
+      </div>
+      <p class="fhir-nota" id="modal-intervencao-nota">Registro informativo estruturado — não emite conduta clínica automática (RDC 657/2022).</p>
+      <form id="form-intervencao-perfil" novalidate="true">
+        <div id="modal-intervencao-erro" class="form-erro" role="alert" tabindex="-1" hidden></div>
+        <div id="modal-intervencao-corpo"></div>
+        <div class="modal-rodape-acoes">
+          <button type="button" class="btn btn-sm" id="btn-cancelar-intervencao">Cancelar</button>
+          <button type="submit" class="btn btn-sm btn-primary" id="btn-salvar-intervencao">Salvar registro no painel</button>
+        </div>
+      </form>
     </dialog>
   </div>
 
@@ -3199,7 +3687,10 @@
       const FONTES = {
         sistema: "Sistema da clínica (FHIR simulado)",
         questionario: "Questionário do paciente",
-        enfermagem: "Avaliação de enfermagem"
+        recepcao: "Recepção (confirmação)",
+        enfermagem: "Avaliação de enfermagem",
+        anestesia: "Avaliação pré-anestésica",
+        medicoExecutor: "Médico executor"
       };
 
       // Orientações ilustrativas (sempre exibem o selo "Conteúdo ilustrativo — a validar pela equipe clínica")
@@ -3413,14 +3904,56 @@
         return imc.toFixed(1).replace(".", ",");
       }
 
+      function validarPesoNumerico(valorRaw, rotulo) {
+        const txt = String(valorRaw || "").trim().replace(",", ".");
+        const num = Number(txt);
+        if (!/^\d{2,3}(\.\d)?$/.test(txt) || !Number.isFinite(num) || num < 20 || num > 300) {
+          return { ok: false, erro: "Informe " + (rotulo || "um peso") + " entre 20 e 300 quilogramas." };
+        }
+        return { ok: true, valor: Math.round(num * 10) / 10 };
+      }
+
+      function validarAlturaNumerica(valorRaw, rotulo) {
+        const txt = String(valorRaw || "").trim();
+        const num = Number(txt);
+        if (!/^\d{2,3}$/.test(txt) || !Number.isFinite(num) || num < 80 || num > 240) {
+          return { ok: false, erro: "Informe " + (rotulo || "uma altura") + " entre 80 e 240 centímetros." };
+        }
+        return { ok: true, valor: Math.round(num) };
+      }
+
+      function obterCampoReconciliado(paciente, campo) {
+        const rec = paciente.intervencoes && paciente.intervencoes.reconciliados;
+        return rec && Object.prototype.hasOwnProperty.call(rec, campo) ? rec[campo] : null;
+      }
+
+      function temValorPreenchido(obj, campo) {
+        return obj && obj[campo] !== null && obj[campo] !== undefined && String(obj[campo]).trim() !== "";
+      }
+
       // Regra ilustrativa. Não é recomendação clínica.
       function obterEntradasCampo(paciente, campo, cenario) {
+        const rec = obterCampoReconciliado(paciente, campo);
+        if (rec) {
+          return [{ fonte: FONTES.anestesia + " (reconciliado)", valor: rec.valor }];
+        }
+        const enfInt = paciente.intervencoes ? paciente.intervencoes.enfermagem : null;
+        if ((campo === "pesoKg" || campo === "alturaCm") && temValorPreenchido(enfInt, campo)) {
+          return [{ fonte: FONTES.enfermagem + " (aferido)", valor: enfInt[campo] }];
+        }
+        const medInt = paciente.intervencoes ? paciente.intervencoes.medicoExecutor : null;
+        if (campo === "comorbidades" && temValorPreenchido(medInt, "comorbidades")) {
+          return [{ fonte: FONTES.medicoExecutor + " (revisado)", valor: medInt.comorbidades }];
+        }
         const entradas = [];
-        if (cenario === "com_sistema" && paciente.sistema && paciente.sistema[campo] !== null && paciente.sistema[campo] !== undefined && String(paciente.sistema[campo]).trim() !== "") {
+        if (cenario === "com_sistema" && temValorPreenchido(paciente.sistema, campo)) {
           entradas.push({ fonte: FONTES.sistema, valor: paciente.sistema[campo] });
         }
-        if (paciente.questionario && paciente.questionario[campo] !== null && paciente.questionario[campo] !== undefined && String(paciente.questionario[campo]).trim() !== "") {
+        if (temValorPreenchido(paciente.questionario, campo)) {
           entradas.push({ fonte: FONTES.questionario, valor: paciente.questionario[campo] });
+        }
+        if (campo === "alergias" && temValorPreenchido(enfInt, "alergias")) {
+          entradas.push({ fonte: FONTES.enfermagem, valor: enfInt.alergias });
         }
         return entradas;
       }
@@ -3428,14 +3961,31 @@
       // Regra ilustrativa. Não é recomendação clínica.
       function obterFontesAtivasPaciente(paciente, cenario) {
         const fontes = [];
+        const intv = paciente.intervencoes || {};
         if (cenario === "com_sistema" && paciente.sistema) fontes.push("Sistema (HL7 FHIR)");
         if (paciente.questionario) fontes.push("Questionário do paciente");
-        if (paciente.enfermagem) fontes.push("Avaliação de enfermagem");
+        if (intv.recepcao) fontes.push("Recepção");
+        if (paciente.enfermagem || intv.enfermagem) fontes.push("Avaliação de enfermagem");
+        if (intv.anestesia) fontes.push("Avaliação pré-anestésica");
+        if (intv.medicoExecutor) fontes.push("Médico executor");
         return fontes;
       }
 
       // Regra ilustrativa. Não é recomendação clínica.
       function resolverConfirmacaoBooleana(paciente, campo) {
+        const rec = obterCampoReconciliado(paciente, campo);
+        if (rec && typeof rec.valor === "boolean") {
+          return { confirmado: rec.valor, divergente: false, fontes: [{ fonte: FONTES.anestesia + " (reconciliado)", valor: rec.valor }], fontePrincipal: FONTES.anestesia };
+        }
+        const intv = paciente.intervencoes || {};
+        if (intv.enfermagem && typeof intv.enfermagem[campo] === "boolean") {
+          const valEnf = intv.enfermagem[campo];
+          return { confirmado: valEnf, divergente: false, fontes: [{ fonte: FONTES.enfermagem, valor: valEnf }], fontePrincipal: FONTES.enfermagem };
+        }
+        if (campo === "acompanhanteConfirmado" && intv.recepcao && typeof intv.recepcao.acompanhanteConfirmado === "boolean") {
+          const valRec = intv.recepcao.acompanhanteConfirmado;
+          return { confirmado: valRec, divergente: false, fontes: [{ fonte: FONTES.recepcao, valor: valRec }], fontePrincipal: FONTES.recepcao };
+        }
         const enf = paciente.enfermagem ? paciente.enfermagem[campo] : null;
         const quest = paciente.questionario ? paciente.questionario[campo] : null;
         const fontes = [];
@@ -3470,6 +4020,7 @@
             }).join(" · ");
             divergencias.push({
               campo: cfg.rotulo,
+              chave: cfg.chave,
               mensagem: "Divergência em " + cfg.rotulo.toLowerCase() + ": " + resumoFontes + "."
             });
           }
@@ -3482,6 +4033,7 @@
 
       // Regra ilustrativa. Não é recomendação clínica.
       function avaliarDivergenciaAnticoagulante(paciente, cenario, campoMeds, divergencias) {
+        if (obterCampoReconciliado(paciente, "usaAnticoagulante")) return;
         if (cenario !== "com_sistema" || !paciente.sistema || !paciente.questionario) return;
         const sisAnticoag = Boolean(paciente.sistema.usaAnticoagulante);
         const questAnticoag = Boolean(paciente.questionario.usaAnticoagulante);
@@ -3490,16 +4042,25 @@
         const resumo = "Anticoagulante: " + (sisAnticoag ? "Sim" : "Não") + " (" + FONTES.sistema + ") · " + (questAnticoag ? "Sim" : "Não") + " (" + FONTES.questionario + ")";
         campoMeds.divergente = true;
         campoMeds.notaAnticoag = resumo;
-        divergencias.push({ campo: "Medicações (anticoagulante)", mensagem: "Divergência em " + resumo + "." });
+        divergencias.push({ campo: "Medicações (anticoagulante)", chave: "usaAnticoagulante", mensagem: "Divergência em " + resumo + "." });
       }
 
       // Regra ilustrativa. Não é recomendação clínica.
-      function avaliarConfirmacao(confObj, rotulo, pendencias, divergencias) {
+      function avaliarConfirmacao(confObj, rotulo, chave, pendencias, divergencias) {
         if (confObj.divergente) {
-          divergencias.push({ campo: rotulo, mensagem: "Divergência na confirmação de " + rotulo.toLowerCase() + " entre enfermagem e questionário." });
+          divergencias.push({ campo: rotulo, chave: chave, mensagem: "Divergência na confirmação de " + rotulo.toLowerCase() + " entre enfermagem e questionário." });
         } else if (!confObj.confirmado) {
           pendencias.push(rotulo + " não confirmado.");
         }
+      }
+
+      function verificarUsoAnticoagulante(paciente, cenario) {
+        const rec = obterCampoReconciliado(paciente, "usaAnticoagulante");
+        if (rec) return Boolean(rec.valor);
+        return Boolean(
+          (cenario === "com_sistema" && paciente.sistema && paciente.sistema.usaAnticoagulante) ||
+          (paciente.questionario && paciente.questionario.usaAnticoagulante)
+        );
       }
 
       // Regra ilustrativa. Não é recomendação clínica.
@@ -3516,15 +4077,17 @@
         }
         const jejum = resolverConfirmacaoBooleana(paciente, "jejumConfirmado");
         const acomp = resolverConfirmacaoBooleana(paciente, "acompanhanteConfirmado");
-        avaliarConfirmacao(jejum, "Jejum", pendencias, divergencias);
-        avaliarConfirmacao(acomp, "Acompanhante", pendencias, divergencias);
+        avaliarConfirmacao(jejum, "Jejum", "jejumConfirmado", pendencias, divergencias);
+        avaliarConfirmacao(acomp, "Acompanhante", "acompanhanteConfirmado", pendencias, divergencias);
 
-        const usaAnticoagulante = Boolean(
-          (cenario === "com_sistema" && paciente.sistema && paciente.sistema.usaAnticoagulante) ||
-          (paciente.questionario && paciente.questionario.usaAnticoagulante)
-        );
+        const usaAnticoagulante = verificarUsoAnticoagulante(paciente, cenario);
+        const anestInt = paciente.intervencoes ? paciente.intervencoes.anestesia : null;
         if (usaAnticoagulante) {
-          avisosInformativos.push("Registro de anticoagulante em uso na lista de medicações.");
+          avisosInformativos.push(
+            anestInt && anestInt.cienciaAnticoagulante
+              ? "Uso de anticoagulante revisado e validado na avaliação pré-anestésica."
+              : "Registro de anticoagulante em uso na lista de medicações."
+          );
         }
         const status = divergencias.length > 0 ? "Atencao" : (pendencias.length > 0 ? "Pendente" : "Pronto");
         return {
@@ -3564,18 +4127,43 @@
         };
       }
 
-      function obterProximoPasso(paciente) {
-        const mapa = [
-          { acao: "Enviar link do questionário pré-procedimento ao paciente.", resp: "Recepção" },
-          { acao: "Aguardar envio do questionário pré-procedimento pelo paciente.", resp: "Paciente / Recepção" },
-          { acao: "Realizar conferência inicial pela enfermagem.", resp: "Enfermagem" },
-          { acao: "Encaminhar dados para avaliação pré-anestésica.", resp: "Enfermagem / Anestesiologia" },
-          { acao: "Concluir checagem de prontidão para liberação.", resp: "Médica anestesiologista" },
-          { acao: "Acolher paciente para início do procedimento.", resp: "Equipe do procedimento" },
-          { acao: "Registrar término e liberar orientações de pós-procedimento.", resp: "Médico executor / Enfermagem" },
-          { acao: "Paciente em pós-procedimento com orientações disponíveis.", resp: "Paciente / Recepção" }
-        ];
-        return mapa[paciente.etapaAtual] || mapa[0];
+      // Mapeia qual perfil profissional está acionado no estágio atual da jornada
+      function obterAcionamentoPaciente(paciente, aval) {
+        const etapa = paciente.etapaAtual;
+        const temDiv = aval && aval.divergencias.length > 0;
+        if (etapa <= 1) {
+          return {
+            perfilId: "Recepcao", perfilRotulo: "Recepção", badgeCls: "Recepcao", pendenteAgora: true,
+            instrucaoCurta: "Cobrar questionário e confirmar acompanhante",
+            instrucaoCompleta: "Conferir envio do questionário pré-procedimento e confirmar acompanhante adulto na recepção."
+          };
+        }
+        if (etapa <= 3) {
+          return {
+            perfilId: "Enfermagem", perfilRotulo: "Enfermagem", badgeCls: "Enfermagem", pendenteAgora: true,
+            instrucaoCurta: "Aferir peso e altura, jejum e alergias na admissão",
+            instrucaoCompleta: "Aferir peso e altura presenciais na admissão, conferir jejum e alergias e encaminhar à anestesia."
+          };
+        }
+        if (etapa === 4 || temDiv) {
+          return {
+            perfilId: "Anestesista", perfilRotulo: "Anestesista", badgeCls: "Anestesista", pendenteAgora: true,
+            instrucaoCurta: temDiv ? "Reconciliar divergência e revisar prontidão pré-anestésica" : "Validar prontidão e medicações pré-anestésicas",
+            instrucaoCompleta: "Revisar os 6 dados críticos, reconciliar divergências entre fontes e validar prontidão pré-anestésica."
+          };
+        }
+        if (etapa <= 6) {
+          return {
+            perfilId: "MedicoExecutor", perfilRotulo: "Médico executor", badgeCls: "MedicoExecutor", pendenteAgora: true,
+            instrucaoCurta: etapa === 5 ? "Confirmar checklist de sala e iniciar procedimento" : "Registrar conclusão e liberar pós-procedimento",
+            instrucaoCompleta: "Conferir comorbidades e checklist de sala, executar o procedimento e liberar orientações pós-procedimento."
+          };
+        }
+        return {
+          perfilId: "MedicoExecutor", perfilRotulo: "Concluído", badgeCls: "Concluido", pendenteAgora: false,
+          instrucaoCurta: "Orientações pós-procedimento liberadas ao celular",
+          instrucaoCompleta: "Procedimento finalizado com orientações de pós-procedimento já disponíveis ao paciente."
+        };
       }
 
       /* =======================================================================
@@ -3583,7 +4171,10 @@
          ======================================================================= */
 
       function clonarPacientesIniciais() {
-        return JSON.parse(JSON.stringify(PACIENTES_INICIAIS));
+        return JSON.parse(JSON.stringify(PACIENTES_INICIAIS)).map(function (p) {
+          p.intervencoes = { recepcao: null, enfermagem: null, anestesia: null, medicoExecutor: null, reconciliados: {} };
+          return p;
+        });
       }
 
       const state = {
@@ -3592,6 +4183,7 @@
         perfil: "Recepcao",
         cenario: "com_sistema",
         filtroStatus: "Todos",
+        filtroPerfilAcionado: "Todos",
         buscaNome: "",
         pacienteSelecionadoId: "p1",
         pacientes: clonarPacientesIniciais(),
@@ -3600,6 +4192,7 @@
         mensagemErroForm: "",
         mensagemDetalhe: "",
         modalFhirAberto: false,
+        modalIntervencaoAberto: false,
         tourAtivo: false,
         tourPasso: 0,
         ultimoFocoAntesModal: null
@@ -3608,31 +4201,35 @@
       const PERFIS_INFO = {
         Recepcao: {
           rotulo: "Recepção",
-          descricao: "Recepção — prioriza acompanhante confirmado, situação do questionário pré-procedimento e etapa de chegada.",
+          descricao: "Recepção — prioriza acompanhante confirmado, envio do questionário e etapa de chegada.",
+          instrucaoPerfil: "Disparar ou acompanhar resposta do questionário pré-procedimento e confirmar acompanhante adulto.",
           campos: ["acompanhante"],
           destacaJornada: true,
-          destacaLateral: false,
+          destacaLateral: true,
           destacaPendencias: true
         },
         Enfermagem: {
           rotulo: "Enfermagem",
           descricao: "Enfermagem — prioriza peso, altura, índice de massa corporal, jejum, alergias e acompanhante na admissão.",
+          instrucaoPerfil: "Aferir peso e altura presenciais, conferir jejum e alergias relatadas e concluir a triagem.",
           campos: ["pesoAlturaImc", "jejum", "alergias", "acompanhante"],
           destacaJornada: false,
-          destacaLateral: false,
+          destacaLateral: true,
           destacaPendencias: false
         },
         Anestesista: {
           rotulo: "Anestesista",
           descricao: "Anestesista — prioriza alergias, medicações em uso (com destaque para anticoagulantes) e confirmação de jejum.",
+          instrucaoPerfil: "Reconciliar divergências entre fontes, registrar ciência de anticoagulantes e validar prontidão.",
           campos: ["alergias", "medicacoes", "jejum"],
           destacaJornada: false,
-          destacaLateral: false,
+          destacaLateral: true,
           destacaPendencias: false
         },
         MedicoExecutor: {
           rotulo: "Médico executor",
-          descricao: "Médico executor — prioriza comorbidades, posição na jornada de 8 etapas e próximo passo com responsável.",
+          descricao: "Médico executor — prioriza comorbidades, checklist de sala e liberação do pós-procedimento.",
+          instrucaoPerfil: "Revisar comorbidades, confirmar checklist de segurança e registrar início e término do procedimento.",
           campos: ["comorbidades"],
           destacaJornada: true,
           destacaLateral: true,
@@ -3641,6 +4238,7 @@
         Paciente: {
           rotulo: "Paciente",
           descricao: "Paciente — visão simplificada de etapa atual, questionário curto e orientações da clínica.",
+          instrucaoPerfil: "Responder às perguntas simples pelo celular.",
           campos: [],
           destacaJornada: false,
           destacaLateral: false,
@@ -3751,15 +4349,21 @@
          5. RENDERIZAÇÃO: TELA A — QUADRO DA CLÍNICA
          ======================================================================= */
 
+      function avaliarPacientesQuadro() {
+        return state.pacientes.map(function (p) {
+          const aval = avaliarProntidaoPaciente(p, state.cenario);
+          return { paciente: p, aval: aval, ac: obterAcionamentoPaciente(p, aval) };
+        });
+      }
+
       function filtrarPacientes(avaliadosOpt) {
         const termo = normalizarTexto(state.buscaNome);
-        const base = avaliadosOpt || state.pacientes.map(function (p) {
-          return { paciente: p, aval: avaliarProntidaoPaciente(p, state.cenario) };
-        });
+        const base = avaliadosOpt || avaliarPacientesQuadro();
         return base.filter(function (item) {
           const okStatus = state.filtroStatus === "Todos" || item.aval.status === state.filtroStatus;
+          const okPerfil = state.filtroPerfilAcionado === "Todos" || (item.ac.pendenteAgora && item.ac.perfilId === state.filtroPerfilAcionado);
           const okNome = !termo || normalizarTexto(item.paciente.nome).includes(termo) || normalizarTexto(item.paciente.procedimento).includes(termo);
-          return okStatus && okNome;
+          return okStatus && okPerfil && okNome;
         });
       }
 
@@ -3828,6 +4432,32 @@
         ]);
       }
 
+      function criarFiltroAcionamentoQuadro() {
+        const opcoes = [
+          { id: "Todos", rotulo: "Todos os perfis" },
+          { id: "Recepcao", rotulo: "Recepção" },
+          { id: "Enfermagem", rotulo: "Enfermagem" },
+          { id: "Anestesista", rotulo: "Anestesista" },
+          { id: "MedicoExecutor", rotulo: "Médico executor" }
+        ];
+        const sel = el("select", {
+          id: "filtro-perfil-acionado",
+          className: "control-select",
+          "aria-label": "Filtrar por perfil acionado",
+          onChange: function (e) {
+            const val = e.target.value;
+            if (val !== "Todos" && !Object.prototype.hasOwnProperty.call(PERFIS_INFO, val)) return;
+            state.filtroPerfilAcionado = val;
+            renderListaQuadro();
+          }
+        }, opcoes.map(function (op) {
+          const opt = el("option", { value: op.id, text: op.rotulo });
+          if (state.filtroPerfilAcionado === op.id) opt.selected = true;
+          return opt;
+        }));
+        return el("label", { className: "control-field", for: "filtro-perfil-acionado" }, [el("span", { text: "Acionamento:" }), sel]);
+      }
+
       function criarBarraFiltrosQuadro(avaliados) {
         const opcoes = [
           { id: "Todos", rotulo: "Todos" },
@@ -3835,25 +4465,50 @@
           { id: "Pendente", rotulo: "Pendente" },
           { id: "Atencao", rotulo: "Atenção" }
         ];
-        const botoesFiltro = el("div", { className: "filtros-status", role: "group", "aria-label": "Filtrar por status" },
-          opcoes.map(function (op) {
-            return el("button", {
-              type: "button",
-              className: "btn-filtro",
-              "aria-pressed": state.filtroStatus === op.id ? "true" : "false",
-              text: op.rotulo,
-              onClick: function () { state.filtroStatus = op.id; renderTelaQuadro(); }
-            });
-          })
-        );
-        return el("div", { className: "filtros-bar" }, [botoesFiltro, criarCampoBuscaQuadro(avaliados)]);
+        const btns = [];
+        opcoes.forEach(function (op) {
+          const b = el("button", {
+            type: "button",
+            className: "btn-filtro",
+            "aria-pressed": state.filtroStatus === op.id ? "true" : "false",
+            text: op.rotulo,
+            onClick: function () {
+              state.filtroStatus = op.id;
+              btns.forEach(function (item) { item.setAttribute("aria-pressed", item === b ? "true" : "false"); });
+              renderListaQuadro();
+            }
+          });
+          btns.push(b);
+        });
+        const botoesFiltro = el("div", { className: "filtros-status", role: "group", "aria-label": "Filtrar por status" }, btns);
+        return el("div", { className: "filtros-bar" }, [botoesFiltro, criarFiltroAcionamentoQuadro(), criarCampoBuscaQuadro(avaliados)]);
       }
 
-      function abrirDetalhePaciente(pacienteId) {
+      function abrirDetalhePaciente(pacienteId, perfilOpcional) {
         state.pacienteSelecionadoId = pacienteId;
+        if (perfilOpcional && Object.prototype.hasOwnProperty.call(PERFIS_INFO, perfilOpcional)) {
+          state.perfil = perfilOpcional;
+        }
         state.mensagemDetalhe = "";
         state.mensagemErroForm = "";
         navegarSubTela("detalhe");
+      }
+
+      function criarCelulaAcionamentoQuadro(p, ac) {
+        const badge = el("span", { className: "acionamento-badge acionamento-badge--" + ac.badgeCls, text: ac.perfilRotulo });
+        const btnAtender = ac.pendenteAgora
+          ? el("button", {
+              type: "button",
+              className: "btn btn-sm btn-outline-accent",
+              text: "Atender (" + ac.perfilRotulo + ")",
+              onClick: function (ev) { ev.stopPropagation(); abrirDetalhePaciente(p.id, ac.perfilId); }
+            })
+          : null;
+        return el("div", { className: "acionamento-celula" }, [
+          badge,
+          el("span", { className: "acionamento-instrucao", text: ac.instrucaoCurta }),
+          btnAtender
+        ]);
       }
 
       function formatarResumoPendencia(aval) {
@@ -3889,6 +4544,7 @@
           el("th", { text: "Procedimento" }),
           el("th", { text: "Data e hora" }),
           el("th", { text: "Etapa atual" }),
+          el("th", { text: "Acionamento atual" }),
           el("th", { text: "Fontes ativas" }),
           el("th", { text: "Status de prontidão" }),
           el("th", { text: "Pendências / Alertas" })
@@ -3908,6 +4564,7 @@
             el("td", { text: p.procedimento }),
             el("td", { text: p.dataHora }),
             el("td", null, criarCelulaProgressoEtapa(p.etapaAtual)),
+            el("td", null, criarCelulaAcionamentoQuadro(p, item.ac)),
             el("td", null, criarSelosFontesAtivas(p)),
             el("td", null, criarBadgeStatus(item.aval)),
             el("td", { text: formatarResumoPendencia(item.aval) })
@@ -3926,6 +4583,7 @@
             ]),
             el("div", { className: "subinfo-celula", text: p.procedimento + " · " + p.dataHora }),
             el("div", { className: "mobile-card-etapa", text: "Etapa " + (p.etapaAtual + 1) + " de 8: " + ETAPAS_JORNADA[p.etapaAtual] }),
+            criarCelulaAcionamentoQuadro(p, item.ac),
             criarSelosFontesAtivas(p),
             el("div", { className: "mobile-card-pendencia", text: formatarResumoPendencia(item.aval) }),
             el("button", { type: "button", className: "btn btn-sm btn-outline-accent", text: "Abrir detalhe do paciente", onClick: function () { abrirDetalhePaciente(p.id); } })
@@ -3946,7 +4604,14 @@
               type: "button",
               className: "btn btn-sm btn-outline-accent",
               text: "Limpar filtros",
-              onClick: function () { state.filtroStatus = "Todos"; state.buscaNome = ""; renderTelaQuadro(); }
+              onClick: function () {
+                state.filtroStatus = "Todos";
+                state.filtroPerfilAcionado = "Todos";
+                state.buscaNome = "";
+                renderTelaQuadro();
+                const btnTodos = document.querySelector(".filtros-status .btn-filtro");
+                if (btnTodos) btnTodos.focus();
+              }
             })
           ]));
           return;
@@ -3959,9 +4624,7 @@
         const sec = document.getElementById("tela-quadro");
         limparElemento(sec);
 
-        const avaliados = state.pacientes.map(function (p) {
-          return { paciente: p, aval: avaliarProntidaoPaciente(p, state.cenario) };
-        });
+        const avaliados = avaliarPacientesQuadro();
 
         sec.appendChild(criarKpisQuadro(avaliados));
         sec.appendChild(criarFaixaCenarioEAtalhos());
@@ -3980,6 +4643,7 @@
           className: "control-select",
           "aria-label": "Selecionar outro paciente",
           onChange: function (e) {
+            if (!state.pacientes.some(function (p) { return p.id === e.target.value; })) return;
             state.pacienteSelecionadoId = e.target.value;
             state.mensagemDetalhe = "";
             state.mensagemErroForm = "";
@@ -4237,18 +4901,74 @@
         ]);
       }
 
-      function criarBoxProximoPasso(paciente, perfilCfg) {
-        const prox = obterProximoPasso(paciente);
-        const clsProx = "card-painel" + (perfilCfg.destacaLateral ? " card-painel--destaque" : "");
-        return el("article", { className: clsProx }, [
-          el("div", { className: "card-painel-head" }, [
-            el("h2", { className: "card-painel-titulo", text: "Próximo passo e responsável" }),
-            perfilCfg.destacaLateral ? el("span", { className: "tag-prioridade", text: "Prioridade: " + perfilCfg.rotulo }) : null
+      function obterTextoCampoPreferido(campoAval, fallback) {
+        if (!campoAval || campoAval.entradas.length === 0) return fallback || "";
+        const lista = campoAval.entradas;
+        return String(lista[lista.length - 1].valor || "");
+      }
+
+      function criarGrupoSimNaoBotoes(idBase, rotulo, labelSim, labelNao, valorInicial, onChangeFn) {
+        let atual = valorInicial === true ? true : (valorInicial === false ? false : null);
+        const btnSim = el("button", { type: "button", id: idBase + "-sim", className: "btn-simnao", "aria-pressed": atual === true ? "true" : "false", text: labelSim });
+        const btnNao = el("button", { type: "button", id: idBase + "-nao", className: "btn-simnao", "aria-pressed": atual === false ? "true" : "false", text: labelNao });
+        function selecionar(val, notificar) {
+          atual = val;
+          btnSim.setAttribute("aria-pressed", val === true ? "true" : "false");
+          btnNao.setAttribute("aria-pressed", val === false ? "true" : "false");
+          if (notificar && onChangeFn) onChangeFn(val);
+        }
+        btnSim.addEventListener("click", function () { selecionar(true, true); });
+        btnNao.addEventListener("click", function () { selecionar(false, true); });
+        return {
+          elGrupo: el("div", { className: "form-grupo", role: "group", "aria-labelledby": idBase + "-lbl" }, [
+            el("span", { id: idBase + "-lbl", className: "form-label", text: rotulo }),
+            el("div", { className: "quest-simnao-grid" }, [btnSim, btnNao])
           ]),
+          getValor: function () { return atual; },
+          setValor: function (v) { selecionar(v, false); }
+        };
+      }
+
+      function executarAcaoRapidaPerfil(paciente, ac) {
+        const etapaAtual = paciente.etapaAtual;
+        if (state.perfil !== ac.perfilId && ac.pendenteAgora) {
+          state.perfil = ac.perfilId;
+          state.mensagemDetalhe = "Perfil alterado para " + ac.perfilRotulo + " (acionado nesta etapa).";
+          renderPocAtiva();
+          return;
+        }
+        if (etapaAtual < ETAPAS_JORNADA.length - 1) {
+          avancarEtapaPaciente(paciente.id);
+        }
+      }
+
+      function criarBoxAcionamentoPerfil(paciente, aval, perfilCfg) {
+        const ac = obterAcionamentoPaciente(paciente, aval);
+        const acionadoAqui = ac.pendenteAgora && ac.perfilId === state.perfil;
+        const badgeEstado = acionadoAqui
+          ? el("span", { className: "acionamento-banner-estado acionamento-banner-estado--ativo", text: "ACIONADO AGORA" })
+          : el("span", { className: "acionamento-banner-estado acionamento-banner-estado--aguardo", text: ac.pendenteAgora ? "Aguardando: " + ac.perfilRotulo : "Etapa concluída" });
+        const instrucao = acionadoAqui ? ac.instrucaoCompleta : (perfilCfg.instrucaoPerfil + " (Acionamento atual: " + ac.perfilRotulo + ".)");
+        const chMap = { Recepcao: "recepcao", Anestesista: "anestesia", MedicoExecutor: "medicoExecutor" };
+        const reg = chMap[state.perfil] && paciente.intervencoes ? paciente.intervencoes[chMap[state.perfil]] : null;
+        const obsEl = reg && reg.observacao ? el("div", { className: "quest-ajuda", text: "Observação (" + perfilCfg.rotulo + "): " + reg.observacao }) : null;
+        const btnEditar = el("button", {
+          type: "button", id: "btn-abrir-modal-intervencao",
+          className: "btn btn-sm " + (acionadoAqui ? "btn-primary" : "btn-outline-accent"),
+          text: "Registrar / Editar (" + perfilCfg.rotulo + ")",
+          onClick: function () { abrirModalIntervencao(paciente, aval); }
+        });
+        const btnRapido = ac.pendenteAgora ? el("button", {
+          type: "button", id: "btn-acao-rapida-perfil", className: "btn btn-sm",
+          text: acionadoAqui ? "Concluir etapa" : "Ir para " + ac.perfilRotulo,
+          onClick: function () { executarAcaoRapidaPerfil(paciente, ac); }
+        }) : null;
+        return el("article", { className: "card-painel" + (acionadoAqui ? " card-painel--destaque" : "") }, [
+          el("div", { className: "card-painel-head" }, [el("h2", { className: "card-painel-titulo", text: "Painel do perfil: " + perfilCfg.rotulo }), badgeEstado]),
           el("div", { className: "proximo-passo-box" }, [
-            el("div", null, [el("strong", { text: "Etapa atual: " }), el("span", { text: ETAPAS_JORNADA[paciente.etapaAtual] })]),
-            el("div", null, [el("strong", { text: "Próximo passo: " }), el("span", { text: prox.acao })]),
-            el("div", null, [el("strong", { text: "Responsável: " }), el("span", { text: prox.resp })])
+            el("div", { className: "acionamento-instrucao", text: instrucao }),
+            obsEl,
+            el("div", { className: "acionamento-acoes-card" }, [btnEditar, btnRapido])
           ])
         ]);
       }
@@ -4256,7 +4976,7 @@
       function criarPainelLateralDetalhe(paciente, aval, perfilCfg) {
         return el("div", { className: "detalhe-lateral" }, [
           criarBoxPendencias(paciente, aval, perfilCfg),
-          criarBoxProximoPasso(paciente, perfilCfg)
+          criarBoxAcionamentoPerfil(paciente, aval, perfilCfg)
         ]);
       }
 
@@ -4303,124 +5023,164 @@
         return "Tudo pronto da sua parte! Aguarde o contato ou acolhimento no horário agendado.";
       }
 
-      function obterExemploQuestionario(paciente) {
-        const base = paciente.sistema || {};
+      function ehRespostaNegativaTexto(valor) {
+        const norm = normalizarTexto(valor);
+        return norm.startsWith("nenhum") || norm.startsWith("sem alergia") || norm === "não" || norm === "nao";
+      }
+
+      function alternarChipNoInput(inp, nomeChip) {
+        const lista = inp.value && !ehRespostaNegativaTexto(inp.value)
+          ? inp.value.split(";").map(function (s) { return s.trim(); }).filter(Boolean)
+          : [];
+        const idx = lista.findIndex(function (s) { return normalizarTexto(s) === normalizarTexto(nomeChip); });
+        if (idx === -1) lista.push(nomeChip);
+        else lista.splice(idx, 1);
+        const novoTxt = lista.join("; ");
+        if (novoTxt.length <= 180) inp.value = novoTxt;
+        return lista.length > 0;
+      }
+
+      function criarBlocoCampoComChips(cfg) {
+        const inp = el("input", { type: "text", id: cfg.inputId, className: "form-input", maxlength: "180", value: cfg.valorInicial || "", placeholder: cfg.placeholder, "aria-label": cfg.rotulo });
+        let simNaoCtrl = null;
+        const chipBtns = cfg.opcoes.map(function (nomeChip) {
+          return el("button", { type: "button", className: "chip-opcao", "aria-pressed": "false", text: nomeChip });
+        });
+        function sincronizar(manterSimVazio) {
+          const norm = normalizarTexto(inp.value);
+          chipBtns.forEach(function (btn) { btn.setAttribute("aria-pressed", norm.includes(normalizarTexto(btn.textContent)) ? "true" : "false"); });
+          if (simNaoCtrl) simNaoCtrl.setValor(norm === "" ? (manterSimVazio ? true : null) : !ehRespostaNegativaTexto(norm));
+        }
+        chipBtns.forEach(function (btn) {
+          btn.addEventListener("click", function () { sincronizar(alternarChipNoInput(inp, btn.textContent)); });
+        });
+        simNaoCtrl = criarGrupoSimNaoBotoes(cfg.inputId + "-sn", cfg.rotulo, cfg.btnSim, cfg.btnNao, null, function (val) {
+          if (val === false) inp.value = cfg.textoNao;
+          else if (ehRespostaNegativaTexto(inp.value)) inp.value = "";
+          sincronizar(val === true);
+        });
+        inp.addEventListener("input", function () { sincronizar(false); });
+        sincronizar(false);
         return {
-          alergias: base.alergias || "Nenhuma alergia conhecida",
-          medicacoes: base.medicacoes || "Nenhuma de uso contínuo",
-          usaAnticoagulante: Boolean(base.usaAnticoagulante),
-          pesoKg: base.pesoKg || 70,
-          alturaCm: base.alturaCm || 170,
-          comorbidades: base.comorbidades || "Nenhuma comorbidade relatada",
+          elGrupo: el("div", { className: "form-grupo" }, [simNaoCtrl.elGrupo, el("div", { className: "chips-selecao", role: "group", "aria-label": "Opções rápidas: " + cfg.rotulo }, chipBtns), inp]),
+          input: inp,
+          sync: function () { sincronizar(false); }
+        };
+      }
+
+      const CFG_CAMPOS_PACIENTE = {
+        alergias: {
+          inputId: "q-alergias", rotulo: "1. Você tem alergia a algum remédio, alimento ou látex?",
+          btnSim: "Sim, tenho alergia", btnNao: "Não tenho alergia", textoNao: "Nenhuma alergia conhecida",
+          placeholder: "Toque acima ou escreva outra alergia (opcional)",
+          opcoes: ["Dipirona", "Penicilina / Amoxicilina", "Anti-inflamatório", "Iodo / Contraste", "Látex", "Frutos do mar"]
+        },
+        medicacoes: {
+          inputId: "q-medicacoes", rotulo: "2. Você toma algum remédio todos os dias?",
+          btnSim: "Sim, tomo todos os dias", btnNao: "Não tomo remédios diários", textoNao: "Nenhuma de uso contínuo",
+          placeholder: "Toque nos exemplos ou escreva o nome do remédio",
+          opcoes: ["Losartana (pressão)", "Levotiroxina (tireoide)", "Metformina (diabetes)", "Sinvastatina", "Omeprazol"]
+        },
+        comorbidades: {
+          inputId: "q-comorbidades", rotulo: "5. Você tem alguma destas condições de saúde?",
+          btnSim: "Sim, tenho", btnNao: "Nenhuma condição de saúde", textoNao: "Nenhuma condição relatada",
+          placeholder: "Toque acima ou descreva outra condição (opcional)",
+          opcoes: ["Pressão alta", "Diabetes", "Problema na tireoide", "Asma ou Bronquite", "Problema no coração"]
+        }
+      };
+
+      function criarControlesQuestionarioSimples(q) {
+        const cfgAlerg = Object.assign({ valorInicial: q.alergias || "" }, CFG_CAMPOS_PACIENTE.alergias);
+        const cfgMeds = Object.assign({ valorInicial: q.medicacoes || "" }, CFG_CAMPOS_PACIENTE.medicacoes);
+        const cfgComorb = Object.assign({ valorInicial: q.comorbidades || "" }, CFG_CAMPOS_PACIENTE.comorbidades);
+        return {
+          blocoAlergias: criarBlocoCampoComChips(cfgAlerg),
+          blocoMeds: criarBlocoCampoComChips(cfgMeds),
+          blocoComorb: criarBlocoCampoComChips(cfgComorb),
+          anticoagSn: criarGrupoSimNaoBotoes("q-anticoag", "3. Nos últimos 7 dias, tomou remédio para 'afinar o sangue'?", "Sim, tomei / Não sei", "Não tomei", typeof q.usaAnticoagulante === "boolean" ? q.usaAnticoagulante : null),
+          acompSn: criarGrupoSimNaoBotoes("q-acomp", "6. Terá acompanhante maior de 18 anos para ir embora?", "Sim, terei acompanhante", "Ainda não tenho", q.acompanhanteConfirmado),
+          jejumSn: criarGrupoSimNaoBotoes("q-jejum", "7. Entendeu e confirma que cumprirá o jejum combinado?", "Sim, confirmo o jejum", "Ainda tenho dúvida", q.jejumConfirmado),
+          peso: el("input", { type: "number", id: "q-peso", className: "form-input", min: "20", max: "300", step: "0.1", value: q.pesoKg || "", placeholder: "Por exemplo: 68" }),
+          altura: el("input", { type: "number", id: "q-altura", className: "form-input", min: "80", max: "240", step: "1", value: q.alturaCm || "", placeholder: "Por exemplo: 165" })
+        };
+      }
+
+      function obterExemploQuestionario(paciente) {
+        const ref = paciente.questionario || paciente.sistema || {};
+        return {
+          alergias: ref.alergias || "Nenhuma alergia conhecida",
+          medicacoes: ref.medicacoes || "Nenhuma de uso contínuo",
+          usaAnticoagulante: Boolean(ref.usaAnticoagulante),
+          pesoKg: ref.pesoKg || 72,
+          alturaCm: ref.alturaCm || 170,
+          comorbidades: ref.comorbidades || "Nenhuma condição relatada",
           acompanhante: true,
           jejum: true
         };
       }
 
-      function criarControlesFormulario(q) {
-        return {
-          alergias: el("input", { type: "text", id: "q-alergias", className: "form-input", maxlength: "180", value: q.alergias || "", placeholder: "Por exemplo: Dipirona, látex ou Nenhuma" }),
-          medicacoes: el("input", { type: "text", id: "q-medicacoes", className: "form-input", maxlength: "180", value: q.medicacoes || "", placeholder: "Por exemplo: Losartana 50 miligramas ao dia ou Nenhuma" }),
-          anticoag: el("input", { type: "checkbox", id: "q-anticoag", checked: Boolean(q.usaAnticoagulante) }),
-          peso: el("input", { type: "number", id: "q-peso", className: "form-input", min: "20", max: "300", step: "0.1", value: q.pesoKg || "" }),
-          altura: el("input", { type: "number", id: "q-altura", className: "form-input", min: "80", max: "240", step: "1", value: q.alturaCm || "" }),
-          comorbidades: el("input", { type: "text", id: "q-comorbidades", className: "form-input", maxlength: "180", value: q.comorbidades || "", placeholder: "Por exemplo: Hipertensão ou Nenhuma" }),
-          acompSim: el("input", { type: "radio", name: "q-acompanhante", value: "sim", checked: q.acompanhanteConfirmado === true }),
-          acompNao: el("input", { type: "radio", name: "q-acompanhante", value: "nao", checked: q.acompanhanteConfirmado === false }),
-          jejumSim: el("input", { type: "radio", name: "q-jejum", value: "sim", checked: q.jejumConfirmado === true }),
-          jejumNao: el("input", { type: "radio", name: "q-jejum", value: "nao", checked: q.jejumConfirmado === false })
-        };
-      }
-
       function preencherFormularioExemplo(ctrl, paciente, erroBox) {
         const ex = obterExemploQuestionario(paciente);
-        ctrl.alergias.value = ex.alergias;
-        ctrl.medicacoes.value = ex.medicacoes;
-        ctrl.anticoag.checked = ex.usaAnticoagulante;
+        ctrl.blocoAlergias.input.value = ex.alergias;
+        ctrl.blocoAlergias.sync();
+        ctrl.blocoMeds.input.value = ex.medicacoes;
+        ctrl.blocoMeds.sync();
+        ctrl.blocoComorb.input.value = ex.comorbidades;
+        ctrl.blocoComorb.sync();
+        ctrl.anticoagSn.setValor(ex.usaAnticoagulante);
         ctrl.peso.value = String(ex.pesoKg);
         ctrl.altura.value = String(ex.alturaCm);
-        ctrl.comorbidades.value = ex.comorbidades;
-        ctrl.acompSim.checked = ex.acompanhante;
-        ctrl.acompNao.checked = !ex.acompanhante;
-        ctrl.jejumSim.checked = ex.jejum;
-        ctrl.jejumNao.checked = !ex.jejum;
+        ctrl.acompSn.setValor(ex.acompanhante);
+        ctrl.jejumSn.setValor(ex.jejum);
         state.mensagemErroForm = "";
         erroBox.hidden = true;
       }
 
-      function criarGrupoRadioSimNao(rotulo, inpSim, inpNao) {
-        return el("div", { className: "form-grupo" }, [
-          el("span", { className: "form-label", text: rotulo }),
-          el("div", { className: "radio-row" }, [
-            el("label", { className: "form-check-label" }, [inpSim, "Sim"]),
-            el("label", { className: "form-check-label" }, [inpNao, "Não"])
-          ])
-        ]);
-      }
-
       function criarFormularioQuestionario(paciente) {
-        const ctrl = criarControlesFormulario(paciente.questionario || {});
-        const erroBox = el("div", { id: "q-erro-box", className: "form-erro", hidden: !state.mensagemErroForm, text: state.mensagemErroForm });
+        const ctrl = criarControlesQuestionarioSimples(paciente.questionario || {});
+        const erroBox = el("div", { id: "q-erro-box", className: "form-erro", role: "alert", tabIndex: "-1", hidden: !state.mensagemErroForm, text: state.mensagemErroForm });
         const form = el("form", { id: "form-questionario-pre", novalidate: "true" }, [
           erroBox,
-          el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-alergias", text: "1. Possui alguma alergia conhecida?" }), ctrl.alergias]),
+          ctrl.blocoAlergias.elGrupo,
+          ctrl.blocoMeds.elGrupo,
           el("div", { className: "form-grupo" }, [
-            el("label", { className: "form-label", for: "q-medicacoes", text: "2. Quais medicações usa continuamente?" }),
-            ctrl.medicacoes,
-            el("label", { className: "form-check-label" }, [ctrl.anticoag, el("span", { text: "Uso anticoagulante ou antiagregante" })])
+            ctrl.anticoagSn.elGrupo,
+            el("p", { className: "quest-ajuda", text: "Exemplos (princípios ativos na embalagem): AAS (ácido acetilsalicílico), Varfarina, Rivaroxabana, Apixabana, Dabigatrana ou Clopidogrel." })
           ]),
           el("div", { className: "form-row-2" }, [
-            el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-peso", text: "3. Peso (kg)" }), ctrl.peso]),
-            el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-altura", text: "4. Altura (cm)" }), ctrl.altura])
+            el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-peso", text: "4a. Peso aproximado (kg)" }), ctrl.peso]),
+            el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-altura", text: "4b. Altura aproximada (cm)" }), ctrl.altura])
           ]),
-          el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-comorbidades", text: "5. Doenças ou condições de saúde" }), ctrl.comorbidades]),
-          criarGrupoRadioSimNao("6. Terá acompanhante adulto na alta?", ctrl.acompSim, ctrl.acompNao),
-          criarGrupoRadioSimNao("7. Entendeu e confirma o jejum orientado?", ctrl.jejumSim, ctrl.jejumNao),
+          ctrl.blocoComorb.elGrupo,
+          ctrl.acompSn.elGrupo,
+          ctrl.jejumSn.elGrupo,
           el("div", { className: "detalhe-acoes" }, [
             el("button", { type: "button", className: "btn btn-sm", id: "btn-preencher-exemplo", text: "Preencher respostas de exemplo", onClick: function () { preencherFormularioExemplo(ctrl, paciente, erroBox); } }),
             el("button", { type: "submit", className: "btn btn-sm btn-primary", id: "btn-enviar-questionario", text: "Enviar questionário" })
           ])
         ]);
-
         form.addEventListener("submit", function (ev) {
           ev.preventDefault();
           processarEnvioQuestionario(paciente, {
-            alergias: ctrl.alergias.value, medicacoes: ctrl.medicacoes.value,
-            usaAnticoagulante: ctrl.anticoag.checked, pesoKg: ctrl.peso.value,
-            alturaCm: ctrl.altura.value, comorbidades: ctrl.comorbidades.value,
-            acompRadio: ctrl.acompSim.checked ? true : (ctrl.acompNao.checked ? false : null),
-            jejumRadio: ctrl.jejumSim.checked ? true : (ctrl.jejumNao.checked ? false : null)
+            alergias: ctrl.blocoAlergias.input.value, medicacoes: ctrl.blocoMeds.input.value,
+            anticoagRadio: ctrl.anticoagSn.getValor(), pesoKg: ctrl.peso.value, alturaCm: ctrl.altura.value,
+            comorbidades: ctrl.blocoComorb.input.value, acompRadio: ctrl.acompSn.getValor(), jejumRadio: ctrl.jejumSn.getValor()
           });
         });
         return form;
       }
 
       function validarDadosQuestionario(dados) {
-        const pesoTexto = String(dados.pesoKg || "").trim().replace(",", ".");
-        const altTexto = String(dados.alturaCm || "").trim();
-        const pesoNum = Number(pesoTexto);
-        const altNum = Number(altTexto);
-        const alergiasBruto = String(dados.alergias || "").trim();
-        const medsBruto = String(dados.medicacoes || "").trim();
-        const comorbBruto = String(dados.comorbidades || "").trim();
-        if (alergiasBruto.length > 180 || medsBruto.length > 180 || comorbBruto.length > 180) {
-          return "Use no máximo 180 caracteres em alergias, medicações e condições de saúde.";
-        }
-        const alergias = higienizarTextoEntrada(alergiasBruto, 180).trim();
-        const medicacoes = higienizarTextoEntrada(medsBruto, 180).trim();
-        const comorbidades = higienizarTextoEntrada(comorbBruto, 180).trim();
-        if (!alergias || !medicacoes || !comorbidades) {
-          return "Preencha alergias, medicações e condições de saúde (informe 'Nenhuma' se não houver).";
-        }
-        if (!/^\d{2,3}(\.\d)?$/.test(pesoTexto) || !Number.isFinite(pesoNum) || pesoNum < 20 || pesoNum > 300) {
-          return "Informe um peso válido entre 20 e 300 quilogramas.";
-        }
-        if (!/^\d{2,3}$/.test(altTexto) || !Number.isFinite(altNum) || altNum < 80 || altNum > 240) {
-          return "Informe uma altura válida inteira entre 80 e 240 centímetros.";
-        }
-        if (dados.acompRadio === null || dados.jejumRadio === null) {
-          return "Responda às perguntas de acompanhante e jejum (Sim ou Não).";
-        }
+        const alergias = higienizarTextoEntrada(String(dados.alergias || "").trim(), 180).trim();
+        const medicacoes = higienizarTextoEntrada(String(dados.medicacoes || "").trim(), 180).trim();
+        const comorbidades = higienizarTextoEntrada(String(dados.comorbidades || "").trim(), 180).trim();
+        if (!alergias || !medicacoes || !comorbidades) return "Responda às perguntas 1, 2 e 5 (toque nos botões 'Não' se não houver).";
+        if (dados.anticoagRadio === null) return "Na pergunta 3, informe se tomou remédio para afinar o sangue.";
+        const vPeso = validarPesoNumerico(dados.pesoKg, "um peso aproximado");
+        if (!vPeso.ok) return vPeso.erro;
+        const vAlt = validarAlturaNumerica(dados.alturaCm, "uma altura aproximada");
+        if (!vAlt.ok) return vAlt.erro;
+        if (dados.acompRadio === null || dados.jejumRadio === null) return "Responda às perguntas 6 e 7 sobre acompanhante e jejum.";
         return "";
       }
 
@@ -4429,28 +5189,31 @@
         if (erro) {
           state.mensagemErroForm = erro;
           renderTelaCelular();
+          const errBox = document.getElementById("q-erro-box");
+          if (errBox) errBox.focus();
           return;
         }
-        const pesoNorm = Number(String(dados.pesoKg || "").trim().replace(",", "."));
-        const altNorm = Number(String(dados.alturaCm || "").trim());
+        const vPeso = validarPesoNumerico(dados.pesoKg, "peso");
+        const vAlt = validarAlturaNumerica(dados.alturaCm, "altura");
         paciente.questionario = {
           alergias: higienizarTextoEntrada(dados.alergias, 180).trim(),
           medicacoes: higienizarTextoEntrada(dados.medicacoes, 180).trim(),
-          usaAnticoagulante: Boolean(dados.usaAnticoagulante),
-          pesoKg: Math.round(pesoNorm * 10) / 10,
-          alturaCm: Math.round(altNorm),
+          usaAnticoagulante: Boolean(dados.anticoagRadio),
+          pesoKg: vPeso.valor,
+          alturaCm: vAlt.valor,
           comorbidades: higienizarTextoEntrada(dados.comorbidades, 180).trim(),
           acompanhanteConfirmado: dados.acompRadio,
           jejumConfirmado: dados.jejumRadio
         };
         if (paciente.etapaAtual < 2) {
+          registrarDatasAteEtapa(paciente, 2);
           paciente.etapaAtual = 2;
-          if (!paciente.datasEtapas[1]) paciente.datasEtapas[1] = DATA_SIMULADA_HOJE;
-          paciente.datasEtapas[2] = DATA_SIMULADA_HOJE;
         }
         state.mensagemErroForm = "";
         state.envioRecentePacienteId = paciente.id;
         renderTelaCelular();
+        const sucBox = document.querySelector("#tela-celular .form-sucesso");
+        if (sucBox) sucBox.focus();
       }
 
       function criarAbaOrientacao(chave, rotulo, abaAtiva) {
@@ -4502,6 +5265,7 @@
           className: "control-select",
           "aria-label": "Selecionar paciente na visão do celular",
           onChange: function (e) {
+            if (!state.pacientes.some(function (p) { return p.id === e.target.value; })) return;
             state.pacienteSelecionadoId = e.target.value;
             state.abaOrientacaoCelular = null;
             state.envioRecentePacienteId = null;
@@ -4542,7 +5306,7 @@
         const paciente = obterPacienteSelecionado();
         const aval = avaliarProntidaoPaciente(paciente, state.cenario);
         const bannerSucesso = state.envioRecentePacienteId === paciente.id
-          ? el("div", { className: "form-sucesso", role: "status" }, [
+          ? el("div", { className: "form-sucesso", role: "status", tabIndex: "-1" }, [
               el("span", { text: "Questionário enviado! O painel da clínica já foi atualizado." }),
               el("div", { className: "detalhe-acoes" }, [
                 el("button", { type: "button", className: "btn btn-sm btn-primary", text: "Voltar ao Quadro", onClick: function () { navegarSubTela("quadro"); } }),
@@ -4567,8 +5331,10 @@
       }
 
       /* =======================================================================
-         8. MODAL FHIR E TOUR GUIADO (8 PASSOS)
+         8. MODAIS (FHIR / INTERVENÇÃO POR PERFIL) E TOUR GUIADO (8 PASSOS)
          ======================================================================= */
+
+      let modalIntervencaoCtx = null;
 
       function definirInertFundoModal(ativo) {
         const alvos = [document.getElementById("app-main"), document.querySelector(".topbar")];
@@ -4580,46 +5346,372 @@
         });
       }
 
+      function obterModalAtivoId() {
+        if (state.modalFhirAberto) return "modal-fhir";
+        if (state.modalIntervencaoAberto) return "modal-intervencao";
+        return null;
+      }
+
+      function abrirBackdropModal(tipo, idBackdrop, idFocoInicial) {
+        if (obterModalAtivoId()) fecharModalAtivo(true);
+        state.ultimoFocoAntesModal = document.activeElement;
+        definirInertFundoModal(true);
+        state.modalFhirAberto = tipo === "fhir";
+        state.modalIntervencaoAberto = tipo === "intervencao";
+        const dlg = document.getElementById(tipo === "fhir" ? "modal-fhir" : "modal-intervencao");
+        if (dlg) dlg.setAttribute("open", "");
+        document.getElementById(idBackdrop).hidden = false;
+        const alvoFoco = document.getElementById(idFocoInicial);
+        if (alvoFoco && typeof alvoFoco.focus === "function") alvoFoco.focus();
+      }
+
+      function fecharModalAtivo(preservarFoco) {
+        definirInertFundoModal(false);
+        ["modal-fhir", "modal-intervencao"].forEach(function (idDlg) {
+          const dlg = document.getElementById(idDlg);
+          if (dlg) dlg.removeAttribute("open");
+        });
+        ["modal-fhir-backdrop", "modal-intervencao-backdrop"].forEach(function (idB) {
+          const elem = document.getElementById(idB);
+          if (elem && !elem.hidden) elem.hidden = true;
+        });
+        state.modalFhirAberto = false;
+        state.modalIntervencaoAberto = false;
+        modalIntervencaoCtx = null;
+        if (preservarFoco) return;
+        const alvoFoco = state.ultimoFocoAntesModal;
+        state.ultimoFocoAntesModal = null;
+        if (alvoFoco && document.contains(alvoFoco) && typeof alvoFoco.focus === "function") alvoFoco.focus();
+      }
+
       function abrirModalFhir(paciente) {
         const pac = paciente || obterPacienteSelecionado();
-        const backdrop = document.getElementById("modal-fhir-backdrop");
         const pre = document.getElementById("modal-fhir-json");
         const nota = document.getElementById("modal-fhir-nota");
-
         nota.textContent = state.cenario === "sem_sistema"
           ? "Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS) — exemplo de referência da Rota 1"
           : "Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS)";
-
         pre.textContent = JSON.stringify(gerarBundleFhirSimulado(pac), null, 2);
-        state.ultimoFocoAntesModal = document.activeElement;
-        definirInertFundoModal(true);
-        state.modalFhirAberto = true;
-        backdrop.hidden = false;
-        document.getElementById("btn-fechar-fhir").focus();
+        abrirBackdropModal("fhir", "modal-fhir-backdrop", "btn-fechar-fhir");
       }
 
-      function fecharModalFhir() {
-        const backdrop = document.getElementById("modal-fhir-backdrop");
-        definirInertFundoModal(false);
-        if (backdrop.hidden) return;
-        backdrop.hidden = true;
-        state.modalFhirAberto = false;
-        const alvoFoco = state.ultimoFocoAntesModal;
-        state.ultimoFocoAntesModal = null;
-        if (alvoFoco && document.contains(alvoFoco) && typeof alvoFoco.focus === "function") {
-          alvoFoco.focus();
+      function criarGrupoTextoModal(id, rotulo, valorInicial, placeholder) {
+        const input = el("input", {
+          type: "text",
+          id: id,
+          className: "form-input",
+          maxlength: "180",
+          value: valorInicial || "",
+          placeholder: placeholder || ""
+        });
+        const elGrupo = el("div", { className: "form-grupo" }, [
+          el("label", { className: "form-label", for: id, text: rotulo }),
+          input
+        ]);
+        return { elGrupo: elGrupo, input: input };
+      }
+
+      function lerConfirmacaoInicialModal(confObj) {
+        if (!confObj || confObj.divergente || !confObj.fontes || confObj.fontes.length === 0) return null;
+        return Boolean(confObj.confirmado);
+      }
+
+      function registrarDatasAteEtapa(paciente, etapaAlvo) {
+        for (let idx = 1; idx <= etapaAlvo; idx += 1) {
+          if (!paciente.datasEtapas[idx]) paciente.datasEtapas[idx] = DATA_SIMULADA_HOJE;
         }
+      }
+
+      function construirCamposRecepcao(paciente, aval, corpo) {
+        const intRec = paciente.intervencoes && paciente.intervencoes.recepcao;
+        const acompCtrl = criarGrupoSimNaoBotoes(
+          "mi-rec-acomp",
+          "Acompanhante adulto confirmado?",
+          "Sim, confirmado",
+          "Não confirmado",
+          lerConfirmacaoInicialModal(aval.acompanhante)
+        );
+        const questCtrl = criarGrupoSimNaoBotoes(
+          "mi-rec-quest",
+          "Link do questionário pré-procedimento enviado?",
+          "Sim, enviado",
+          "Ainda não",
+          Boolean((intRec && intRec.questionarioEnviado) || paciente.etapaAtual >= 1)
+        );
+        const obsGrp = criarGrupoTextoModal(
+          "mi-rec-obs",
+          "Observação administrativa (opcional)",
+          intRec && intRec.observacao ? intRec.observacao : "",
+          "Exemplo: nome do acompanhante confirmado na chegada"
+        );
+        corpo.appendChild(acompCtrl.elGrupo);
+        corpo.appendChild(questCtrl.elGrupo);
+        corpo.appendChild(obsGrp.elGrupo);
+        return function () {
+          return { acompConfirmado: acompCtrl.getValor(), questEnviado: questCtrl.getValor(), obs: obsGrp.input.value };
+        };
+      }
+
+      function salvarIntervencaoRecepcao(paciente, dados) {
+        if (dados.acompConfirmado === null) {
+          return "Informe se o acompanhante adulto foi confirmado.";
+        }
+        paciente.intervencoes.recepcao = {
+          acompanhanteConfirmado: Boolean(dados.acompConfirmado),
+          questionarioEnviado: Boolean(dados.questEnviado),
+          observacao: higienizarTextoEntrada(dados.obs, 180).trim()
+        };
+        if (dados.questEnviado && paciente.etapaAtual === 0) {
+          registrarDatasAteEtapa(paciente, 1);
+          paciente.etapaAtual = 1;
+        }
+        state.mensagemDetalhe = "Registro da recepção salvo no painel para " + paciente.nome + ".";
+        return "";
+      }
+
+      function construirCamposEnfermagem(paciente, aval, corpo) {
+        const pesoGrp = criarGrupoTextoModal("mi-enf-peso", "Peso aferido na admissão (kg)", obterTextoCampoPreferido(aval.campos.pesoKg, ""), "Exemplo: 72");
+        const altGrp = criarGrupoTextoModal("mi-enf-altura", "Altura aferida (cm)", obterTextoCampoPreferido(aval.campos.alturaCm, ""), "Exemplo: 170");
+        const alergGrp = criarGrupoTextoModal("mi-enf-alergias", "Alergias conferidas na triagem", obterTextoCampoPreferido(aval.campos.alergias, ""), "Exemplo: Nenhuma ou descreva");
+        const jejumCtrl = criarGrupoSimNaoBotoes("mi-enf-jejum", "Jejum conferido na admissão?", "Sim, em jejum", "Não confirmado", lerConfirmacaoInicialModal(aval.jejum));
+        const acompCtrl = criarGrupoSimNaoBotoes("mi-enf-acomp", "Acompanhante adulto conferido?", "Sim, confirmado", "Não confirmado", lerConfirmacaoInicialModal(aval.acompanhante));
+        const chkAvancar = el("input", { type: "checkbox", id: "mi-enf-avancar" });
+        chkAvancar.checked = paciente.etapaAtual <= 3;
+
+        corpo.appendChild(el("div", { className: "form-row-2" }, [pesoGrp.elGrupo, altGrp.elGrupo]));
+        corpo.appendChild(alergGrp.elGrupo);
+        corpo.appendChild(jejumCtrl.elGrupo);
+        corpo.appendChild(acompCtrl.elGrupo);
+        corpo.appendChild(el("label", { className: "form-grupo", for: "mi-enf-avancar" }, [
+          el("span", { className: "detalhe-acoes" }, [chkAvancar, el("span", { className: "form-label", text: "Concluir triagem de enfermagem e encaminhar à anestesia" })])
+        ]));
+        return function () {
+          return { peso: pesoGrp.input.value, altura: altGrp.input.value, alergias: alergGrp.input.value, jejum: jejumCtrl.getValor(), acomp: acompCtrl.getValor(), avancar: chkAvancar.checked };
+        };
+      }
+
+      function salvarIntervencaoEnfermagem(paciente, dados) {
+        const vPeso = validarPesoNumerico(dados.peso, "o peso aferido");
+        if (!vPeso.ok) return vPeso.erro;
+        const vAlt = validarAlturaNumerica(dados.altura, "a altura aferida");
+        if (!vAlt.ok) return vAlt.erro;
+        if (dados.jejum === null || dados.acomp === null) {
+          return "Confirme os status de jejum e acompanhante na admissão.";
+        }
+        paciente.intervencoes.enfermagem = {
+          pesoKg: vPeso.valor,
+          alturaCm: vAlt.valor,
+          alergias: higienizarTextoEntrada(dados.alergias, 180).trim(),
+          jejumConfirmado: Boolean(dados.jejum),
+          acompanhanteConfirmado: Boolean(dados.acomp)
+        };
+        const etapaTarget = dados.avancar ? 4 : 3;
+        if (paciente.etapaAtual < etapaTarget) {
+          registrarDatasAteEtapa(paciente, etapaTarget);
+          paciente.etapaAtual = etapaTarget;
+        }
+        state.mensagemDetalhe = "Aferição da enfermagem registrada no painel para " + paciente.nome + ".";
+        return "";
+      }
+
+      function criarControleReconciliacaoTexto(avalCampo, chave, rotulo, eraDivergente) {
+        const valorInicial = obterTextoCampoPreferido(avalCampo, "");
+        const grp = criarGrupoTextoModal("mi-anest-" + chave, rotulo, valorInicial, "Informe o valor conferido");
+        const vistas = new Set();
+        const botoesFonte = [];
+        (avalCampo ? avalCampo.entradas : []).forEach(function (ent) {
+          const valStr = String(ent.valor || "").trim();
+          const chaveNorm = valStr + "|" + ent.fonte;
+          if (!valStr || vistas.has(chaveNorm)) return;
+          vistas.add(chaveNorm);
+          botoesFonte.push(el("button", {
+            type: "button",
+            className: "chip-opcao",
+            text: "Usar (" + ent.fonte + "): " + valStr,
+            onClick: function () { grp.input.value = valStr; }
+          }));
+        });
+        if (botoesFonte.length > 0) {
+          grp.elGrupo.appendChild(el("div", { className: "chips-selecao" }, botoesFonte));
+        }
+        return { chave: chave, rotulo: rotulo, eraDivergente: eraDivergente, valorInicial: valorInicial, input: grp.input, elGrupo: grp.elGrupo };
+      }
+
+      function adicionarDivergenciasAnestesista(aval, controlesTexto, controlesBool, corpo) {
+        const chavesTexto = { alergias: "Alergias reconciliadas", medicacoes: "Medicações reconciliadas", pesoKg: "Peso reconciliado", alturaCm: "Altura reconciliada", comorbidades: "Comorbidades reconciliadas" };
+        const chavesBool = { usaAnticoagulante: "Uso de anticoagulante reconciliado", jejumConfirmado: "Jejum reconciliado", acompanhanteConfirmado: "Acompanhante reconciliado" };
+        if (aval.divergencias.length > 0) {
+          corpo.appendChild(el("div", { className: "modal-div-bloco" }, [
+            el("strong", { text: "Divergências pendentes de conciliação:" })
+          ].concat(aval.divergencias.map(function (d) { return el("span", { text: "• " + d.mensagem }); }))));
+        }
+        const divChaves = new Set(aval.divergencias.map(function (d) { return d.chave; }));
+        ["alergias", "medicacoes"].concat(aval.divergencias.map(function (d) { return d.chave; })).forEach(function (chave) {
+          if (Object.prototype.hasOwnProperty.call(chavesTexto, chave) && !controlesTexto.some(function (c) { return c.chave === chave; })) {
+            controlesTexto.push(criarControleReconciliacaoTexto(aval.campos[chave], chave, chavesTexto[chave], divChaves.has(chave)));
+          } else if (Object.prototype.hasOwnProperty.call(chavesBool, chave) && !controlesBool.some(function (c) { return c.chave === chave; })) {
+            const ctrl = criarGrupoSimNaoBotoes("mi-anest-b-" + chave, chavesBool[chave], "Sim", "Não", null);
+            controlesBool.push({ chave: chave, rotulo: chavesBool[chave], ctrl: ctrl });
+          }
+        });
+      }
+
+      function construirCamposAnestesista(paciente, aval, corpo) {
+        const intAnest = paciente.intervencoes && paciente.intervencoes.anestesia;
+        const controlesTexto = [];
+        const controlesBool = [];
+        adicionarDivergenciasAnestesista(aval, controlesTexto, controlesBool, corpo);
+        controlesTexto.forEach(function (c) { corpo.appendChild(c.elGrupo); });
+        controlesBool.forEach(function (c) { corpo.appendChild(c.ctrl.elGrupo); });
+        const chkCiencia = el("input", { type: "checkbox", id: "mi-anest-ciencia" });
+        chkCiencia.checked = Boolean(intAnest && intAnest.cienciaAnticoagulante);
+        const chkAvancar = el("input", { type: "checkbox", id: "mi-anest-avancar" });
+        chkAvancar.checked = paciente.etapaAtual <= 4;
+        const obsGrp = criarGrupoTextoModal("mi-anest-obs", "Observação pré-anestésica informativa (opcional)", intAnest && intAnest.observacao ? intAnest.observacao : "", "Sem gerar recomendação ou conduta automática");
+        corpo.appendChild(el("label", { className: "detalhe-acoes", for: "mi-anest-ciencia" }, [chkCiencia, el("span", { className: "form-label", text: "Registrar ciência informativa de medicações e anticoagulante" })]));
+        corpo.appendChild(el("label", { className: "detalhe-acoes", for: "mi-anest-avancar" }, [chkAvancar, el("span", { className: "form-label", text: "Concluir revisão pré-anestésica e avançar para Liberado" })]));
+        corpo.appendChild(obsGrp.elGrupo);
+        return function () {
+          return {
+            textos: controlesTexto.map(function (c) { return { chave: c.chave, rotulo: c.rotulo, eraDivergente: c.eraDivergente, valorInicial: c.valorInicial, valor: c.input.value }; }),
+            bools: controlesBool.map(function (c) { return { chave: c.chave, rotulo: c.rotulo, valor: c.ctrl.getValor() }; }),
+            cienciaAnticoag: chkCiencia.checked,
+            avancar: chkAvancar.checked,
+            obs: obsGrp.input.value
+          };
+        };
+      }
+
+      function salvarIntervencaoAnestesista(paciente, dados) {
+        for (let i = 0; i < dados.textos.length; i += 1) {
+          const item = dados.textos[i];
+          const limpo = higienizarTextoEntrada(item.valor, 180).trim();
+          if (item.eraDivergente && !limpo) return "Preencha a conciliação de " + item.rotulo.toLowerCase() + ".";
+          if (item.chave === "pesoKg" && limpo && !validarPesoNumerico(limpo, "peso reconciliado").ok) {
+            return validarPesoNumerico(limpo, "peso reconciliado").erro;
+          }
+          if (item.chave === "alturaCm" && limpo && !validarAlturaNumerica(limpo, "altura reconciliada").ok) {
+            return validarAlturaNumerica(limpo, "altura reconciliada").erro;
+          }
+          if (item.eraDivergente || limpo !== String(item.valorInicial || "").trim()) {
+            paciente.intervencoes.reconciliados[item.chave] = { valor: limpo };
+          }
+        }
+        for (let j = 0; j < dados.bools.length; j += 1) {
+          const itemB = dados.bools[j];
+          if (itemB.valor === null) return "Defina a conciliação de " + itemB.rotulo.toLowerCase() + ".";
+          paciente.intervencoes.reconciliados[itemB.chave] = { valor: Boolean(itemB.valor) };
+        }
+        paciente.intervencoes.anestesia = {
+          cienciaAnticoagulante: Boolean(dados.cienciaAnticoag),
+          observacao: higienizarTextoEntrada(dados.obs, 180).trim()
+        };
+        if (dados.avancar && paciente.etapaAtual < 5) {
+          registrarDatasAteEtapa(paciente, 5);
+          paciente.etapaAtual = 5;
+        }
+        state.mensagemDetalhe = "Conciliação pré-anestésica registrada para " + paciente.nome + ".";
+        return "";
+      }
+
+      function construirCamposMedicoExecutor(paciente, aval, corpo) {
+        const medInt = paciente.intervencoes && paciente.intervencoes.medicoExecutor;
+        const comorbGrp = criarGrupoTextoModal("mi-med-comorb", "Comorbidades revisadas pelo executor", obterTextoCampoPreferido(aval.campos.comorbidades, ""), "Descreva ou confirme comorbidades");
+        const checklistCtrl = criarGrupoSimNaoBotoes("mi-med-checklist", "Conferência de sala registrada?", "Sim, conferido", "Pendente", medInt ? medInt.checklistSalaConfirmado : true);
+        const selEtapa = el("select", { id: "mi-med-etapa", className: "form-input" }, [
+          el("option", { value: "manter", text: "Manter etapa atual (" + ETAPAS_JORNADA[paciente.etapaAtual] + ")" }),
+          el("option", { value: "6", text: "Registrar início: Em procedimento (Etapa 7)" }),
+          el("option", { value: "7", text: "Concluir: Pós-procedimento e liberar orientações no celular (Etapa 8)" })
+        ]);
+        selEtapa.value = paciente.etapaAtual >= 5 && paciente.etapaAtual < 7 ? "7" : "manter";
+        const obsGrp = criarGrupoTextoModal("mi-med-obs", "Observação de término ou alta (opcional)", medInt && medInt.observacao ? medInt.observacao : "", "Exemplo: orientações pós-procedimento liberadas");
+        corpo.appendChild(comorbGrp.elGrupo);
+        corpo.appendChild(checklistCtrl.elGrupo);
+        corpo.appendChild(el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "mi-med-etapa", text: "Atualizar estágio da jornada" }), selEtapa]));
+        corpo.appendChild(obsGrp.elGrupo);
+        return function () {
+          return { comorbidades: comorbGrp.input.value, checklist: checklistCtrl.getValor(), etapaSel: selEtapa.value, obs: obsGrp.input.value };
+        };
+      }
+
+      function salvarIntervencaoMedicoExecutor(paciente, dados) {
+        if (dados.checklist === null) return "Informe o status da conferência de sala.";
+        paciente.intervencoes.medicoExecutor = {
+          comorbidades: higienizarTextoEntrada(dados.comorbidades, 180).trim(),
+          checklistSalaConfirmado: Boolean(dados.checklist),
+          observacao: higienizarTextoEntrada(dados.obs, 180).trim()
+        };
+        if (dados.etapaSel === "6" || dados.etapaSel === "7") {
+          const alvo = Number(dados.etapaSel);
+          if (alvo > paciente.etapaAtual) {
+            registrarDatasAteEtapa(paciente, alvo);
+            paciente.etapaAtual = alvo;
+          }
+        }
+        state.mensagemDetalhe = "Registro do médico executor atualizado no painel para " + paciente.nome + ".";
+        return "";
+      }
+
+      function abrirModalIntervencao(paciente, aval) {
+        const pac = paciente || obterPacienteSelecionado();
+        const av = aval || avaliarProntidaoPaciente(pac, state.cenario);
+        const perfilAtual = state.perfil === "Paciente" ? "Recepcao" : state.perfil;
+        const cfg = PERFIS_INFO[perfilAtual] || PERFIS_INFO.Recepcao;
+        const corpo = document.getElementById("modal-intervencao-corpo");
+        const erroBox = document.getElementById("modal-intervencao-erro");
+        erroBox.hidden = true;
+        erroBox.textContent = "";
+        limparElemento(corpo);
+        document.getElementById("modal-intervencao-titulo").textContent = "Registrar / Editar — " + cfg.rotulo;
+        corpo.appendChild(el("div", { className: "alerta-row alerta-row--info" }, [
+          criarSvgIcon("info", 14),
+          el("span", { text: pac.nome + " · Etapa: " + ETAPAS_JORNADA[pac.etapaAtual] })
+        ]));
+        const builders = {
+          Recepcao: construirCamposRecepcao,
+          Enfermagem: construirCamposEnfermagem,
+          Anestesista: construirCamposAnestesista,
+          MedicoExecutor: construirCamposMedicoExecutor
+        };
+        const getDados = builders[perfilAtual](pac, av, corpo);
+        modalIntervencaoCtx = { pacienteId: pac.id, perfil: perfilAtual, getDados: getDados };
+        abrirBackdropModal("intervencao", "modal-intervencao-backdrop", "btn-fechar-intervencao");
+      }
+
+      function processarSubmitIntervencao(ev) {
+        if (ev) ev.preventDefault();
+        if (!modalIntervencaoCtx) return;
+        const paciente = state.pacientes.find(function (p) { return p.id === modalIntervencaoCtx.pacienteId; });
+        if (!paciente) return;
+        const savers = {
+          Recepcao: salvarIntervencaoRecepcao,
+          Enfermagem: salvarIntervencaoEnfermagem,
+          Anestesista: salvarIntervencaoAnestesista,
+          MedicoExecutor: salvarIntervencaoMedicoExecutor
+        };
+        const dados = modalIntervencaoCtx.getDados();
+        const erro = savers[modalIntervencaoCtx.perfil](paciente, dados);
+        const erroBox = document.getElementById("modal-intervencao-erro");
+        if (erro) {
+          erroBox.textContent = erro;
+          erroBox.hidden = false;
+          erroBox.focus();
+          return;
+        }
+        fecharModalAtivo(false);
+        renderPocAtiva();
       }
 
       const PASSOS_TOUR = [
         {
           titulo: "Passo 1 — Quadro da clínica",
-          texto: "Cinco pacientes fictícios, três status de prontidão (Pronto, Pendente e Atenção) e fontes ativas em uma única tela, como um painel de voos.",
+          texto: "Cinco pacientes fictícios, três status de prontidão (Pronto, Pendente e Atenção) e acionamento atual em uma única tela, como um painel de voos.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.cenario = "com_sistema";
             state.perfil = "Recepcao";
             state.filtroStatus = "Todos";
+            state.filtroPerfilAcionado = "Todos";
             state.buscaNome = "";
             navegarSubTela("quadro");
           }
@@ -4628,7 +5720,7 @@
           titulo: "Passo 2 — A dor da informação fragmentada",
           texto: "Abrimos a paciente Marina Ferreira Costa: a alergia a látex foi informada no questionário pré-procedimento, mas não consta no sistema da clínica.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.cenario = "com_sistema";
             state.perfil = "Recepcao";
             state.pacienteSelecionadoId = "p3";
@@ -4636,10 +5728,10 @@
           }
         },
         {
-          titulo: "Passo 3 — Destaque por perfil (Anestesista)",
-          texto: "Ao trocar para o perfil Anestesista, o painel continua idêntico, mas destaca imediatamente alergias, medicações e jejum.",
+          titulo: "Passo 3 — Acionamento e edição por perfil (Anestesista)",
+          texto: "Ao trocar para Anestesista, o painel destaca alergias, medicações e jejum, e o botão de registro permite conciliar a divergência sem sair da tela.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.cenario = "com_sistema";
             state.perfil = "Anestesista";
             state.pacienteSelecionadoId = "p3";
@@ -4648,9 +5740,9 @@
         },
         {
           titulo: "Passo 4 — Visão do paciente (Carlos Eduardo Mendes)",
-          texto: "No celular do paciente 2 (Carlos Eduardo Mendes), clique em 'Preencher respostas de exemplo' e 'Enviar questionário' ao vivo antes de seguir.",
+          texto: "No celular do paciente 2 (Carlos Eduardo Mendes), toque em 'Preencher respostas de exemplo' e 'Enviar questionário' ao vivo antes de seguir.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.pacienteSelecionadoId = "p2";
             state.perfil = "Paciente";
             navegarSubTela("paciente");
@@ -4658,9 +5750,9 @@
         },
         {
           titulo: "Passo 5 — Painel atualizado sozinho",
-          texto: "De volta ao Quadro: após o envio do questionário, etapa, fontes ativas e pendências atualizam na hora, sem digitação extra da equipe.",
+          texto: "De volta ao Quadro: após o envio do questionário, etapa, acionamento atual e pendências atualizam na hora, sem digitação extra da equipe.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.perfil = "Recepcao";
             navegarSubTela("quadro");
           }
@@ -4669,7 +5761,7 @@
           titulo: "Passo 6 — Clínica sem sistema",
           texto: "No cenário 'Clínica sem sistema (só questionário)', não há dependência de prontuário eletrônico: o questionário pré-procedimento alimenta todo o painel.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.cenario = "sem_sistema";
             state.perfil = "Recepcao";
             navegarSubTela("quadro");
@@ -4688,11 +5780,12 @@
         },
         {
           titulo: "Passo 8 — Fechamento",
-          texto: "Não trocamos o prontuário de ninguém. Apenas mostramos em uma tela o que toda a equipe precisa ver para uma jornada mais segura.",
+          texto: "Não trocamos o prontuário de ninguém. Apenas mostramos em uma tela o que toda a equipe precisa ver e confirmar para uma jornada mais segura.",
           executar: function () {
-            fecharModalFhir();
+            fecharModalAtivo(false);
             state.cenario = "com_sistema";
             state.perfil = "Recepcao";
+            state.filtroPerfilAcionado = "Todos";
             navegarSubTela("quadro");
           }
         }
@@ -4736,7 +5829,7 @@
 
       function encerrarTour() {
         state.tourAtivo = false;
-        fecharModalFhir();
+        fecharModalAtivo(false);
         renderTour();
       }
 
@@ -4805,6 +5898,7 @@
         state.perfil = "Recepcao";
         state.cenario = "com_sistema";
         state.filtroStatus = "Todos";
+        state.filtroPerfilAcionado = "Todos";
         state.buscaNome = "";
         state.pacienteSelecionadoId = "p1";
         state.abaOrientacaoCelular = null;
@@ -4822,6 +5916,8 @@
         document.getElementById("hero-nome-produto").textContent = NOME_PRODUTO;
         document.getElementById("hero-selo-produto").textContent = SELO_NOME_PRODUTO;
         document.getElementById("diag-nome-produto").textContent = NOME_PRODUTO.toUpperCase();
+        const marcoHoje = document.getElementById("marco-data-hoje");
+        if (marcoHoje) marcoHoje.textContent = DATA_SIMULADA_HOJE;
         document.getElementById("diag-aeroporto").setAttribute("aria-label", "Ilustração comparando um painel de voos do aeroporto com o " + NOME_PRODUTO + ".");
 
         document.getElementById("brand-icon").appendChild(criarSvgIcon("board", 16));
@@ -4853,9 +5949,61 @@
         });
       }
 
+      function formatarMoedaCompacta(valor) {
+        if (valor >= 1e9) {
+          const bil = valor / 1e9;
+          return "R$ " + bil.toFixed(2).replace(".", ",") + (bil < 2 ? " bilhão" : " bilhões");
+        }
+        if (valor >= 1e6) {
+          const mil = valor / 1e6;
+          const casas = mil >= 10 ? 1 : 2;
+          return "R$ " + mil.toFixed(casas).replace(".", ",") + (mil < 2 ? " milhão" : " milhões");
+        }
+        return "R$ " + Math.round(valor).toLocaleString("pt-BR");
+      }
+
+      function atualizarSimuladorTamSamSom() {
+        const rangeClin = document.getElementById("range-som-clinicas");
+        const rangeTick = document.getElementById("range-som-ticket");
+        if (!rangeClin || !rangeTick) return;
+        const clinicas = Number(rangeClin.value) || 0;
+        const ticket = Number(rangeTick.value) || 0;
+        const mrr = clinicas * ticket;
+        const arr = mrr * 12;
+        const share = (clinicas / 25000) * 100;
+        document.getElementById("out-som-clinicas").textContent = clinicas.toLocaleString("pt-BR") + " clínicas";
+        document.getElementById("out-som-ticket").textContent = "R$ " + ticket.toLocaleString("pt-BR") + " por mês";
+        document.getElementById("out-som-mrr").textContent = formatarMoedaCompacta(mrr);
+        document.getElementById("out-som-arr").textContent = formatarMoedaCompacta(arr);
+        document.getElementById("out-som-share").textContent = share.toFixed(share < 1 ? 2 : 1).replace(".", ",") + "% do SAM";
+        document.querySelectorAll(".simulador-presets button").forEach(function (btn) {
+          const ativo = Number(btn.getAttribute("data-clinicas")) === clinicas && Number(btn.getAttribute("data-ticket")) === ticket;
+          btn.classList.toggle("btn-outline-accent", ativo);
+          btn.setAttribute("aria-pressed", ativo ? "true" : "false");
+        });
+      }
+
+      function inicializarSimuladorTamSamSom() {
+        const rangeClin = document.getElementById("range-som-clinicas");
+        const rangeTick = document.getElementById("range-som-ticket");
+        if (!rangeClin || !rangeTick) return;
+        rangeClin.addEventListener("input", atualizarSimuladorTamSamSom);
+        rangeTick.addEventListener("input", atualizarSimuladorTamSamSom);
+        document.querySelectorAll(".simulador-presets button").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            rangeClin.value = btn.getAttribute("data-clinicas");
+            rangeTick.value = btn.getAttribute("data-ticket");
+            atualizarSimuladorTamSamSom();
+          });
+        });
+        atualizarSimuladorTamSamSom();
+      }
+
       function obterFocaveisModalOuTour() {
-        const seletores = "button:not([disabled]), [tabindex]:not([tabindex='-1'])";
-        const lista = Array.from(document.getElementById("modal-fhir").querySelectorAll(seletores));
+        const modalId = obterModalAtivoId();
+        if (!modalId) return [];
+        const seletores = "input:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex='-1'])";
+        const lista = Array.from(document.getElementById(modalId).querySelectorAll(seletores));
         const tour = document.getElementById("tour-popover");
         if (state.tourAtivo && tour && !tour.hidden) {
           return lista.concat(Array.from(tour.querySelectorAll(seletores)));
@@ -4863,8 +6011,8 @@
         return lista;
       }
 
-      function tratarTabModalFhir(e) {
-        if (e.key !== "Tab" || !state.modalFhirAberto) return;
+      function tratarTabModalAtivo(e) {
+        if (e.key !== "Tab" || !obterModalAtivoId()) return;
         const focaveis = obterFocaveisModalOuTour();
         if (focaveis.length === 0) return;
         e.preventDefault();
@@ -4918,14 +6066,19 @@
         document.getElementById("btn-tour-voltar").addEventListener("click", function () { avancarTour(-1); });
         document.getElementById("btn-tour-proximo").addEventListener("click", function () { avancarTour(1); });
         document.getElementById("btn-tour-sair").addEventListener("click", encerrarTour);
-        document.getElementById("btn-fechar-fhir").addEventListener("click", fecharModalFhir);
+        document.getElementById("btn-fechar-fhir").addEventListener("click", function () { fecharModalAtivo(false); });
         document.getElementById("btn-copiar-fhir").addEventListener("click", copiarTextoFhir);
-        document.getElementById("modal-fhir-backdrop").addEventListener("click", function (e) {
-          if (e.target === e.currentTarget) fecharModalFhir();
+        document.getElementById("btn-fechar-intervencao").addEventListener("click", function () { fecharModalAtivo(false); });
+        document.getElementById("btn-cancelar-intervencao").addEventListener("click", function () { fecharModalAtivo(false); });
+        document.getElementById("form-intervencao-perfil").addEventListener("submit", processarSubmitIntervencao);
+        ["modal-fhir-backdrop", "modal-intervencao-backdrop"].forEach(function (idB) {
+          document.getElementById(idB).addEventListener("click", function (e) {
+            if (e.target === e.currentTarget) fecharModalAtivo(false);
+          });
         });
         document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape" && state.modalFhirAberto) fecharModalFhir();
-          tratarTabModalFhir(e);
+          if (e.key === "Escape" && obterModalAtivoId()) fecharModalAtivo(false);
+          tratarTabModalAtivo(e);
           tratarSetasTablist(e);
         });
       }
@@ -4964,6 +6117,7 @@
 
       aplicarConstantesProduto();
       inicializarObservadorApresentacao();
+      inicializarSimuladorTamSamSom();
       vincularEventosGlobais();
       navegarPrincipal("apresentacao");
     })();
