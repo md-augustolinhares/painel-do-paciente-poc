@@ -1,0 +1,3745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none';">
+  <title>Painel do Paciente (nome provisório) — Apresentação e PoC</title>
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #475569;
+      --border-default: #cbd5e1;
+      --border-soft: #e2e8f0;
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+      --accent-tint: #f0fdfa;
+      --accent-border: #99f6e4;
+      --status-pronto-bg: #dcfce7;
+      --status-pronto-text: #14532d;
+      --status-pronto-border: #86efac;
+      --status-pendente-bg: #fef3c7;
+      --status-pendente-text: #78350f;
+      --status-pendente-border: #fcd34d;
+      --status-atencao-bg: #fee2e2;
+      --status-atencao-text: #7f1d1d;
+      --status-atencao-border: #fca5a5;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, Monaco, monospace;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--text-primary);
+      background-color: var(--bg-page);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .icon-svg {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* Barra global fixa no topo */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      min-height: 48px;
+    }
+
+    .topbar-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 6px 16px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-md);
+      background-color: var(--accent);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .badge-provisorio {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .aviso-ficticio {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .nav-principal {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.2;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      background-color: var(--bg-subtle);
+      border-color: #94a3b8;
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--accent-dark);
+      border-color: var(--accent-dark);
+    }
+
+    .btn-outline-accent {
+      background-color: var(--accent-tint);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    .btn-outline-accent:hover:not(:disabled) {
+      background-color: #ccfbf1;
+    }
+
+    .btn-sm {
+      font-size: 12px;
+      padding: 5px 9px;
+    }
+
+    .btn-tab-main {
+      border-color: transparent;
+      background-color: transparent;
+      color: var(--text-secondary);
+    }
+
+    .btn-tab-main[aria-selected="true"] {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    /* Badges de status e rótulos */
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .badge-status--pronto {
+      background-color: var(--status-pronto-bg);
+      color: var(--status-pronto-text);
+      border-color: var(--status-pronto-border);
+    }
+
+    .badge-status--pendente {
+      background-color: var(--status-pendente-bg);
+      color: var(--status-pendente-text);
+      border-color: var(--status-pendente-border);
+    }
+
+    .badge-status--atencao {
+      background-color: var(--status-atencao-bg);
+      color: var(--status-atencao-text);
+      border-color: var(--status-atencao-border);
+    }
+
+    .badge-status--compact {
+      font-size: 10.5px;
+      padding: 1px 6px;
+    }
+
+    .tag-tipo {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+    }
+
+    .tag-tipo--fato {
+      background-color: #e0f2fe;
+      color: #0c4a6e;
+      border-color: #7dd3fc;
+    }
+
+    .tag-tipo--hipotese {
+      background-color: #fef3c7;
+      color: #78350f;
+      border-color: #fcd34d;
+    }
+
+    .tag-tipo--fora {
+      background-color: #f1f5f9;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+
+    .tag-tipo--naoverificado {
+      background-color: #fee2e2;
+      color: #7f1d1d;
+      border-color: #fca5a5;
+    }
+
+    .selo-clinico {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #78350f;
+      background-color: #fef3c7;
+      border: 1px solid #fcd34d;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* =====================================================
+       PARTE 1: APRESENTAÇÃO DO PROJETO
+       ===================================================== */
+    .apresentacao-subnav {
+      position: sticky;
+      top: 48px;
+      z-index: 400;
+      background-color: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .apresentacao-subnav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .anchor-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 4px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .anchor-link:hover {
+      background-color: var(--bg-surface);
+      border-color: var(--border-default);
+      color: var(--text-primary);
+    }
+
+    .anchor-link.is-active {
+      background-color: var(--accent-tint);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    .apresentacao-container {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 20px 16px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sec-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      scroll-margin-top: 100px;
+    }
+
+    .sec-card--hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+      border-color: var(--accent-border);
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .sec-header--flush {
+      margin-bottom: 0;
+    }
+
+    .sec-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .sec-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      color: var(--accent-dark);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .sec-card h2 {
+      margin: 0;
+      font-size: 19px;
+      color: var(--text-primary);
+    }
+
+    .hero-title {
+      margin: 8px 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    .hero-lead {
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      margin: 0 0 14px;
+      max-width: 78ch;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Diagrama Problema: 4 caixas isoladas */
+    .diagram-isoladas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .caixa-isolada {
+      position: relative;
+      background-color: var(--bg-page);
+      border: 2px dashed #94a3b8;
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .caixa-isolada-titulo {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .caixa-isolada-desc {
+      margin: 0;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .caixa-isolada-sem {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--status-atencao-text);
+      background-color: var(--status-atencao-bg);
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Diagrama Solução: Aeroporto vs Painel */
+    .diagram-aeroporto {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 14px;
+    }
+
+    .board-airport {
+      background-color: #0f172a;
+      color: #f8fafc;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .board-airport-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #5eead4;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .board-row {
+      display: grid;
+      grid-template-columns: 1.2fr 0.7fr 1fr;
+      gap: 6px;
+      padding: 4px 0;
+      border-bottom: 1px dashed #334155;
+    }
+
+    .board-clinical {
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 12.5px;
+    }
+
+    .board-clinical-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      border-bottom: 1px solid var(--accent-border);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .board-clinical .board-row {
+      border-bottom-color: #ccfbf1;
+    }
+
+    .board-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      padding: 0 4px;
+    }
+
+    /* Diagrama Integração: 2 rotas */
+    .diagram-rotas {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .rota-flow {
+      display: grid;
+      grid-template-columns: 1.1fr auto 1.3fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+
+    .rota-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12.5px;
+    }
+
+    .rota-box--dest {
+      background-color: var(--accent-tint);
+      border-color: var(--accent);
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    .rota-seta {
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Grids de cards informativos na Apresentação */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .mini-box {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .mini-box h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .mini-box p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .lista-limpa {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .timeline-marcos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 12px 0 18px;
+    }
+
+    .marco-card {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-default);
+      border-top: 3px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+
+    .marco-data {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: 4px;
+    }
+
+    .riscos-lista {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .risco-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       PARTE 2: CONTROLES DA DEMO (POC)
+       ===================================================== */
+    .poc-bar {
+      position: sticky;
+      top: 48px;
+      z-index: 450;
+      background-color: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .poc-bar-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 5px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .poc-subtabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .btn-subtab {
+      font-size: 12px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+      background-color: var(--bg-surface);
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-subtab[aria-selected="true"] {
+      background-color: var(--accent-dark);
+      border-color: var(--accent-dark);
+      color: #ffffff;
+    }
+
+    .poc-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .control-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .control-select {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
+      max-width: 100%;
+      min-width: 0;
+      text-overflow: ellipsis;
+    }
+
+    .poc-wrapper {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 14px 16px 32px;
+    }
+
+    .poc-wrapper--detalhe {
+      padding: 8px 16px 8px;
+    }
+
+    /* =====================================================
+       TELA A: QUADRO DA CLÍNICA
+       ===================================================== */
+    .kpis-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .kpi-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .filtros-bar {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filtros-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-filtro {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-default);
+      background-color: var(--bg-page);
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-filtro[aria-pressed="true"] {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .busca-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .busca-icon {
+      position: absolute;
+      left: 9px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .busca-input {
+      font-family: inherit;
+      font-size: 13px;
+      padding: 5px 10px 5px 30px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      min-width: 275px;
+    }
+
+    .tabela-wrap {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tabela-quadro {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .tabela-quadro th {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background-color: var(--bg-subtle);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .tabela-quadro td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 13px;
+      vertical-align: middle;
+      overflow-wrap: anywhere;
+    }
+
+    .tabela-quadro tbody tr {
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .tabela-quadro tbody tr:hover {
+      background-color: var(--accent-tint);
+    }
+
+    .tabela-quadro tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .btn-nome-paciente {
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .subinfo-celula {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .cards-mobile-quadro {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .paciente-card-mobile {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-card-etapa {
+      font-size: 12.5px;
+    }
+
+    .mobile-card-pendencia {
+      font-size: 12px;
+      color: var(--text-muted);
+      overflow-wrap: anywhere;
+    }
+
+    .empty-state {
+      background-color: var(--bg-surface);
+      border: 1px dashed var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 28px 16px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    /* =====================================================
+       TELA B: DETALHE DO PACIENTE (COMPACTA PARA 1366x768)
+       ===================================================== */
+    .detalhe-header {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 7px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .detalhe-identidade {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .detalhe-linha1 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .detalhe-nome {
+      margin: 0;
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .detalhe-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .detalhe-acoes {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .detalhe-jornada {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 6px 12px 7px;
+      margin-bottom: 8px;
+    }
+
+    .jornada-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .jornada-titulo {
+      margin: 0;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    .jornada-etapa-texto {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+
+    .timeline-8 {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .etapa-item {
+      border: 1px solid var(--border-soft);
+      background-color: var(--bg-page);
+      border-radius: 6px;
+      padding: 4px 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 46px;
+    }
+
+    .etapa-item--concluida {
+      background-color: var(--accent-tint);
+      border-color: var(--accent-border);
+    }
+
+    .etapa-item--atual {
+      background-color: #ccfbf1;
+      border: 2px solid var(--accent);
+    }
+
+    .etapa-item--destaque {
+      box-shadow: 0 0 0 2px #0f766e33;
+    }
+
+    .etapa-topo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .etapa-item--atual .etapa-topo-row,
+    .etapa-item--concluida .etapa-topo-row {
+      color: var(--accent-dark);
+    }
+
+    .etapa-nome {
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    .detalhe-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .card-painel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-painel--grow {
+      flex: 1;
+    }
+
+    .card-painel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .card-painel-titulo {
+      margin: 0;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .perfil-subnota {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      margin-bottom: 6px;
+    }
+
+    .criticos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      flex: 1;
+    }
+
+    .critico-item {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      padding: 7px 9px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .critico-item--prioritario {
+      background-color: var(--accent-tint);
+      border: 2px solid var(--accent);
+    }
+
+    .critico-item--divergencia {
+      background-color: #fef2f2;
+      border: 2px solid #dc2626;
+    }
+
+    .critico-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .critico-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+    }
+
+    .tag-prioridade {
+      font-size: 10px;
+      font-weight: 700;
+      color: #ffffff;
+      background-color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .critico-valor {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .critico-valor--vazio {
+      color: var(--text-muted);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .critico-fontes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .selo-fonte {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background-color: #e2e8f0;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .selo-anticoag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #78350f;
+      background-color: #fef3c7;
+      border: 1px solid #fcd34d;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .divergencia-bloco {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 12px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .detalhe-lateral {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .alertas-lista {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .alerta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.3;
+      border: 1px solid transparent;
+      overflow-wrap: anywhere;
+    }
+
+    .alerta-row--divergencia {
+      background-color: var(--status-atencao-bg);
+      color: var(--status-atencao-text);
+      border-color: var(--status-atencao-border);
+    }
+
+    .alerta-row--pendencia {
+      background-color: var(--status-pendente-bg);
+      color: var(--status-pendente-text);
+      border-color: var(--status-pendente-border);
+    }
+
+    .alerta-row--info {
+      background-color: var(--accent-tint);
+      color: var(--accent-dark);
+      border-color: var(--accent-border);
+    }
+
+    .alerta-row--ok {
+      background-color: var(--status-pronto-bg);
+      color: var(--status-pronto-text);
+      border-color: var(--status-pronto-border);
+    }
+
+    .proximo-passo-box {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      border-radius: 7px;
+      padding: 8px 10px;
+      font-size: 12.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-painel--destaque {
+      border: 2px solid var(--accent);
+      background-color: var(--accent-tint);
+    }
+
+    .feedback-inline {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      margin-left: 4px;
+    }
+
+    /* =====================================================
+       TELA C: VISÃO DO PACIENTE (CELULAR)
+       ===================================================== */
+    .celular-topo-controles {
+      max-width: 440px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .celular-moldura {
+      max-width: 410px;
+      margin: 0 auto;
+      background-color: var(--bg-surface);
+      border: 8px solid #1e293b;
+      border-radius: 28px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .celular-notch {
+      background-color: #1e293b;
+      color: #f8fafc;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px 7px;
+      letter-spacing: 0.02em;
+    }
+
+    .celular-tela {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: var(--bg-page);
+    }
+
+    .celular-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .celular-card h3 {
+      margin: 0 0 8px;
+      font-size: 14.5px;
+      color: var(--text-primary);
+    }
+
+    .celular-card h3.celular-titulo-flush {
+      margin: 0;
+    }
+
+    .celular-submeta {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .celular-orient-lista {
+      font-size: 12.5px;
+    }
+
+    .form-grupo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .form-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      font-family: inherit;
+      font-size: 13px;
+      padding: 7px 9px;
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      width: 100%;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .form-check-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .radio-row {
+      display: flex;
+      gap: 14px;
+      margin-top: 2px;
+    }
+
+    .form-erro {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--status-atencao-text);
+      background-color: var(--status-atencao-bg);
+      border: 1px solid var(--status-atencao-border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+    }
+
+    .form-sucesso {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--status-pronto-text);
+      background-color: var(--status-pronto-bg);
+      border: 1px solid var(--status-pronto-border);
+      border-radius: 6px;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .orientacoes-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    /* =====================================================
+       MODAL FHIR E TOUR GUIADO (NÃO-BLOQUEANTE)
+       ===================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.45);
+      z-index: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-fhir {
+      position: static;
+      margin: 0;
+      width: 100%;
+      max-width: 720px;
+      max-height: 85vh;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--text-primary);
+    }
+
+    .modal-fhir-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .modal-fhir-head h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .fhir-nota {
+      margin: 0;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .fhir-pre {
+      margin: 0;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.45;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      overflow: auto;
+      max-height: 54vh;
+    }
+
+    .tour-popover {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 950;
+      width: min(390px, calc(100vw - 32px));
+      background-color: var(--bg-surface);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tour-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tour-titulo {
+      margin: 0;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+
+    .tour-texto {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.45;
+    }
+
+    .tour-acoes {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tour-nav-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tour-destaque {
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.35);
+    }
+
+    /* =====================================================
+       RESPONSIVIDADE (DESKTOP E MOBILE 375x812)
+       ===================================================== */
+    @media (max-width: 1024px) {
+      .timeline-8 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .detalhe-grid {
+        grid-template-columns: 1fr;
+      }
+      .diagram-isoladas {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .diagram-aeroporto {
+        grid-template-columns: 1fr;
+      }
+      .board-connector {
+        padding: 4px 0;
+      }
+      .rota-flow {
+        grid-template-columns: 1fr;
+      }
+      .rota-seta {
+        transform: rotate(90deg);
+      }
+      .timeline-marcos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .topbar-inner {
+        padding: 8px 12px;
+      }
+      .apresentacao-subnav {
+        top: 0;
+        position: static;
+      }
+      .poc-bar {
+        position: static;
+      }
+      .kpis-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .tabela-wrap {
+        display: none;
+      }
+      .cards-mobile-quadro {
+        display: flex;
+      }
+      .busca-input {
+        min-width: 100%;
+        width: 100%;
+      }
+      .busca-wrap {
+        width: 100%;
+      }
+      .timeline-8 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .criticos-grid {
+        grid-template-columns: 1fr;
+      }
+      .diagram-isoladas,
+      .grid-3,
+      .grid-2,
+      .timeline-marcos {
+        grid-template-columns: 1fr;
+      }
+      .celular-moldura {
+        border-width: 0;
+        border-radius: var(--radius-md);
+        max-width: 100%;
+      }
+      .celular-notch {
+        display: none;
+      }
+      .celular-topo-controles .control-field {
+        width: 100%;
+      }
+      .celular-topo-controles .control-select {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group">
+        <span class="brand-icon" id="brand-icon" aria-hidden="true"></span>
+        <span class="brand-name" id="topbar-nome-produto">Painel do Paciente</span>
+        <span class="badge-provisorio" id="topbar-selo-produto">nome provisório</span>
+      </div>
+
+      <div class="aviso-ficticio" id="aviso-dados-ficticios" role="status">
+        <span id="aviso-icon" aria-hidden="true"></span>
+        <span>Demonstração com dados fictícios</span>
+      </div>
+
+      <nav class="nav-principal" role="tablist" aria-label="Navegação principal">
+        <button type="button" class="btn btn-tab-main" id="tab-btn-apresentacao" role="tab" aria-selected="true" aria-controls="painel-apresentacao">
+          Apresentação do Projeto
+        </button>
+        <button type="button" class="btn btn-tab-main" id="tab-btn-poc" role="tab" aria-selected="false" aria-controls="painel-poc">
+          Demonstração (PoC)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app-main">
+    <!-- =====================================================
+         PARTE 1: APRESENTAÇÃO DO PROJETO (10 SEÇÕES)
+         ===================================================== -->
+    <div id="painel-apresentacao">
+      <nav class="apresentacao-subnav" aria-label="Seções da apresentação">
+        <div class="apresentacao-subnav-inner" id="apresentacao-anchors">
+          <a class="anchor-link is-active" href="#secao-1">1. Abertura</a>
+          <a class="anchor-link" href="#secao-2">2. O problema</a>
+          <a class="anchor-link" href="#secao-3">3. Para quem</a>
+          <a class="anchor-link" href="#secao-4">4. A solução</a>
+          <a class="anchor-link" href="#secao-5">5. Integração</a>
+          <a class="anchor-link" href="#secao-6">6. Fora da v1</a>
+          <a class="anchor-link" href="#secao-7">7. Negócio</a>
+          <a class="anchor-link" href="#secao-8">8. Histórico e riscos</a>
+          <a class="anchor-link" href="#secao-9">9. Próximos passos</a>
+          <a class="anchor-link" href="#secao-10">10. Time</a>
+        </div>
+      </nav>
+
+      <div class="apresentacao-container">
+        <!-- Seção 1: Abertura -->
+        <section id="secao-1" class="sec-card sec-card--hero">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">1</span>
+              <span class="badge-provisorio" id="hero-selo-produto">nome provisório</span>
+            </div>
+            <span class="tag-tipo tag-tipo--fato">Grupo 3 · formação Médicos Híbridos</span>
+          </div>
+          <h1 class="hero-title" id="hero-nome-produto">Painel do Paciente</h1>
+          <p class="hero-lead">
+            Um painel único do paciente para clínicas pequenas, que mostra em uma tela onde ele está na jornada do procedimento, o que falta e os dados críticos que toda a equipe precisa ver, sem trocar o prontuário de ninguém.
+          </p>
+          <div class="hero-meta">
+            <button type="button" class="btn btn-primary" id="btn-cta-ver-demo">
+              Ver a demonstração
+            </button>
+            <span class="aviso-ficticio">Prova de conceito de experiência · dados fictícios</span>
+          </div>
+        </section>
+
+        <!-- Seção 2: O problema -->
+        <section id="secao-2" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">2</span>
+              <h2>O problema</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--fato">Fato</span>
+          </div>
+          <p>
+            A informação do paciente fica fragmentada na jornada pré-procedimento. Cada profissional registra no seu próprio sistema ou formulário e não enxerga o que o outro anotou. O resultado é retrabalho, atraso no dia do procedimento e falha de comunicação.
+          </p>
+          <div class="diagram-isoladas" role="img" aria-label="Diagrama mostrando quatro áreas isoladas sem conexão entre si: Recepção, Enfermagem, Anestesia e Médico executor.">
+            <div class="caixa-isolada">
+              <h3 class="caixa-isolada-titulo">Recepção</h3>
+              <p class="caixa-isolada-desc">Agenda, confirmação de presença e envio do questionário.</p>
+              <span class="caixa-isolada-sem">Sem conexão com a equipe</span>
+            </div>
+            <div class="caixa-isolada">
+              <h3 class="caixa-isolada-titulo">Enfermagem</h3>
+              <p class="caixa-isolada-desc">Confere jejum, acompanhante e medidas na admissão.</p>
+              <span class="caixa-isolada-sem">Sem conexão com o sistema</span>
+            </div>
+            <div class="caixa-isolada">
+              <h3 class="caixa-isolada-titulo">Anestesia</h3>
+              <p class="caixa-isolada-desc">Precisa ver alergias, medicações e jejum antes da sedação.</p>
+              <span class="caixa-isolada-sem">Não vê o questionário pré</span>
+            </div>
+            <div class="caixa-isolada">
+              <h3 class="caixa-isolada-titulo">Médico executor</h3>
+              <p class="caixa-isolada-desc">Checa se o paciente está liberado e com comorbidades mapeadas.</p>
+              <span class="caixa-isolada-sem">Sem visão única do status</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção 3: Para quem -->
+        <section id="secao-3" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">3</span>
+              <h2>Para quem</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
+          </div>
+          <div class="grid-3">
+            <div class="mini-box">
+              <h3>Clínicas pequenas e médias</h3>
+              <p>Estruturas enxutas que realizam procedimentos ambulatoriais e sofrem com falhas de comunicação entre turnos.</p>
+            </div>
+            <div class="mini-box">
+              <h3>Procedimentos com sedação</h3>
+              <p>Procedimentos minimamente invasivos com sedação, mantendo a anestesista no centro da validação de segurança.</p>
+            </div>
+            <div class="mini-box">
+              <h3>Pacientes que valorizam cuidado</h3>
+              <p>Pessoas que esperam organização, clareza nas orientações pré/pós e sensação de acompanhamento contínuo.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção 4: A solução -->
+        <section id="secao-4" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">4</span>
+              <h2>A solução</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--hipotese">Proposta</span>
+          </div>
+          <p>
+            Um painel executivo único do paciente que <strong>não substitui nenhum prontuário</strong>. Pense no painel de voos do aeroporto: <em>"Cada companhia aérea tem seu sistema. O painel não substitui nenhum. Ele mostra só voo, portão e status."</em>
+          </p>
+          <div id="diag-aeroporto" class="diagram-aeroporto" role="img" aria-label="Ilustração comparando um painel de voos do aeroporto com o Painel do Paciente.">
+            <div class="board-airport">
+              <div class="board-airport-head">
+                <span id="diag-plane-icon" aria-hidden="true"></span>
+                <span>PAINEL DE VOOS (AEROPORTO)</span>
+              </div>
+              <div class="board-row"><strong>Voo</strong><strong>Portão</strong><strong>Status</strong></div>
+              <div class="board-row"><span>BR-104</span><span>G12</span><span>Embarque</span></div>
+              <div class="board-row"><span>BR-220</span><span>G05</span><span>Aguardando</span></div>
+              <div class="board-row"><span>BR-318</span><span>G09</span><span>Atenção</span></div>
+            </div>
+
+            <div class="board-connector" aria-hidden="true">Mesma lógica →</div>
+
+            <div class="board-clinical">
+              <div class="board-clinical-head">
+                <span id="diag-board-icon" aria-hidden="true"></span>
+                <span id="diag-nome-produto">PAINEL DO PACIENTE</span>
+              </div>
+              <div class="board-row"><strong>Paciente</strong><strong>Etapa</strong><strong>Prontidão</strong></div>
+              <div class="board-row"><span>Helena Prado</span><span>Liberado</span><span>Pronto</span></div>
+              <div class="board-row"><span>Carlos Mendes</span><span>Quest. enviado</span><span>Pendente</span></div>
+              <div class="board-row"><span>Marina Costa</span><span>Enfermagem</span><span>Atenção</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção 5: Como resolve a integração -->
+        <section id="secao-5" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">5</span>
+              <h2>Como resolve a integração</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--hipotese">Arquitetura da v1</span>
+          </div>
+          <p>
+            Para não travar na falta de padrão entre prontuários nem exigir digitação dupla da equipe, o painel opera por duas rotas complementares:
+          </p>
+          <div class="diagram-rotas">
+            <div class="rota-flow">
+              <div class="rota-box"><strong>Rota 1: Clínica com sistema</strong></div>
+              <span class="rota-seta" id="seta-rota-1" aria-hidden="true">→</span>
+              <div class="rota-box">Lê apenas dado estruturado no padrão <strong>HL7 FHIR</strong> (padrão nacional usado pela RNDS)</div>
+              <span class="rota-seta" id="seta-rota-2" aria-hidden="true">→</span>
+              <div class="rota-box rota-box--dest">Alimenta o painel sem IA em texto livre</div>
+            </div>
+            <div class="rota-flow">
+              <div class="rota-box"><strong>Rota 2: Clínica sem sistema</strong></div>
+              <span class="rota-seta" id="seta-rota-3" aria-hidden="true">→</span>
+              <div class="rota-box">O paciente responde ao <strong>questionário pré-procedimento</strong> no celular</div>
+              <span class="rota-seta" id="seta-rota-4" aria-hidden="true">→</span>
+              <div class="rota-box rota-box--dest">Alimenta o painel sem a equipe digitar nada a mais</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção 6: O que fica fora da primeira versão -->
+        <section id="secao-6" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">6</span>
+              <h2>O que fica fora da primeira versão</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--fora">Fora do escopo</span>
+          </div>
+          <ul class="lista-limpa">
+            <li>Integração real em produção com prontuários eletrônicos de mercado.</li>
+            <li>Inteligência artificial lendo evoluções ou texto livre clínico.</li>
+            <li>Módulo de cobrança, faturamento e controle real de login/permissões.</li>
+            <li>Uso com dados reais de pacientes (toda a demonstração usa apenas dados fictícios).</li>
+          </ul>
+        </section>
+
+        <!-- Seção 7: Modelo de negócio -->
+        <section id="secao-7" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">7</span>
+              <h2>Modelo de negócio</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
+          </div>
+          <div class="grid-3">
+            <div class="mini-box">
+              <h3>Cliente (B2B)</h3>
+              <p>A clínica é o cliente pagante, não o paciente final.</p>
+            </div>
+            <div class="mini-box">
+              <h3>Posicionamento</h3>
+              <p>Nicho premium: poucos clientes que valorizam segurança e experiência diferenciada.</p>
+            </div>
+            <div class="mini-box">
+              <h3>Formato de receita</h3>
+              <p>Hipótese de assinatura mensal por clínica — <strong>valor a validar em conversas com clínicas</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Seção 8: O que já fizemos e o que falta -->
+        <section id="secao-8" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">8</span>
+              <h2>O que já fizemos e o que falta</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--fato">Fato</span>
+          </div>
+          <div class="timeline-marcos">
+            <div class="marco-card">
+              <span class="marco-data">02/10</span>
+              <p>Partida com duas dores iniciais e visão de questionário pré com relatório único.</p>
+            </div>
+            <div class="marco-card">
+              <span class="marco-data">19/10</span>
+              <p>Feedback das mentoras: focar uma dor, definir cliente ideal, interoperabilidade, não mexer em processos e definir modelo de negócio.</p>
+            </div>
+            <div class="marco-card">
+              <span class="marco-data">26/10</span>
+              <p>Reunião Augusto + Marcelo: foco em painel executivo do paciente para clínicas pequenas.</p>
+            </div>
+            <div class="marco-card">
+              <span class="marco-data">15/11</span>
+              <p>Proposta de pitch e PoC com recorte em sedação e 2 rotas de integração.</p>
+            </div>
+          </div>
+
+          <h3>Riscos mapeados</h3>
+          <ul class="riscos-lista">
+            <li class="risco-item">
+              <span><strong>1.</strong> Integração real com prontuários ainda não testada.</span>
+              <span class="tag-tipo tag-tipo--fato">Fato</span>
+            </li>
+            <li class="risco-item">
+              <span><strong>2.</strong> Disposição da clínica a pagar pelo painel ainda não validada.</span>
+              <span class="tag-tipo tag-tipo--fato">Fato</span>
+            </li>
+            <li class="risco-item">
+              <span><strong>3.</strong> Painel com alertas clínicos pode ser enquadrado como software médico pela Anvisa (por isso a v1 só exibe alertas de informação).</span>
+              <span class="tag-tipo tag-tipo--naoverificado">Não verificado</span>
+            </li>
+            <li class="risco-item">
+              <span><strong>4.</strong> Sistemas de gestão de clínica podem já cobrir parte da jornada.</span>
+              <span class="tag-tipo tag-tipo--naoverificado">Não verificado</span>
+            </li>
+            <li class="risco-item">
+              <span><strong>5.</strong> Dados de saúde são dados sensíveis na LGPD (a demo usa só dados fictícios).</span>
+              <span class="tag-tipo tag-tipo--fato">Fato</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Seção 9: Próximos passos -->
+        <section id="secao-9" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">9</span>
+              <h2>Próximos passos</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--hipotese">Plano imediato</span>
+          </div>
+          <ol class="lista-limpa">
+            <li>Validar recorte de sedação e lista final de dados críticos com a anestesista.</li>
+            <li>Conversar com 3 clínicas pequenas/médias para validar dor, fluxo e disposição a pagar.</li>
+            <li>Testar esta demonstração com 3 a 5 pessoas e medir o tempo para entender o estado do paciente.</li>
+          </ol>
+        </section>
+
+        <!-- Seção 10: Time -->
+        <section id="secao-10" class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <span class="sec-num">10</span>
+              <h2>Time</h2>
+            </div>
+            <span class="tag-tipo tag-tipo--fato">Grupo 3</span>
+          </div>
+          <div class="grid-3">
+            <article class="mini-box">
+              <h3>Augusto</h3>
+              <p>Médico generalista, faz pós em IA e ciência de dados. Leva a parte técnica e de dados.</p>
+            </article>
+            <article class="mini-box">
+              <h3>Marcelo</h3>
+              <p>Médico do trabalho e gestor em saúde, com visão corporativa de produto. Conduz e fecha decisões.</p>
+            </article>
+            <article class="mini-box">
+              <h3>Karina (Ká)</h3>
+              <p>Anestesista. Traz a dor real do pré-operatório e da sedação.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         PARTE 2: DEMONSTRAÇÃO CONCEITUAL (POC)
+         ===================================================== -->
+    <div id="painel-poc" hidden>
+      <!-- Barra compacta de controles da PoC -->
+      <div class="poc-bar" role="region" aria-label="Controles da demonstração">
+        <div class="poc-bar-inner">
+          <div class="poc-subtabs" role="tablist" aria-label="Telas da demonstração">
+            <button type="button" class="btn-subtab" id="subtab-quadro" role="tab" aria-selected="true">A. Quadro da Clínica</button>
+            <button type="button" class="btn-subtab" id="subtab-detalhe" role="tab" aria-selected="false">B. Detalhe do Paciente</button>
+            <button type="button" class="btn-subtab" id="subtab-paciente" role="tab" aria-selected="false">C. Visão do Paciente (Celular)</button>
+          </div>
+
+          <div class="poc-controls">
+            <label class="control-field" for="select-perfil">
+              <span>Perfil:</span>
+              <select id="select-perfil" class="control-select">
+                <option value="Recepcao">Recepção</option>
+                <option value="Enfermagem">Enfermagem</option>
+                <option value="Anestesista">Anestesista</option>
+                <option value="MedicoExecutor">Médico executor</option>
+                <option value="Paciente">Paciente</option>
+              </select>
+            </label>
+
+            <label class="control-field" for="select-cenario">
+              <span>Cenário:</span>
+              <select id="select-cenario" class="control-select">
+                <option value="com_sistema">Clínica com sistema (FHIR simulado)</option>
+                <option value="sem_sistema">Clínica sem sistema (só questionário)</option>
+              </select>
+            </label>
+
+            <button type="button" class="btn btn-sm btn-outline-accent" id="btn-iniciar-tour">
+              Iniciar tour
+            </button>
+            <button type="button" class="btn btn-sm" id="btn-reiniciar-demo">
+              Reiniciar demonstração
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="poc-wrapper" id="poc-wrapper">
+        <!-- Tela A: Quadro da Clínica -->
+        <section id="tela-quadro" aria-label="Quadro da clínica"></section>
+
+        <!-- Tela B: Detalhe do Paciente -->
+        <section id="tela-detalhe" aria-label="Detalhe do paciente" hidden></section>
+
+        <!-- Tela C: Visão do Paciente (Celular) -->
+        <section id="tela-celular" aria-label="Visão do paciente no celular" hidden></section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal HL7 FHIR Simulado -->
+  <div id="modal-fhir-backdrop" class="modal-backdrop" hidden>
+    <dialog id="modal-fhir" class="modal-fhir" role="dialog" aria-modal="true" aria-labelledby="modal-fhir-titulo">
+      <div class="modal-fhir-head">
+        <h2 id="modal-fhir-titulo">Dado bruto simulado (HL7 FHIR)</h2>
+        <div class="detalhe-acoes">
+          <button type="button" class="btn btn-sm" id="btn-copiar-fhir">Copiar JSON</button>
+          <button type="button" class="btn btn-sm btn-primary" id="btn-fechar-fhir">Fechar</button>
+        </div>
+      </div>
+      <p class="fhir-nota" id="modal-fhir-nota">Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS)</p>
+      <pre class="fhir-pre" id="modal-fhir-json" tabindex="0"></pre>
+    </dialog>
+  </div>
+
+  <!-- Balão não-bloqueante do Tour Guiado -->
+  <aside id="tour-popover" class="tour-popover" role="region" aria-label="Tour guiado da demonstração" hidden>
+    <div class="tour-head">
+      <h2 class="tour-titulo" id="tour-titulo">Tour guiado</h2>
+      <button type="button" class="btn btn-sm" id="btn-tour-sair">Sair</button>
+    </div>
+    <p class="tour-texto" id="tour-texto"></p>
+    <div class="tour-acoes">
+      <span class="badge-provisorio" id="tour-contador">1 / 8</span>
+      <div class="tour-nav-btns">
+        <button type="button" class="btn btn-sm" id="btn-tour-voltar">Voltar</button>
+        <button type="button" class="btn btn-sm btn-primary" id="btn-tour-proximo">Próximo</button>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* =======================================================================
+         1. CONFIGURAÇÕES EDITÁVEIS (ALTERE AQUI SEM PRECISAR PROGRAMAR)
+         ======================================================================= */
+
+      // Nome provisório exibido em toda a interface
+      const NOME_PRODUTO = "Painel do Paciente";
+      const SELO_NOME_PRODUTO = "nome provisório";
+      // Data simulada usada como referência do dia da demonstração
+      const DATA_SIMULADA_HOJE = "15/11";
+
+      // Etapas fixas da jornada do procedimento (índices de 0 a 7)
+      const ETAPAS_JORNADA = [
+        "Agendado",
+        "Questionário enviado",
+        "Questionário respondido",
+        "Avaliação de enfermagem",
+        "Avaliação pré-anestésica",
+        "Liberado",
+        "Procedimento",
+        "Pós-procedimento"
+      ];
+
+      // Nomes das fontes de dados exibidos nos selos de origem
+      const FONTES = {
+        sistema: "Sistema da clínica (FHIR simulado)",
+        questionario: "Questionário do paciente",
+        enfermagem: "Avaliação de enfermagem"
+      };
+
+      // Orientações ilustrativas (sempre exibem o selo "Conteúdo ilustrativo — a validar pela equipe clínica")
+      const ORIENTACOES_ILUSTRATIVAS = {
+        pre: [
+          "Confirme sua chegada com 30 minutos de antecedência, levando documento com foto.",
+          "Cumpra o período de jejum informado no agendamento e evite alimentos sólidos após o horário combinado.",
+          "Organize um acompanhante adulto maior de 18 anos para ir embora com você após a sedação.",
+          "Caso tenha novas alergias ou mudança de medicações, informe antes do procedimento."
+        ],
+        pos: [
+          "Deixe a clínica apenas na companhia do seu acompanhante adulto.",
+          "Não dirija veículos nem opere máquinas nas primeiras 24 horas após a sedação.",
+          "Retome a alimentação leve de acordo com as instruções recebidas na alta.",
+          "Em caso de dúvidas ou sinais inesperados, utilize o telefone de contato entregue pela clínica."
+        ]
+      };
+
+      // Lista inicial de 5 pacientes fictícios.
+      // - etapaAtual: índice de 0 a 7 em ETAPAS_JORNADA ("Agendado" até "Pós-procedimento").
+      // - datasEtapas: rótulos de data exibidos na linha do tempo de cada etapa já alcançada.
+      // - usaAnticoagulante: booleano (true/false) indicando uso de anticoagulante/antiagregante.
+      // - questionario / enfermagem = null significa que essa fonte ainda não enviou ou registrou dados.
+      const PACIENTES_INICIAIS = [
+        {
+          id: "p1",
+          nome: "Helena Souza Prado",
+          idade: 44,
+          dataNascimento: "1982-05-14",
+          procedimento: "Blefaroplastia ambulatorial com sedação",
+          dataHora: "Hoje, 08:30",
+          responsavel: "Dra. Beatriz (Anestesia)",
+          etapaAtual: 5,
+          datasEtapas: ["10/11", "11/11", "12/11", "13/11", "14/11", DATA_SIMULADA_HOJE],
+          sistema: {
+            alergias: "Nenhuma alergia conhecida",
+            medicacoes: "Levotiroxina 50 mcg/dia",
+            usaAnticoagulante: false,
+            pesoKg: 64,
+            alturaCm: 165,
+            comorbidades: "Hipotireoidismo controlado"
+          },
+          questionario: {
+            alergias: "Nenhuma alergia conhecida",
+            medicacoes: "Levotiroxina 50 mcg/dia",
+            usaAnticoagulante: false,
+            pesoKg: 64,
+            alturaCm: 165,
+            comorbidades: "Hipotireoidismo controlado",
+            jejumConfirmado: true,
+            acompanhanteConfirmado: true
+          },
+          enfermagem: {
+            jejumConfirmado: true,
+            acompanhanteConfirmado: true
+          }
+        },
+        {
+          id: "p2",
+          nome: "Carlos Eduardo Mendes",
+          idade: 51,
+          dataNascimento: "1975-08-22",
+          procedimento: "Colonoscopia diagnóstica com sedação",
+          dataHora: "Hoje, 10:00",
+          responsavel: "Enf. Marcos (Enfermagem)",
+          etapaAtual: 1,
+          datasEtapas: ["12/11", "13/11"],
+          sistema: {
+            alergias: "Nenhuma registrada",
+            medicacoes: "Losartana 50 mg/dia",
+            usaAnticoagulante: false,
+            pesoKg: 82,
+            alturaCm: 175,
+            comorbidades: "Hipertensão arterial sistêmica"
+          },
+          questionario: null,
+          enfermagem: null
+        },
+        {
+          id: "p3",
+          nome: "Marina Ferreira Costa",
+          idade: 36,
+          dataNascimento: "1990-02-11",
+          procedimento: "Blefaroplastia ambulatorial com sedação",
+          dataHora: "Hoje, 11:30",
+          responsavel: "Dra. Beatriz (Anestesia)",
+          etapaAtual: 3,
+          datasEtapas: ["11/11", "12/11", "13/11", DATA_SIMULADA_HOJE],
+          sistema: {
+            alergias: "Sem alergias registradas",
+            medicacoes: "Nenhuma de uso contínuo",
+            usaAnticoagulante: false,
+            pesoKg: 58,
+            alturaCm: 162,
+            comorbidades: "Nenhuma comorbidade relatada"
+          },
+          questionario: {
+            alergias: "Alergia a látex (edema e urticária)",
+            medicacoes: "Nenhuma de uso contínuo",
+            usaAnticoagulante: false,
+            pesoKg: 58,
+            alturaCm: 162,
+            comorbidades: "Nenhuma comorbidade relatada",
+            jejumConfirmado: true,
+            acompanhanteConfirmado: true
+          },
+          enfermagem: {
+            jejumConfirmado: true,
+            acompanhanteConfirmado: true
+          }
+        },
+        {
+          id: "p4",
+          nome: "Roberto Almeida Nascimento",
+          idade: 67,
+          dataNascimento: "1959-11-03",
+          procedimento: "Endoscopia digestiva alta com sedação",
+          dataHora: "Amanhã, 08:00",
+          responsavel: "Dra. Beatriz (Anestesia)",
+          etapaAtual: 4,
+          datasEtapas: ["10/11", "11/11", "12/11", "13/11", "14/11"],
+          sistema: {
+            alergias: "Dipirona (urticária leve)",
+            medicacoes: "Apixabana 5 mg (12/12h) — anticoagulante oral; Atorvastatina 20 mg/dia",
+            usaAnticoagulante: true,
+            pesoKg: 79,
+            alturaCm: 170,
+            comorbidades: "Fibrilação atrial paroxística; Dislipidemia"
+          },
+          questionario: {
+            alergias: "Dipirona (urticária leve)",
+            medicacoes: "Apixabana 5 mg (12/12h) — anticoagulante oral; Atorvastatina 20 mg/dia",
+            usaAnticoagulante: true,
+            pesoKg: 79,
+            alturaCm: 170,
+            comorbidades: "Fibrilação atrial paroxística; Dislipidemia",
+            jejumConfirmado: true,
+            acompanhanteConfirmado: false
+          },
+          enfermagem: {
+            jejumConfirmado: true,
+            acompanhanteConfirmado: null
+          }
+        },
+        {
+          id: "p5",
+          nome: "Luciana Ribeiro Campos",
+          idade: 29,
+          dataNascimento: "1997-04-19",
+          procedimento: "Endoscopia digestiva alta com sedação",
+          dataHora: "Hoje, 07:00",
+          responsavel: "Dr. Henrique (Médico executor)",
+          etapaAtual: 7,
+          datasEtapas: ["09/11", "10/11", "11/11", "12/11", "13/11", "14/11", DATA_SIMULADA_HOJE, DATA_SIMULADA_HOJE],
+          sistema: {
+            alergias: "Nenhuma alergia conhecida",
+            medicacoes: "Nenhuma de uso contínuo",
+            usaAnticoagulante: false,
+            pesoKg: 61,
+            alturaCm: 168,
+            comorbidades: "Gastrite leve em investigação"
+          },
+          questionario: {
+            alergias: "Nenhuma alergia conhecida",
+            medicacoes: "Nenhuma de uso contínuo",
+            usaAnticoagulante: false,
+            pesoKg: 61,
+            alturaCm: 168,
+            comorbidades: "Gastrite leve em investigação",
+            jejumConfirmado: true,
+            acompanhanteConfirmado: true
+          },
+          enfermagem: {
+            jejumConfirmado: true,
+            acompanhanteConfirmado: true
+          }
+        }
+      ];
+
+      /* =======================================================================
+         2. REGRAS DE PRONTIDÃO E NEGÓCIO (SEM IA, DETERMINÍSTICAS)
+         ======================================================================= */
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function normalizarTexto(valor) {
+        if (valor === null || valor === undefined) return "";
+        return String(valor).trim().toLowerCase().replace(/\s+/g, " ");
+      }
+
+      // Remove caracteres de controle ASCII/BiDi e aplica limite de caracteres
+      function higienizarTextoEntrada(valor, maxLen) {
+        if (valor === null || valor === undefined) return "";
+        const lim = typeof maxLen === "number" && maxLen > 0 ? maxLen : 180;
+        const limpo = String(valor).replace(/[\u0000-\u001F\u007F\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, "");
+        return limpo.slice(0, lim);
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function calcularImc(pesoKg, alturaCm) {
+        if (!pesoKg || !alturaCm || pesoKg <= 0 || alturaCm <= 0) return null;
+        const alturaM = alturaCm / 100;
+        const imc = pesoKg / (alturaM * alturaM);
+        return imc.toFixed(1).replace(".", ",");
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function obterEntradasCampo(paciente, campo, cenario) {
+        const entradas = [];
+        if (cenario === "com_sistema" && paciente.sistema && paciente.sistema[campo] !== null && paciente.sistema[campo] !== undefined && String(paciente.sistema[campo]).trim() !== "") {
+          entradas.push({ fonte: FONTES.sistema, valor: paciente.sistema[campo] });
+        }
+        if (paciente.questionario && paciente.questionario[campo] !== null && paciente.questionario[campo] !== undefined && String(paciente.questionario[campo]).trim() !== "") {
+          entradas.push({ fonte: FONTES.questionario, valor: paciente.questionario[campo] });
+        }
+        return entradas;
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function resolverConfirmacaoBooleana(paciente, campo) {
+        const enf = paciente.enfermagem ? paciente.enfermagem[campo] : null;
+        const quest = paciente.questionario ? paciente.questionario[campo] : null;
+        const fontes = [];
+        if (typeof enf === "boolean") fontes.push({ fonte: FONTES.enfermagem, valor: enf });
+        if (typeof quest === "boolean") fontes.push({ fonte: FONTES.questionario, valor: quest });
+
+        const divergente = typeof enf === "boolean" && typeof quest === "boolean" && enf !== quest;
+        const confirmado = !divergente && (enf === true || quest === true);
+        const fontePrincipal = typeof enf === "boolean" ? FONTES.enfermagem : (typeof quest === "boolean" ? FONTES.questionario : null);
+        return { confirmado: confirmado, divergente: divergente, fontes: fontes, fontePrincipal: fontePrincipal };
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function avaliarCamposTexto(paciente, cenario, divergencias) {
+        const camposTexto = [
+          { chave: "alergias", rotulo: "Alergias" },
+          { chave: "medicacoes", rotulo: "Medicações" },
+          { chave: "pesoKg", rotulo: "Peso" },
+          { chave: "alturaCm", rotulo: "Altura" },
+          { chave: "comorbidades", rotulo: "Comorbidades" }
+        ];
+        const camposResolvidos = {};
+        let faltamDados = false;
+
+        camposTexto.forEach(function (cfg) {
+          const entradas = obterEntradasCampo(paciente, cfg.chave, cenario);
+          const base = entradas[0] ? normalizarTexto(entradas[0].valor) : "";
+          const divergente = entradas.length > 1 && entradas.some(function (e) { return normalizarTexto(e.valor) !== base; });
+          if (divergente) {
+            const resumoFontes = entradas.map(function (ent) {
+              return "'" + ent.valor + "' (" + ent.fonte + ")";
+            }).join(" · ");
+            divergencias.push({
+              campo: cfg.rotulo,
+              mensagem: "Divergência em " + cfg.rotulo.toLowerCase() + ": " + resumoFontes + "."
+            });
+          }
+          if (entradas.length === 0) faltamDados = true;
+          camposResolvidos[cfg.chave] = { entradas: entradas, divergente: divergente };
+        });
+
+        return { camposResolvidos: camposResolvidos, faltamDados: faltamDados };
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function avaliarDivergenciaAnticoagulante(paciente, cenario, campoMeds, divergencias) {
+        if (cenario !== "com_sistema" || !paciente.sistema || !paciente.questionario) return;
+        const sisAnticoag = Boolean(paciente.sistema.usaAnticoagulante);
+        const questAnticoag = Boolean(paciente.questionario.usaAnticoagulante);
+        if (sisAnticoag === questAnticoag) return;
+
+        const resumo = "Anticoagulante: " + (sisAnticoag ? "Sim" : "Não") + " (" + FONTES.sistema + ") · " + (questAnticoag ? "Sim" : "Não") + " (" + FONTES.questionario + ")";
+        campoMeds.divergente = true;
+        campoMeds.notaAnticoag = resumo;
+        divergencias.push({ campo: "Medicações (anticoagulante)", mensagem: "Divergência em " + resumo + "." });
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function avaliarConfirmacao(confObj, rotulo, pendencias, divergencias) {
+        if (confObj.divergente) {
+          divergencias.push({ campo: rotulo, mensagem: "Divergência na confirmação de " + rotulo.toLowerCase() + " entre enfermagem e questionário." });
+        } else if (!confObj.confirmado) {
+          pendencias.push(rotulo + " não confirmado.");
+        }
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function avaliarProntidaoPaciente(paciente, cenario) {
+        const pendencias = [];
+        const divergencias = [];
+        const avisosInformativos = [];
+        const textoAval = avaliarCamposTexto(paciente, cenario, divergencias);
+        avaliarDivergenciaAnticoagulante(paciente, cenario, textoAval.camposResolvidos.medicacoes, divergencias);
+
+        if (!paciente.questionario) pendencias.push("Questionário pré ainda não respondido.");
+        if (cenario === "sem_sistema" && textoAval.faltamDados) {
+          pendencias.push("Dados críticos aguardando resposta no questionário.");
+        }
+        const jejum = resolverConfirmacaoBooleana(paciente, "jejumConfirmado");
+        const acomp = resolverConfirmacaoBooleana(paciente, "acompanhanteConfirmado");
+        avaliarConfirmacao(jejum, "Jejum", pendencias, divergencias);
+        avaliarConfirmacao(acomp, "Acompanhante", pendencias, divergencias);
+
+        const usaAnticoagulante = Boolean(
+          (cenario === "com_sistema" && paciente.sistema && paciente.sistema.usaAnticoagulante) ||
+          (paciente.questionario && paciente.questionario.usaAnticoagulante)
+        );
+        if (usaAnticoagulante) {
+          avisosInformativos.push("Registro de anticoagulante em uso na lista de medicações.");
+        }
+        const status = divergencias.length > 0 ? "Atencao" : (pendencias.length > 0 ? "Pendente" : "Pronto");
+        return {
+          status: status, statusTexto: status === "Atencao" ? "Atenção" : status,
+          pendencias: pendencias, divergencias: divergencias, avisosInformativos: avisosInformativos,
+          totalPendencias: pendencias.length + divergencias.length, usaAnticoagulante: usaAnticoagulante,
+          campos: textoAval.camposResolvidos, jejum: jejum, acompanhante: acomp
+        };
+      }
+
+      function criarObservationFhir(pacienteId, code, display, value, unit) {
+        return {
+          resource: {
+            resourceType: "Observation",
+            status: "final",
+            code: { coding: [{ system: "http://loinc.org", code: code, display: display }] },
+            valueQuantity: { value: value || null, unit: unit },
+            subject: { reference: "Patient/" + pacienteId }
+          }
+        };
+      }
+
+      // Gerador de Bundle HL7 FHIR simplificado para demonstração técnica
+      function gerarBundleFhirSimulado(paciente) {
+        const sis = paciente.sistema || paciente.questionario || {};
+        return {
+          resourceType: "Bundle",
+          type: "collection",
+          meta: { note: "Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS)" },
+          entry: [
+            { resource: { resourceType: "Patient", id: paciente.id, name: [{ text: paciente.nome }], birthDate: paciente.dataNascimento } },
+            { resource: { resourceType: "AllergyIntolerance", clinicalStatus: { text: "active" }, code: { text: sis.alergias || "Não informado" }, patient: { reference: "Patient/" + paciente.id } } },
+            { resource: { resourceType: "MedicationStatement", status: "active", medicationCodeableConcept: { text: sis.medicacoes || "Não informado" }, note: sis.usaAnticoagulante ? [{ text: "Anticoagulante registrado" }] : [], subject: { reference: "Patient/" + paciente.id } } },
+            criarObservationFhir(paciente.id, "29463-7", "Body weight", sis.pesoKg, "kg"),
+            criarObservationFhir(paciente.id, "8302-2", "Body height", sis.alturaCm, "cm")
+          ]
+        };
+      }
+
+      function obterProximoPasso(paciente) {
+        const mapa = [
+          { acao: "Enviar link do questionário pré ao paciente.", resp: "Recepção" },
+          { acao: "Aguardar envio do questionário pré pelo paciente.", resp: "Paciente / Recepção" },
+          { acao: "Realizar conferência inicial pela enfermagem.", resp: "Enfermagem" },
+          { acao: "Encaminhar dados para avaliação pré-anestésica.", resp: "Enfermagem / Anestesia" },
+          { acao: "Concluir checagem de prontidão para liberação.", resp: "Anestesista" },
+          { acao: "Acolher paciente para início do procedimento.", resp: "Equipe do procedimento" },
+          { acao: "Registrar término e liberar orientações pós.", resp: "Médico executor / Enfermagem" },
+          { acao: "Paciente em pós-procedimento com orientações disponíveis.", resp: "Paciente / Recepção" }
+        ];
+        return mapa[paciente.etapaAtual] || mapa[0];
+      }
+
+      /* =======================================================================
+         3. ESTADO EM MEMÓRIA (SEM LOCALSTORAGE / COOKIES)
+         ======================================================================= */
+
+      function clonarPacientesIniciais() {
+        return JSON.parse(JSON.stringify(PACIENTES_INICIAIS));
+      }
+
+      const state = {
+        abaPrincipal: "apresentacao",
+        subTelaPoc: "quadro",
+        perfil: "Recepcao",
+        cenario: "com_sistema",
+        filtroStatus: "Todos",
+        buscaNome: "",
+        pacienteSelecionadoId: "p1",
+        pacientes: clonarPacientesIniciais(),
+        abaOrientacaoCelular: null,
+        envioRecentePacienteId: null,
+        mensagemErroForm: "",
+        mensagemDetalhe: "",
+        modalFhirAberto: false,
+        tourAtivo: false,
+        tourPasso: 0,
+        ultimoFocoAntesModal: null
+      };
+
+      const PERFIS_INFO = {
+        Recepcao: { rotulo: "Recepção", campos: ["acompanhante"], destacaJornada: true, destacaLateral: false, destacaPendencias: true },
+        Enfermagem: { rotulo: "Enfermagem", campos: ["pesoAlturaImc", "jejum", "alergias", "acompanhante"], destacaJornada: false, destacaLateral: false, destacaPendencias: false },
+        Anestesista: { rotulo: "Anestesista", campos: ["alergias", "medicacoes", "jejum"], destacaJornada: false, destacaLateral: false, destacaPendencias: false },
+        MedicoExecutor: { rotulo: "Médico executor", campos: ["comorbidades"], destacaJornada: true, destacaLateral: true, destacaPendencias: false },
+        Paciente: { rotulo: "Paciente", campos: [], destacaJornada: false, destacaLateral: false, destacaPendencias: false }
+      };
+
+      /* =======================================================================
+         4. UTILITÁRIOS SEGUROS DE DOM (ZERO innerHTML PARA PREVENIR XSS)
+         ======================================================================= */
+
+      const SVG_NS = "http://www.w3.org/2000/svg";
+
+      const ICON_PATHS = {
+        board: ["M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2", "M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2", "M9 12h6", "M9 16h4"],
+        info: ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z", "M12 16v-4", "M12 8h.01"],
+        check: ["M22 11.08V12a10 10 0 1 1-5.93-9.14", "M9 11l3 3L22 4"],
+        clock: ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z", "M12 6v6l4 2"],
+        alert: ["M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z", "M12 9v4", "M12 17h.01"],
+        arrowLeft: ["M19 12H5", "M12 19l-7-7 7-7"],
+        arrowRight: ["M5 12h14", "M12 5l7 7-7 7"],
+        phone: ["M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z", "M12 18h.01"],
+        code: ["M16 18l6-6-6-6", "M8 6l-6 6 6 6"],
+        search: ["M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z", "M21 21l-4.35-4.35"],
+        plane: ["M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6l-.3.6 5.2 3.1-3.3 3.3-2.3-.5-.6.6 2.1 1.6 1.6 2.1.6-.6-.5-2.3 3.3-3.3 3.1 5.2.6-.3c.4-.2.7-.6.6-1.1z"]
+      };
+
+      function criarSvgIcon(nome, tamanho) {
+        const size = tamanho || 14;
+        const svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("width", String(size));
+        svg.setAttribute("height", String(size));
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "2");
+        svg.setAttribute("stroke-linecap", "round");
+        svg.setAttribute("stroke-linejoin", "round");
+        svg.setAttribute("aria-hidden", "true");
+        svg.classList.add("icon-svg");
+
+        const paths = ICON_PATHS[nome] || [];
+        paths.forEach(function (d) {
+          const path = document.createElementNS(SVG_NS, "path");
+          path.setAttribute("d", d);
+          svg.appendChild(path);
+        });
+        return svg;
+      }
+
+      function el(tag, attrs, children) {
+        const node = document.createElement(tag);
+        if (attrs) {
+          Object.keys(attrs).forEach(function (k) {
+            const v = attrs[k];
+            if (k === "className") {
+              node.className = v;
+            } else if (k === "text") {
+              node.textContent = v;
+            } else if (k === "checked") {
+              node.checked = Boolean(v);
+            } else if (k.startsWith("on") && typeof v === "function") {
+              node.addEventListener(k.slice(2).toLowerCase(), v);
+            } else if (v !== false && v !== null && v !== undefined) {
+              node.setAttribute(k, String(v));
+            }
+          });
+        }
+        if (children) {
+          const lista = Array.isArray(children) ? children : [children];
+          lista.forEach(function (child) {
+            if (child === null || child === undefined || child === false) return;
+            if (typeof child === "string" || typeof child === "number") {
+              node.appendChild(document.createTextNode(String(child)));
+            } else {
+              node.appendChild(child);
+            }
+          });
+        }
+        return node;
+      }
+
+      function limparElemento(node) {
+        while (node.firstChild) {
+          node.removeChild(node.firstChild);
+        }
+      }
+
+      function criarBadgeStatus(avaliacao) {
+        const mapa = {
+          Pronto: { cls: "badge-status--pronto", icon: "check" },
+          Pendente: { cls: "badge-status--pendente", icon: "clock" },
+          Atencao: { cls: "badge-status--atencao", icon: "alert" }
+        };
+        const cfg = mapa[avaliacao.status] || mapa.Pendente;
+        return el("span", { className: "badge-status " + cfg.cls }, [
+          criarSvgIcon(cfg.icon, 13),
+          el("span", { text: avaliacao.statusTexto })
+        ]);
+      }
+
+      function obterPacienteSelecionado() {
+        const achado = state.pacientes.find(function (p) { return p.id === state.pacienteSelecionadoId; });
+        return achado || state.pacientes[0];
+      }
+
+      /* =======================================================================
+         5. RENDERIZAÇÃO: TELA A — QUADRO DA CLÍNICA
+         ======================================================================= */
+
+      function filtrarPacientes(avaliadosOpt) {
+        const termo = normalizarTexto(state.buscaNome);
+        const base = avaliadosOpt || state.pacientes.map(function (p) {
+          return { paciente: p, aval: avaliarProntidaoPaciente(p, state.cenario) };
+        });
+        return base.filter(function (item) {
+          const okStatus = state.filtroStatus === "Todos" || item.aval.status === state.filtroStatus;
+          const okNome = !termo || normalizarTexto(item.paciente.nome).includes(termo) || normalizarTexto(item.paciente.procedimento).includes(termo);
+          return okStatus && okNome;
+        });
+      }
+
+      function criarKpisQuadro(avaliados) {
+        const contagens = { Total: avaliados.length, Pronto: 0, Pendente: 0, Atencao: 0 };
+        avaliados.forEach(function (item) { contagens[item.aval.status] += 1; });
+
+        const specs = [
+          { rotulo: "Total de pacientes", valor: contagens.Total, badge: null },
+          { rotulo: "Prontos", valor: contagens.Pronto, badge: { status: "Pronto", statusTexto: "Pronto" } },
+          { rotulo: "Pendentes", valor: contagens.Pendente, badge: { status: "Pendente", statusTexto: "Pendente" } },
+          { rotulo: "Atenção", valor: contagens.Atencao, badge: { status: "Atencao", statusTexto: "Atenção" } }
+        ];
+
+        return el("div", { className: "kpis-row" }, specs.map(function (s) {
+          return el("div", { className: "kpi-card" }, [
+            el("div", null, [
+              el("div", { className: "kpi-label", text: s.rotulo }),
+              el("div", { className: "kpi-value", text: String(s.valor) })
+            ]),
+            s.badge ? criarBadgeStatus(s.badge) : null
+          ]);
+        }));
+      }
+
+      function criarCampoBuscaQuadro(avaliados) {
+        const inputBusca = el("input", {
+          type: "search",
+          id: "input-busca-paciente",
+          className: "busca-input",
+          maxlength: "100",
+          placeholder: "Buscar paciente ou procedimento...",
+          value: state.buscaNome,
+          "aria-label": "Buscar paciente por nome ou procedimento",
+          onInput: function (e) {
+            const limpo = higienizarTextoEntrada(e.target.value, 100);
+            if (e.target.value !== limpo) e.target.value = limpo;
+            state.buscaNome = limpo;
+            renderListaQuadro(avaliados);
+          }
+        });
+        return el("div", { className: "busca-wrap" }, [
+          el("span", { className: "busca-icon", "aria-hidden": "true" }, criarSvgIcon("search", 14)),
+          inputBusca
+        ]);
+      }
+
+      function criarBarraFiltrosQuadro(avaliados) {
+        const opcoes = [
+          { id: "Todos", rotulo: "Todos" },
+          { id: "Pronto", rotulo: "Pronto" },
+          { id: "Pendente", rotulo: "Pendente" },
+          { id: "Atencao", rotulo: "Atenção" }
+        ];
+        const botoesFiltro = el("div", { className: "filtros-status", role: "group", "aria-label": "Filtrar por status" },
+          opcoes.map(function (op) {
+            return el("button", {
+              type: "button",
+              className: "btn-filtro",
+              "aria-pressed": state.filtroStatus === op.id ? "true" : "false",
+              text: op.rotulo,
+              onClick: function () { state.filtroStatus = op.id; renderTelaQuadro(); }
+            });
+          })
+        );
+        return el("div", { className: "filtros-bar" }, [botoesFiltro, criarCampoBuscaQuadro(avaliados)]);
+      }
+
+      function abrirDetalhePaciente(pacienteId) {
+        state.pacienteSelecionadoId = pacienteId;
+        state.mensagemDetalhe = "";
+        state.mensagemErroForm = "";
+        navegarSubTela("detalhe");
+      }
+
+      function formatarResumoPendencia(aval) {
+        if (aval.totalPendencias === 0) return "0 pendências";
+        const primeiro = aval.divergencias[0] ? aval.divergencias[0].mensagem : aval.pendencias[0];
+        const sufixo = aval.totalPendencias === 1 ? "item" : "itens";
+        return aval.totalPendencias + " " + sufixo + " — " + primeiro;
+      }
+
+      function criarTabelaQuadro(filtrados) {
+        const thead = el("thead", null, el("tr", null, [
+          el("th", { text: "Paciente" }),
+          el("th", { text: "Procedimento" }),
+          el("th", { text: "Data e hora" }),
+          el("th", { text: "Etapa atual" }),
+          el("th", { text: "Status de prontidão" }),
+          el("th", { text: "Pendências / Alertas" })
+        ]));
+        const tbody = el("tbody", null, filtrados.map(function (item) {
+          const p = item.paciente;
+          return el("tr", { "data-paciente-id": p.id, onClick: function () { abrirDetalhePaciente(p.id); } }, [
+            el("td", null, [
+              el("button", {
+                type: "button",
+                className: "btn-nome-paciente",
+                text: p.nome,
+                onClick: function (ev) { ev.stopPropagation(); abrirDetalhePaciente(p.id); }
+              }),
+              el("span", { className: "subinfo-celula", text: p.idade + " anos · " + p.responsavel })
+            ]),
+            el("td", { text: p.procedimento }),
+            el("td", { text: p.dataHora }),
+            el("td", { text: (p.etapaAtual + 1) + "/8 · " + ETAPAS_JORNADA[p.etapaAtual] }),
+            el("td", null, criarBadgeStatus(item.aval)),
+            el("td", { text: formatarResumoPendencia(item.aval) })
+          ]);
+        }));
+        return el("div", { className: "tabela-wrap" }, el("table", { className: "tabela-quadro" }, [thead, tbody]));
+      }
+
+      function criarCardsMobileQuadro(filtrados) {
+        return el("div", { className: "cards-mobile-quadro" }, filtrados.map(function (item) {
+          const p = item.paciente;
+          return el("article", { className: "paciente-card-mobile" }, [
+            el("div", { className: "sec-header sec-header--flush" }, [
+              el("button", { type: "button", className: "btn-nome-paciente", text: p.nome, onClick: function () { abrirDetalhePaciente(p.id); } }),
+              criarBadgeStatus(item.aval)
+            ]),
+            el("div", { className: "subinfo-celula", text: p.procedimento + " · " + p.dataHora }),
+            el("div", { className: "mobile-card-etapa", text: "Etapa: " + ETAPAS_JORNADA[p.etapaAtual] }),
+            el("div", { className: "mobile-card-pendencia", text: formatarResumoPendencia(item.aval) }),
+            el("button", { type: "button", className: "btn btn-sm btn-outline-accent", text: "Abrir detalhe do paciente", onClick: function () { abrirDetalhePaciente(p.id); } })
+          ]);
+        }));
+      }
+
+      function renderListaQuadro(avaliadosOpt) {
+        const container = document.getElementById("quadro-lista-slot");
+        if (!container) return;
+        limparElemento(container);
+
+        const filtrados = filtrarPacientes(avaliadosOpt);
+        if (filtrados.length === 0) {
+          container.appendChild(el("div", { className: "empty-state" }, [
+            el("p", { text: "Nenhum paciente encontrado para este filtro ou busca." }),
+            el("button", {
+              type: "button",
+              className: "btn btn-sm btn-outline-accent",
+              text: "Limpar filtros",
+              onClick: function () { state.filtroStatus = "Todos"; state.buscaNome = ""; renderTelaQuadro(); }
+            })
+          ]));
+          return;
+        }
+        container.appendChild(criarTabelaQuadro(filtrados));
+        container.appendChild(criarCardsMobileQuadro(filtrados));
+      }
+
+      function renderTelaQuadro() {
+        const sec = document.getElementById("tela-quadro");
+        limparElemento(sec);
+
+        const avaliados = state.pacientes.map(function (p) {
+          return { paciente: p, aval: avaliarProntidaoPaciente(p, state.cenario) };
+        });
+
+        sec.appendChild(criarKpisQuadro(avaliados));
+        sec.appendChild(criarBarraFiltrosQuadro(avaliados));
+        sec.appendChild(el("div", { id: "quadro-lista-slot" }));
+        renderListaQuadro(avaliados);
+      }
+
+      /* =======================================================================
+         6. RENDERIZAÇÃO: TELA B — DETALHE DO PACIENTE (COMPACTA EM 1366x768)
+         ======================================================================= */
+
+      function criarSeletorPacienteDetalhe(paciente) {
+        return el("select", {
+          id: "detalhe-seletor-paciente",
+          className: "control-select",
+          "aria-label": "Selecionar outro paciente",
+          onChange: function (e) {
+            state.pacienteSelecionadoId = e.target.value;
+            state.mensagemDetalhe = "";
+            state.mensagemErroForm = "";
+            renderTelaDetalhe();
+          }
+        }, state.pacientes.map(function (p) {
+          const opt = el("option", { value: p.id, text: p.nome });
+          if (p.id === paciente.id) opt.selected = true;
+          return opt;
+        }));
+      }
+
+      function criarBotoesAcaoDetalhe(paciente) {
+        const podeAvancar = paciente.etapaAtual < ETAPAS_JORNADA.length - 1;
+        return el("div", { className: "detalhe-acoes" }, [
+          el("button", {
+            type: "button",
+            className: "btn btn-sm btn-primary",
+            id: "btn-avancar-etapa",
+            disabled: !podeAvancar,
+            onClick: function () { avancarEtapaPaciente(paciente.id); }
+          }, [el("span", { text: podeAvancar ? "Avançar etapa" : "Etapa final" }), podeAvancar ? criarSvgIcon("arrowRight", 13) : null]),
+          el("button", {
+            type: "button",
+            className: "btn btn-sm btn-outline-accent",
+            onClick: function () { navegarSubTela("paciente"); }
+          }, [criarSvgIcon("phone", 13), el("span", { text: "Visão do paciente (celular)" })]),
+          el("button", {
+            type: "button",
+            className: "btn btn-sm",
+            id: "btn-ver-fhir",
+            onClick: function () { abrirModalFhir(paciente); }
+          }, [criarSvgIcon("code", 13), el("span", { text: "Ver dado bruto (FHIR)" })]),
+          state.mensagemDetalhe ? el("span", { className: "feedback-inline", text: state.mensagemDetalhe, role: "status" }) : null
+        ]);
+      }
+
+      function criarHeaderDetalhe(paciente, aval) {
+        const btnVoltar = el("button", {
+          type: "button",
+          className: "btn btn-sm",
+          onClick: function () { navegarSubTela("quadro"); }
+        }, [criarSvgIcon("arrowLeft", 13), el("span", { text: "Quadro" })]);
+
+        const identidade = el("div", { className: "detalhe-identidade" }, [
+          el("div", { className: "detalhe-linha1" }, [btnVoltar, criarSeletorPacienteDetalhe(paciente), el("h1", { className: "detalhe-nome", text: paciente.nome }), criarBadgeStatus(aval)]),
+          el("div", { className: "detalhe-meta" }, [
+            el("span", { text: paciente.idade + " anos (nasc. " + paciente.dataNascimento + ")" }),
+            el("span", { text: "·" }),
+            el("span", { text: paciente.procedimento }),
+            el("span", { text: "·" }),
+            el("span", { text: paciente.dataHora }),
+            el("span", { text: "·" }),
+            el("span", { text: paciente.responsavel })
+          ])
+        ]);
+
+        return el("div", { className: "detalhe-header" }, [identidade, criarBotoesAcaoDetalhe(paciente)]);
+      }
+
+      function criarTimelineDetalhe(paciente, perfilCfg) {
+        const tituloWrap = el("div", { className: "jornada-topo" }, [
+          el("h2", { className: "jornada-titulo", text: "Jornada do procedimento (8 etapas)" }),
+          el("span", {
+            className: "jornada-etapa-texto",
+            text: "Etapa atual: " + (paciente.etapaAtual + 1) + "/8 — " + ETAPAS_JORNADA[paciente.etapaAtual]
+          })
+        ]);
+
+        const lista = el("ol", { className: "timeline-8" }, ETAPAS_JORNADA.map(function (etapa, idx) {
+          const concluida = idx < paciente.etapaAtual;
+          const atual = idx === paciente.etapaAtual;
+          let cls = "etapa-item";
+          if (concluida) cls += " etapa-item--concluida";
+          if (atual) cls += " etapa-item--atual";
+          if (atual && perfilCfg.destacaJornada) cls += " etapa-item--destaque";
+
+          const dataStr = paciente.datasEtapas[idx] || (concluida || atual ? DATA_SIMULADA_HOJE : "—");
+          return el("li", { className: cls, "aria-current": atual ? "step" : false }, [
+            el("div", { className: "etapa-topo-row" }, [
+              el("span", { text: (idx + 1) + (atual ? " · Atual" : "") }),
+              el("span", { text: dataStr })
+            ]),
+            el("div", { className: "etapa-nome", text: etapa })
+          ]);
+        }));
+
+        return el("section", { className: "detalhe-jornada", "aria-label": "Linha do tempo da jornada" }, [tituloWrap, lista]);
+      }
+
+      function criarBlocoDivergencia(linhas) {
+        return el("div", { className: "divergencia-bloco" }, linhas);
+      }
+
+      function criarSeloFontesDivergentes() {
+        return el("span", { className: "badge-status badge-status--atencao badge-status--compact", text: "Fontes divergentes" });
+      }
+
+      function criarItemCriticoCard(cfg) {
+        let cls = "critico-item";
+        if (cfg.divergente) cls += " critico-item--divergencia";
+        else if (cfg.prioritario) cls += " critico-item--prioritario";
+
+        const head = el("div", { className: "critico-head" }, [
+          el("span", { className: "critico-label", text: cfg.rotulo }),
+          cfg.prioritario ? el("span", { className: "tag-prioridade", text: "Prioridade: " + cfg.perfilRotulo }) : null
+        ]);
+
+        return el("div", { className: cls }, [
+          head,
+          cfg.conteudo,
+          el("div", { className: "critico-fontes" }, cfg.selos)
+        ]);
+      }
+
+      function montarValorESelosTexto(campoAval, textoFallback) {
+        if (!campoAval || campoAval.entradas.length === 0) {
+          return {
+            conteudo: el("div", { className: "critico-valor critico-valor--vazio", text: textoFallback || "Não informado" }),
+            selos: [el("span", { className: "selo-fonte", text: "Sem fonte preenchida" })]
+          };
+        }
+        if (campoAval.divergente) {
+          const linhas = campoAval.entradas.map(function (ent) {
+            return el("div", null, [
+              el("strong", { text: ent.valor + " " }),
+              el("span", { className: "selo-fonte", text: ent.fonte })
+            ]);
+          });
+          if (campoAval.notaAnticoag) {
+            linhas.push(el("div", null, el("strong", { text: campoAval.notaAnticoag })));
+          }
+          return {
+            conteudo: criarBlocoDivergencia(linhas),
+            selos: [criarSeloFontesDivergentes()]
+          };
+        }
+        const fontesUnicas = Array.from(new Set(campoAval.entradas.map(function (e) { return e.fonte; })));
+        return {
+          conteudo: el("div", { className: "critico-valor", text: String(campoAval.entradas[0].valor) }),
+          selos: fontesUnicas.map(function (f) { return el("span", { className: "selo-fonte", text: f }); })
+        };
+      }
+
+      function montarPesoAlturaImc(aval) {
+        const pesoEntradas = aval.campos.pesoKg.entradas;
+        const altEntradas = aval.campos.alturaCm.entradas;
+        if (pesoEntradas.length === 0 && altEntradas.length === 0) {
+          return {
+            conteudo: el("div", { className: "critico-valor critico-valor--vazio", text: "Peso e altura não informados" }),
+            selos: [el("span", { className: "selo-fonte", text: "Sem fonte preenchida" })]
+          };
+        }
+        if (aval.campos.pesoKg.divergente || aval.campos.alturaCm.divergente) {
+          const fontesAtivas = Array.from(new Set(pesoEntradas.concat(altEntradas).map(function (e) { return e.fonte; })));
+          const linhas = fontesAtivas.map(function (fonte) {
+            const pEnt = pesoEntradas.find(function (e) { return e.fonte === fonte; });
+            const aEnt = altEntradas.find(function (e) { return e.fonte === fonte; });
+            const pVal = pEnt ? Number(pEnt.valor) : null;
+            const aVal = aEnt ? Number(aEnt.valor) : null;
+            const imcFonte = calcularImc(pVal, aVal);
+            const txt = (pVal ? pVal + " kg" : "—") + " · " + (aVal ? aVal + " cm" : "—") + (imcFonte ? " · IMC " + imcFonte + " kg/m²" : "");
+            return el("div", null, [el("strong", { text: txt + " " }), el("span", { className: "selo-fonte", text: fonte })]);
+          });
+          return { conteudo: criarBlocoDivergencia(linhas), selos: [criarSeloFontesDivergentes()] };
+        }
+        const peso = pesoEntradas[0] ? Number(pesoEntradas[0].valor) : null;
+        const alt = altEntradas[0] ? Number(altEntradas[0].valor) : null;
+        const imc = calcularImc(peso, alt);
+        const texto = (peso ? peso + " kg" : "—") + " · " + (alt ? alt + " cm" : "—") + (imc ? " · IMC " + imc + " kg/m²" : "");
+        const fontes = Array.from(new Set(pesoEntradas.concat(altEntradas).map(function (e) { return e.fonte; })));
+        return {
+          conteudo: el("div", { className: "critico-valor", text: texto }),
+          selos: fontes.map(function (f) { return el("span", { className: "selo-fonte", text: f }); })
+        };
+      }
+
+      function montarConfirmacaoItem(confObj, rotuloSim, rotuloNao) {
+        if (confObj.divergente) {
+          return {
+            conteudo: criarBlocoDivergencia(confObj.fontes.map(function (f) {
+              return el("div", null, [
+                el("strong", { text: (f.valor ? "Sim" : "Não") + " " }),
+                el("span", { className: "selo-fonte", text: f.fonte })
+              ]);
+            })),
+            selos: [criarSeloFontesDivergentes()]
+          };
+        }
+        if (confObj.confirmado) {
+          const fontes = Array.from(new Set(confObj.fontes.filter(function (f) { return f.valor === true; }).map(function (f) { return f.fonte; })));
+          return {
+            conteudo: el("div", { className: "critico-valor", text: rotuloSim }),
+            selos: fontes.map(function (f) { return el("span", { className: "selo-fonte", text: f }); })
+          };
+        }
+        const fonteNao = confObj.fontes.find(function (f) { return f.valor === false; });
+        return {
+          conteudo: el("div", { className: "critico-valor critico-valor--vazio", text: rotuloNao }),
+          selos: [el("span", { className: "selo-fonte", text: fonteNao ? fonteNao.fonte : "Aguardando confirmação" })]
+        };
+      }
+
+      function criarCartaoDadosCriticos(aval, perfilCfg) {
+        const meds = montarValorESelosTexto(aval.campos.medicacoes, "Medicações não informadas");
+        if (aval.usaAnticoagulante) {
+          meds.selos.push(el("span", { className: "selo-anticoag" }, [criarSvgIcon("info", 11), el("span", { text: "Anticoagulante registrado" })]));
+        }
+        const itens = [
+          { chave: "alergias", rotulo: "Alergias", divergente: aval.campos.alergias.divergente, dados: montarValorESelosTexto(aval.campos.alergias, "Alergias não informadas") },
+          { chave: "medicacoes", rotulo: "Medicações em uso", divergente: aval.campos.medicacoes.divergente, dados: meds },
+          { chave: "pesoAlturaImc", rotulo: "Peso, altura e IMC", divergente: aval.campos.pesoKg.divergente || aval.campos.alturaCm.divergente, dados: montarPesoAlturaImc(aval) },
+          { chave: "comorbidades", rotulo: "Comorbidades", divergente: aval.campos.comorbidades.divergente, dados: montarValorESelosTexto(aval.campos.comorbidades, "Comorbidades não informadas") },
+          { chave: "jejum", rotulo: "Jejum confirmado", divergente: aval.jejum.divergente, dados: montarConfirmacaoItem(aval.jejum, "Sim — jejum confirmado", "Não confirmado") },
+          { chave: "acompanhante", rotulo: "Acompanhante confirmado", divergente: aval.acompanhante.divergente, dados: montarConfirmacaoItem(aval.acompanhante, "Sim — acompanhante confirmado", "Não confirmado") }
+        ];
+        const grid = el("div", { className: "criticos-grid" }, itens.map(function (it) {
+          return criarItemCriticoCard({
+            rotulo: it.rotulo, divergente: it.divergente,
+            prioritario: perfilCfg.campos.indexOf(it.chave) !== -1,
+            perfilRotulo: perfilCfg.rotulo, conteudo: it.dados.conteudo, selos: it.dados.selos
+          });
+        }));
+        return el("article", { className: "card-painel" }, [
+          el("div", { className: "card-painel-head" }, [
+            el("h2", { className: "card-painel-titulo", text: "Cartão de dados críticos" }),
+            el("span", { className: "selo-clinico", text: "Conteúdo ilustrativo — a validar pela equipe clínica" })
+          ]),
+          el("div", { className: "perfil-subnota", text: "Perfil ativo: " + perfilCfg.rotulo + " · Campos prioritários destacados em verde-azulado" }),
+          grid
+        ]);
+      }
+
+      function criarBoxPendencias(paciente, aval, perfilCfg) {
+        const itensAlerta = [];
+        aval.divergencias.forEach(function (d) {
+          itensAlerta.push(el("li", { className: "alerta-row alerta-row--divergencia" }, [criarSvgIcon("alert", 14), el("span", { text: d.mensagem })]));
+        });
+        aval.pendencias.forEach(function (pTxt) {
+          itensAlerta.push(el("li", { className: "alerta-row alerta-row--pendencia" }, [criarSvgIcon("clock", 14), el("span", { text: pTxt })]));
+        });
+        aval.avisosInformativos.forEach(function (aTxt) {
+          itensAlerta.push(el("li", { className: "alerta-row alerta-row--info" }, [criarSvgIcon("info", 14), el("span", { text: aTxt })]));
+        });
+        if (itensAlerta.length === 0) {
+          itensAlerta.push(el("li", { className: "alerta-row alerta-row--ok" }, [criarSvgIcon("check", 14), el("span", { text: "Nenhuma pendência ou divergência registrada. Dados conferidos." })]));
+        }
+        const destacaPend = Boolean(perfilCfg && perfilCfg.destacaPendencias);
+        const questStatus = paciente.questionario ? "Questionário pré: Respondido" : "Questionário pré: Aguardando resposta";
+        return el("article", { className: "card-painel card-painel--grow" + (destacaPend ? " card-painel--destaque" : "") }, [
+          el("div", { className: "card-painel-head" }, [
+            el("h2", { className: "card-painel-titulo", text: "Pendências e alertas de informação" }),
+            destacaPend ? el("span", { className: "tag-prioridade", text: "Prioridade: Recepção (Questionário)" }) : el("span", { className: "selo-fonte", text: "Apenas informação — sem conduta clínica" })
+          ]),
+          destacaPend ? el("div", { className: "perfil-subnota", text: questStatus }) : null,
+          el("ul", { className: "alertas-lista" }, itensAlerta)
+        ]);
+      }
+
+      function criarBoxProximoPasso(paciente, perfilCfg) {
+        const prox = obterProximoPasso(paciente);
+        const clsProx = "card-painel" + (perfilCfg.destacaLateral ? " card-painel--destaque" : "");
+        return el("article", { className: clsProx }, [
+          el("div", { className: "card-painel-head" }, [
+            el("h2", { className: "card-painel-titulo", text: "Próximo passo e responsável" }),
+            perfilCfg.destacaLateral ? el("span", { className: "tag-prioridade", text: "Prioridade: " + perfilCfg.rotulo }) : null
+          ]),
+          el("div", { className: "proximo-passo-box" }, [
+            el("div", null, [el("strong", { text: "Etapa atual: " }), el("span", { text: ETAPAS_JORNADA[paciente.etapaAtual] })]),
+            el("div", null, [el("strong", { text: "Próximo passo: " }), el("span", { text: prox.acao })]),
+            el("div", null, [el("strong", { text: "Responsável: " }), el("span", { text: prox.resp })])
+          ])
+        ]);
+      }
+
+      function criarPainelLateralDetalhe(paciente, aval, perfilCfg) {
+        return el("div", { className: "detalhe-lateral" }, [
+          criarBoxPendencias(paciente, aval, perfilCfg),
+          criarBoxProximoPasso(paciente, perfilCfg)
+        ]);
+      }
+
+      function renderTelaDetalhe() {
+        const sec = document.getElementById("tela-detalhe");
+        limparElemento(sec);
+        const paciente = obterPacienteSelecionado();
+        const aval = avaliarProntidaoPaciente(paciente, state.cenario);
+        const perfilCfg = Object.prototype.hasOwnProperty.call(PERFIS_INFO, state.perfil)
+          ? PERFIS_INFO[state.perfil]
+          : PERFIS_INFO.Recepcao;
+
+        sec.appendChild(criarHeaderDetalhe(paciente, aval));
+        sec.appendChild(criarTimelineDetalhe(paciente, perfilCfg));
+        sec.appendChild(el("div", { className: "detalhe-grid" }, [
+          criarCartaoDadosCriticos(aval, perfilCfg),
+          criarPainelLateralDetalhe(paciente, aval, perfilCfg)
+        ]));
+      }
+
+      function avancarEtapaPaciente(pacienteId) {
+        const paciente = state.pacientes.find(function (p) { return p.id === pacienteId; });
+        if (!paciente || paciente.etapaAtual >= ETAPAS_JORNADA.length - 1) return;
+        paciente.etapaAtual += 1;
+        paciente.datasEtapas[paciente.etapaAtual] = DATA_SIMULADA_HOJE;
+        state.mensagemDetalhe = "Etapa avançada para: " + ETAPAS_JORNADA[paciente.etapaAtual] + ".";
+        renderPocAtiva();
+      }
+
+      /* =======================================================================
+         7. RENDERIZAÇÃO: TELA C — VISÃO DO PACIENTE (CELULAR)
+         ======================================================================= */
+
+      function obterOQueFaltaPaciente(paciente, aval) {
+        if (paciente.etapaAtual >= 6) {
+          return "Procedimento concluído. Leia as orientações de pós-procedimento abaixo.";
+        }
+        if (!paciente.questionario) {
+          return "Preencha e envie o questionário pré-procedimento abaixo (leva menos de 1 minuto).";
+        }
+        if (aval.pendencias.length > 0) {
+          return "Falta confirmar: " + aval.pendencias.join(" ");
+        }
+        return "Tudo pronto da sua parte! Aguarde o contato ou acolhimento no horário agendado.";
+      }
+
+      function obterExemploQuestionario(paciente) {
+        const base = paciente.sistema || {};
+        return {
+          alergias: base.alergias || "Nenhuma alergia conhecida",
+          medicacoes: base.medicacoes || "Nenhuma de uso contínuo",
+          usaAnticoagulante: Boolean(base.usaAnticoagulante),
+          pesoKg: base.pesoKg || 70,
+          alturaCm: base.alturaCm || 170,
+          comorbidades: base.comorbidades || "Nenhuma comorbidade relatada",
+          acompanhante: true,
+          jejum: true
+        };
+      }
+
+      function criarControlesFormulario(q) {
+        return {
+          alergias: el("input", { type: "text", id: "q-alergias", className: "form-input", maxlength: "180", value: q.alergias || "", placeholder: "Ex.: Dipirona, látex ou Nenhuma" }),
+          medicacoes: el("input", { type: "text", id: "q-medicacoes", className: "form-input", maxlength: "180", value: q.medicacoes || "", placeholder: "Ex.: Losartana 50 mg/dia ou Nenhuma" }),
+          anticoag: el("input", { type: "checkbox", id: "q-anticoag", checked: Boolean(q.usaAnticoagulante) }),
+          peso: el("input", { type: "number", id: "q-peso", className: "form-input", min: "20", max: "300", step: "0.1", value: q.pesoKg || "" }),
+          altura: el("input", { type: "number", id: "q-altura", className: "form-input", min: "80", max: "240", step: "1", value: q.alturaCm || "" }),
+          comorbidades: el("input", { type: "text", id: "q-comorbidades", className: "form-input", maxlength: "180", value: q.comorbidades || "", placeholder: "Ex.: Hipertensão ou Nenhuma" }),
+          acompSim: el("input", { type: "radio", name: "q-acompanhante", value: "sim", checked: q.acompanhanteConfirmado === true }),
+          acompNao: el("input", { type: "radio", name: "q-acompanhante", value: "nao", checked: q.acompanhanteConfirmado === false }),
+          jejumSim: el("input", { type: "radio", name: "q-jejum", value: "sim", checked: q.jejumConfirmado === true }),
+          jejumNao: el("input", { type: "radio", name: "q-jejum", value: "nao", checked: q.jejumConfirmado === false })
+        };
+      }
+
+      function preencherFormularioExemplo(ctrl, paciente, erroBox) {
+        const ex = obterExemploQuestionario(paciente);
+        ctrl.alergias.value = ex.alergias;
+        ctrl.medicacoes.value = ex.medicacoes;
+        ctrl.anticoag.checked = ex.usaAnticoagulante;
+        ctrl.peso.value = String(ex.pesoKg);
+        ctrl.altura.value = String(ex.alturaCm);
+        ctrl.comorbidades.value = ex.comorbidades;
+        ctrl.acompSim.checked = ex.acompanhante;
+        ctrl.acompNao.checked = !ex.acompanhante;
+        ctrl.jejumSim.checked = ex.jejum;
+        ctrl.jejumNao.checked = !ex.jejum;
+        state.mensagemErroForm = "";
+        erroBox.hidden = true;
+      }
+
+      function criarGrupoRadioSimNao(rotulo, inpSim, inpNao) {
+        return el("div", { className: "form-grupo" }, [
+          el("span", { className: "form-label", text: rotulo }),
+          el("div", { className: "radio-row" }, [
+            el("label", { className: "form-check-label" }, [inpSim, "Sim"]),
+            el("label", { className: "form-check-label" }, [inpNao, "Não"])
+          ])
+        ]);
+      }
+
+      function criarFormularioQuestionario(paciente) {
+        const ctrl = criarControlesFormulario(paciente.questionario || {});
+        const erroBox = el("div", { id: "q-erro-box", className: "form-erro", hidden: !state.mensagemErroForm, text: state.mensagemErroForm });
+        const form = el("form", { id: "form-questionario-pre", novalidate: "true" }, [
+          erroBox,
+          el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-alergias", text: "1. Possui alguma alergia conhecida?" }), ctrl.alergias]),
+          el("div", { className: "form-grupo" }, [
+            el("label", { className: "form-label", for: "q-medicacoes", text: "2. Quais medicações usa continuamente?" }),
+            ctrl.medicacoes,
+            el("label", { className: "form-check-label" }, [ctrl.anticoag, el("span", { text: "Uso anticoagulante ou antiagregante" })])
+          ]),
+          el("div", { className: "form-row-2" }, [
+            el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-peso", text: "3. Peso (kg)" }), ctrl.peso]),
+            el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-altura", text: "4. Altura (cm)" }), ctrl.altura])
+          ]),
+          el("div", { className: "form-grupo" }, [el("label", { className: "form-label", for: "q-comorbidades", text: "5. Doenças ou condições de saúde" }), ctrl.comorbidades]),
+          criarGrupoRadioSimNao("6. Terá acompanhante adulto na alta?", ctrl.acompSim, ctrl.acompNao),
+          criarGrupoRadioSimNao("7. Entendeu e confirma o jejum orientado?", ctrl.jejumSim, ctrl.jejumNao),
+          el("div", { className: "detalhe-acoes" }, [
+            el("button", { type: "button", className: "btn btn-sm", id: "btn-preencher-exemplo", text: "Preencher respostas de exemplo", onClick: function () { preencherFormularioExemplo(ctrl, paciente, erroBox); } }),
+            el("button", { type: "submit", className: "btn btn-sm btn-primary", id: "btn-enviar-questionario", text: "Enviar questionário" })
+          ])
+        ]);
+
+        form.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          processarEnvioQuestionario(paciente, {
+            alergias: ctrl.alergias.value, medicacoes: ctrl.medicacoes.value,
+            usaAnticoagulante: ctrl.anticoag.checked, pesoKg: ctrl.peso.value,
+            alturaCm: ctrl.altura.value, comorbidades: ctrl.comorbidades.value,
+            acompRadio: ctrl.acompSim.checked ? true : (ctrl.acompNao.checked ? false : null),
+            jejumRadio: ctrl.jejumSim.checked ? true : (ctrl.jejumNao.checked ? false : null)
+          });
+        });
+        return form;
+      }
+
+      function validarDadosQuestionario(dados) {
+        const pesoNum = Number(dados.pesoKg);
+        const altNum = Number(dados.alturaCm);
+        const alergiasBruto = String(dados.alergias || "").trim();
+        const medsBruto = String(dados.medicacoes || "").trim();
+        const comorbBruto = String(dados.comorbidades || "").trim();
+        if (alergiasBruto.length > 180 || medsBruto.length > 180 || comorbBruto.length > 180) {
+          return "Use no máximo 180 caracteres em alergias, medicações e condições de saúde.";
+        }
+        const alergias = higienizarTextoEntrada(alergiasBruto, 180).trim();
+        const medicacoes = higienizarTextoEntrada(medsBruto, 180).trim();
+        const comorbidades = higienizarTextoEntrada(comorbBruto, 180).trim();
+        if (!alergias || !medicacoes || !comorbidades) {
+          return "Preencha alergias, medicações e condições de saúde (informe 'Nenhuma' se não houver).";
+        }
+        if (!Number.isFinite(pesoNum) || pesoNum < 20 || pesoNum > 300) {
+          return "Informe um peso válido entre 20 e 300 kg.";
+        }
+        if (!Number.isFinite(altNum) || altNum < 80 || altNum > 240) {
+          return "Informe uma altura válida entre 80 e 240 cm.";
+        }
+        if (dados.acompRadio === null || dados.jejumRadio === null) {
+          return "Responda às perguntas de acompanhante e jejum (Sim ou Não).";
+        }
+        return "";
+      }
+
+      function processarEnvioQuestionario(paciente, dados) {
+        const erro = validarDadosQuestionario(dados);
+        if (erro) {
+          state.mensagemErroForm = erro;
+          renderTelaCelular();
+          return;
+        }
+        paciente.questionario = {
+          alergias: higienizarTextoEntrada(dados.alergias, 180).trim(),
+          medicacoes: higienizarTextoEntrada(dados.medicacoes, 180).trim(),
+          usaAnticoagulante: Boolean(dados.usaAnticoagulante),
+          pesoKg: Math.round(Number(dados.pesoKg) * 10) / 10,
+          alturaCm: Math.round(Number(dados.alturaCm)),
+          comorbidades: higienizarTextoEntrada(dados.comorbidades, 180).trim(),
+          acompanhanteConfirmado: dados.acompRadio,
+          jejumConfirmado: dados.jejumRadio
+        };
+        if (paciente.etapaAtual < 2) {
+          paciente.etapaAtual = 2;
+          if (!paciente.datasEtapas[1]) paciente.datasEtapas[1] = DATA_SIMULADA_HOJE;
+          paciente.datasEtapas[2] = DATA_SIMULADA_HOJE;
+        }
+        state.mensagemErroForm = "";
+        state.envioRecentePacienteId = paciente.id;
+        renderTelaCelular();
+      }
+
+      function criarCardOrientacoes(paciente) {
+        const abaPadrao = paciente.etapaAtual >= 6 ? "pos" : "pre";
+        const abaAtiva = state.abaOrientacaoCelular || abaPadrao;
+        const itens = ORIENTACOES_ILUSTRATIVAS[abaAtiva] || ORIENTACOES_ILUSTRATIVAS.pre;
+
+        return el("div", { className: "celular-card" }, [
+          el("div", { className: "card-painel-head" }, [
+            el("h3", { className: "celular-titulo-flush", text: "Orientações da clínica" }),
+            el("span", { className: "selo-clinico", text: "Conteúdo ilustrativo — a validar pela equipe clínica" })
+          ]),
+          el("div", { className: "orientacoes-tabs", role: "tablist", "aria-label": "Tipo de orientação" }, [
+            el("button", {
+              type: "button",
+              className: "btn-subtab",
+              role: "tab",
+              "aria-selected": abaAtiva === "pre" ? "true" : "false",
+              text: "Pré-procedimento",
+              onClick: function () { state.abaOrientacaoCelular = "pre"; renderTelaCelular(); }
+            }),
+            el("button", {
+              type: "button",
+              className: "btn-subtab",
+              role: "tab",
+              "aria-selected": abaAtiva === "pos" ? "true" : "false",
+              text: "Pós-procedimento",
+              onClick: function () { state.abaOrientacaoCelular = "pos"; renderTelaCelular(); }
+            })
+          ]),
+          el("ul", { className: "lista-limpa celular-orient-lista" }, itens.map(function (txt) {
+            return el("li", { text: txt });
+          }))
+        ]);
+      }
+
+      function criarTopoCelular(paciente) {
+        const seletor = el("select", {
+          id: "celular-seletor-paciente",
+          className: "control-select",
+          "aria-label": "Selecionar paciente na visão do celular",
+          onChange: function (e) {
+            state.pacienteSelecionadoId = e.target.value;
+            state.abaOrientacaoCelular = null;
+            state.envioRecentePacienteId = null;
+            state.mensagemErroForm = "";
+            renderTelaCelular();
+          }
+        }, state.pacientes.map(function (p) {
+          const opt = el("option", { value: p.id, text: p.nome + " (" + ETAPAS_JORNADA[p.etapaAtual] + ")" });
+          if (p.id === paciente.id) opt.selected = true;
+          return opt;
+        }));
+        return el("div", { className: "celular-topo-controles" }, [
+          el("label", { className: "control-field", for: "celular-seletor-paciente" }, [el("span", { text: "Paciente:" }), seletor]),
+          el("div", { className: "detalhe-acoes" }, [
+            el("button", { type: "button", className: "btn btn-sm", text: "Ver no Quadro", onClick: function () { navegarSubTela("quadro"); } }),
+            el("button", { type: "button", className: "btn btn-sm btn-outline-accent", text: "Ver no Detalhe", onClick: function () { navegarSubTela("detalhe"); } })
+          ])
+        ]);
+      }
+
+      function criarCardStatusCelular(paciente, aval) {
+        return el("div", { className: "celular-card" }, [
+          el("div", { className: "card-painel-head" }, [
+            el("h3", { className: "celular-titulo-flush", text: "Olá, " + paciente.nome.split(" ")[0] }),
+            el("span", { className: "badge-provisorio", text: ETAPAS_JORNADA[paciente.etapaAtual] })
+          ]),
+          el("div", { className: "celular-submeta", text: paciente.procedimento + " · " + paciente.dataHora }),
+          el("div", { className: "alerta-row alerta-row--info" }, [
+            criarSvgIcon("info", 14),
+            el("span", { text: obterOQueFaltaPaciente(paciente, aval) })
+          ])
+        ]);
+      }
+
+      function renderTelaCelular() {
+        const sec = document.getElementById("tela-celular");
+        limparElemento(sec);
+        const paciente = obterPacienteSelecionado();
+        const aval = avaliarProntidaoPaciente(paciente, state.cenario);
+        const bannerSucesso = state.envioRecentePacienteId === paciente.id
+          ? el("div", { className: "form-sucesso", role: "status" }, [
+              el("span", { text: "Questionário enviado! O painel da clínica já foi atualizado." }),
+              el("div", { className: "detalhe-acoes" }, [
+                el("button", { type: "button", className: "btn btn-sm btn-primary", text: "Voltar ao Quadro", onClick: function () { navegarSubTela("quadro"); } }),
+                el("button", { type: "button", className: "btn btn-sm", text: "Ver Detalhe", onClick: function () { navegarSubTela("detalhe"); } })
+              ])
+            ])
+          : null;
+        const cardQuest = el("div", { className: "celular-card" }, [
+          el("div", { className: "card-painel-head" }, [
+            el("h3", { className: "celular-titulo-flush", text: "Questionário pré-procedimento" }),
+            el("span", { className: "selo-clinico", text: "Conteúdo ilustrativo — a validar pela equipe clínica" })
+          ]),
+          bannerSucesso,
+          criarFormularioQuestionario(paciente)
+        ]);
+        const moldura = el("div", { className: "celular-moldura" }, [
+          el("div", { className: "celular-notch", text: NOME_PRODUTO + " · Visão do paciente" }),
+          el("div", { className: "celular-tela" }, [criarCardStatusCelular(paciente, aval), cardQuest, criarCardOrientacoes(paciente)])
+        ]);
+        sec.appendChild(criarTopoCelular(paciente));
+        sec.appendChild(moldura);
+      }
+
+      /* =======================================================================
+         8. MODAL FHIR E TOUR GUIADO (8 PASSOS)
+         ======================================================================= */
+
+      function definirInertFundoModal(ativo) {
+        const alvos = [document.getElementById("app-main"), document.querySelector(".topbar")];
+        alvos.forEach(function (elem) {
+          if (!elem) return;
+          elem.inert = Boolean(ativo);
+          if (ativo) elem.setAttribute("inert", "");
+          else elem.removeAttribute("inert");
+        });
+      }
+
+      function abrirModalFhir(paciente) {
+        const pac = paciente || obterPacienteSelecionado();
+        const backdrop = document.getElementById("modal-fhir-backdrop");
+        const pre = document.getElementById("modal-fhir-json");
+        const nota = document.getElementById("modal-fhir-nota");
+
+        nota.textContent = state.cenario === "sem_sistema"
+          ? "Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS) — exemplo de referência da Rota 1"
+          : "Estrutura simplificada, inspirada no padrão HL7 FHIR (RNDS)";
+
+        pre.textContent = JSON.stringify(gerarBundleFhirSimulado(pac), null, 2);
+        state.ultimoFocoAntesModal = document.activeElement;
+        definirInertFundoModal(true);
+        state.modalFhirAberto = true;
+        backdrop.hidden = false;
+        document.getElementById("btn-fechar-fhir").focus();
+      }
+
+      function fecharModalFhir() {
+        const backdrop = document.getElementById("modal-fhir-backdrop");
+        definirInertFundoModal(false);
+        if (backdrop.hidden) return;
+        backdrop.hidden = true;
+        state.modalFhirAberto = false;
+        const alvoFoco = state.ultimoFocoAntesModal;
+        state.ultimoFocoAntesModal = null;
+        if (alvoFoco && document.contains(alvoFoco) && typeof alvoFoco.focus === "function") {
+          alvoFoco.focus();
+        }
+      }
+
+      const PASSOS_TOUR = [
+        {
+          titulo: "Passo 1 — Quadro da clínica",
+          texto: "Cinco pacientes fictícios, três status de prontidão (Pronto, Pendente e Atenção) em uma única tela, como um painel de voos.",
+          executar: function () {
+            fecharModalFhir();
+            state.cenario = "com_sistema";
+            state.perfil = "Recepcao";
+            state.filtroStatus = "Todos";
+            state.buscaNome = "";
+            navegarSubTela("quadro");
+          }
+        },
+        {
+          titulo: "Passo 2 — A dor da informação fragmentada",
+          texto: "Abrimos a paciente 3 (Marina): a alergia a látex foi informada no questionário do paciente, mas não consta no sistema da clínica. Hoje ninguém veria isso.",
+          executar: function () {
+            fecharModalFhir();
+            state.cenario = "com_sistema";
+            state.perfil = "Recepcao";
+            state.pacienteSelecionadoId = "p3";
+            navegarSubTela("detalhe");
+          }
+        },
+        {
+          titulo: "Passo 3 — Destaque por perfil (Anestesista)",
+          texto: "Ao trocar para o perfil Anestesista, o painel continua o mesmo, mas destaca imediatamente alergias, medicações e jejum.",
+          executar: function () {
+            fecharModalFhir();
+            state.cenario = "com_sistema";
+            state.perfil = "Anestesista";
+            state.pacienteSelecionadoId = "p3";
+            navegarSubTela("detalhe");
+          }
+        },
+        {
+          titulo: "Passo 4 — Visão do paciente (Carlos)",
+          texto: "No celular do paciente 2 (Carlos), você pode clicar em 'Preencher respostas de exemplo' e 'Enviar questionário' ao vivo antes de seguir.",
+          executar: function () {
+            fecharModalFhir();
+            state.pacienteSelecionadoId = "p2";
+            state.perfil = "Paciente";
+            navegarSubTela("paciente");
+          }
+        },
+        {
+          titulo: "Passo 5 — Painel atualizado sozinho",
+          texto: "De volta ao Quadro: após o envio do questionário, etapa e pendências atualizam na hora, sem ninguém da equipe digitar nada a mais.",
+          executar: function () {
+            fecharModalFhir();
+            state.perfil = "Recepcao";
+            navegarSubTela("quadro");
+          }
+        },
+        {
+          titulo: "Passo 6 — Clínica sem sistema",
+          texto: "No cenário 'Clínica sem sistema (só questionário)', não há dependência de prontuário eletrônico: o questionário pré alimenta todo o painel.",
+          executar: function () {
+            fecharModalFhir();
+            state.cenario = "sem_sistema";
+            state.perfil = "Recepcao";
+            navegarSubTela("quadro");
+          }
+        },
+        {
+          titulo: "Passo 7 — Padrão nacional HL7 FHIR",
+          texto: "Quando a clínica tem sistema, integramos apenas dados estruturados no padrão HL7 FHIR (usado pela RNDS), como neste exemplo bruto.",
+          executar: function () {
+            state.cenario = "com_sistema";
+            state.pacienteSelecionadoId = "p3";
+            state.perfil = "Recepcao";
+            navegarSubTela("detalhe");
+            abrirModalFhir(obterPacienteSelecionado());
+          }
+        },
+        {
+          titulo: "Passo 8 — Fechamento",
+          texto: "Não trocamos o prontuário de ninguém. Apenas mostramos em uma tela o que toda a equipe precisa ver para uma jornada mais segura.",
+          executar: function () {
+            fecharModalFhir();
+            state.cenario = "com_sistema";
+            state.perfil = "Recepcao";
+            navegarSubTela("quadro");
+          }
+        }
+      ];
+
+      function renderTour() {
+        const popover = document.getElementById("tour-popover");
+        if (!state.tourAtivo) {
+          popover.hidden = true;
+          return;
+        }
+        const passo = PASSOS_TOUR[state.tourPasso];
+        document.getElementById("tour-titulo").textContent = passo.titulo;
+        document.getElementById("tour-texto").textContent = passo.texto;
+        document.getElementById("tour-contador").textContent = (state.tourPasso + 1) + " / " + PASSOS_TOUR.length;
+        document.getElementById("btn-tour-voltar").disabled = state.tourPasso === 0;
+        document.getElementById("btn-tour-proximo").textContent = state.tourPasso === PASSOS_TOUR.length - 1 ? "Concluir" : "Próximo";
+        popover.hidden = false;
+      }
+
+      function iniciarTour() {
+        state.tourAtivo = true;
+        state.tourPasso = 0;
+        navegarPrincipal("poc");
+        PASSOS_TOUR[0].executar();
+        renderTour();
+      }
+
+      function avancarTour(delta) {
+        const novoIndice = state.tourPasso + delta;
+        if (novoIndice >= PASSOS_TOUR.length) {
+          encerrarTour();
+          return;
+        }
+        if (novoIndice < 0) return;
+        if (state.abaPrincipal !== "poc") navegarPrincipal("poc");
+        state.tourPasso = novoIndice;
+        PASSOS_TOUR[state.tourPasso].executar();
+        renderTour();
+      }
+
+      function encerrarTour() {
+        state.tourAtivo = false;
+        fecharModalFhir();
+        renderTour();
+      }
+
+      /* =======================================================================
+         9. NAVEGAÇÃO, SINCRONIZAÇÃO DE CONTROLES E INICIALIZAÇÃO
+         ======================================================================= */
+
+      function sincronizarControlesPoc() {
+        document.getElementById("select-perfil").value = state.perfil;
+        document.getElementById("select-cenario").value = state.cenario;
+
+        const mapaTabs = {
+          quadro: "subtab-quadro",
+          detalhe: "subtab-detalhe",
+          paciente: "subtab-paciente"
+        };
+        Object.keys(mapaTabs).forEach(function (chave) {
+          document.getElementById(mapaTabs[chave]).setAttribute("aria-selected", state.subTelaPoc === chave ? "true" : "false");
+        });
+
+        const wrapper = document.getElementById("poc-wrapper");
+        wrapper.classList.toggle("poc-wrapper--detalhe", state.subTelaPoc === "detalhe");
+      }
+
+      function renderPocAtiva() {
+        sincronizarControlesPoc();
+        document.getElementById("tela-quadro").hidden = state.subTelaPoc !== "quadro";
+        document.getElementById("tela-detalhe").hidden = state.subTelaPoc !== "detalhe";
+        document.getElementById("tela-celular").hidden = state.subTelaPoc !== "paciente";
+
+        if (state.subTelaPoc === "quadro") renderTelaQuadro();
+        else if (state.subTelaPoc === "detalhe") renderTelaDetalhe();
+        else if (state.subTelaPoc === "paciente") renderTelaCelular();
+      }
+
+      function navegarPrincipal(aba) {
+        if (aba === "apresentacao" && state.tourAtivo) {
+          encerrarTour();
+        }
+        state.abaPrincipal = aba;
+        const ehApresentacao = aba === "apresentacao";
+        document.getElementById("painel-apresentacao").hidden = !ehApresentacao;
+        document.getElementById("painel-poc").hidden = ehApresentacao;
+        document.getElementById("tab-btn-apresentacao").setAttribute("aria-selected", ehApresentacao ? "true" : "false");
+        document.getElementById("tab-btn-poc").setAttribute("aria-selected", !ehApresentacao ? "true" : "false");
+        if (!ehApresentacao) {
+          renderPocAtiva();
+        }
+        window.scrollTo(0, 0);
+      }
+
+      function navegarSubTela(subTela) {
+        state.subTelaPoc = subTela;
+        state.mensagemErroForm = "";
+        if (subTela === "paciente") {
+          state.perfil = "Paciente";
+        } else if (state.perfil === "Paciente") {
+          state.perfil = "Recepcao";
+        }
+        renderPocAtiva();
+        window.scrollTo(0, 0);
+      }
+
+      function reiniciarDemonstracao() {
+        state.pacientes = clonarPacientesIniciais();
+        state.perfil = "Recepcao";
+        state.cenario = "com_sistema";
+        state.filtroStatus = "Todos";
+        state.buscaNome = "";
+        state.pacienteSelecionadoId = "p1";
+        state.abaOrientacaoCelular = null;
+        state.envioRecentePacienteId = null;
+        state.mensagemErroForm = "";
+        state.mensagemDetalhe = "";
+        encerrarTour();
+        navegarSubTela("quadro");
+      }
+
+      function aplicarConstantesProduto() {
+        document.title = NOME_PRODUTO + " (" + SELO_NOME_PRODUTO + ") — Apresentação e PoC";
+        document.getElementById("topbar-nome-produto").textContent = NOME_PRODUTO;
+        document.getElementById("topbar-selo-produto").textContent = SELO_NOME_PRODUTO;
+        document.getElementById("hero-nome-produto").textContent = NOME_PRODUTO;
+        document.getElementById("hero-selo-produto").textContent = SELO_NOME_PRODUTO;
+        document.getElementById("diag-nome-produto").textContent = NOME_PRODUTO.toUpperCase();
+        document.getElementById("diag-aeroporto").setAttribute("aria-label", "Ilustração comparando um painel de voos do aeroporto com o " + NOME_PRODUTO + ".");
+
+        document.getElementById("brand-icon").appendChild(criarSvgIcon("board", 16));
+        document.getElementById("aviso-icon").appendChild(criarSvgIcon("info", 13));
+        document.getElementById("diag-plane-icon").appendChild(criarSvgIcon("plane", 14));
+        document.getElementById("diag-board-icon").appendChild(criarSvgIcon("board", 14));
+
+        ["seta-rota-1", "seta-rota-2", "seta-rota-3", "seta-rota-4"].forEach(function (id) {
+          const span = document.getElementById(id);
+          limparElemento(span);
+          span.appendChild(criarSvgIcon("arrowRight", 16));
+        });
+      }
+
+      function copiarTextoFhir() {
+        const btn = document.getElementById("btn-copiar-fhir");
+        const txt = document.getElementById("modal-fhir-json").textContent;
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          btn.textContent = "Selecione para copiar";
+          return;
+        }
+        navigator.clipboard.writeText(txt).then(function () {
+          btn.textContent = "JSON copiado";
+          setTimeout(function () { btn.textContent = "Copiar JSON"; }, 1800);
+        }).catch(function () {
+          btn.textContent = "Selecione para copiar";
+        });
+      }
+
+      function tratarTabModalFhir(e) {
+        if (e.key !== "Tab" || !state.modalFhirAberto) return;
+        const dialog = document.getElementById("modal-fhir");
+        const focaveis = Array.from(dialog.querySelectorAll("button:not([disabled]), [tabindex]:not([tabindex='-1'])"));
+        if (focaveis.length === 0) return;
+        const primeiro = focaveis[0];
+        const ultimo = focaveis[focaveis.length - 1];
+        if (!dialog.contains(document.activeElement)) {
+          e.preventDefault();
+          primeiro.focus();
+        } else if (e.shiftKey && document.activeElement === primeiro) {
+          e.preventDefault();
+          ultimo.focus();
+        } else if (!e.shiftKey && document.activeElement === ultimo) {
+          e.preventDefault();
+          primeiro.focus();
+        }
+      }
+
+      function vincularEventosModalETour() {
+        document.getElementById("btn-iniciar-tour").addEventListener("click", iniciarTour);
+        document.getElementById("btn-reiniciar-demo").addEventListener("click", reiniciarDemonstracao);
+        document.getElementById("btn-tour-voltar").addEventListener("click", function () { avancarTour(-1); });
+        document.getElementById("btn-tour-proximo").addEventListener("click", function () { avancarTour(1); });
+        document.getElementById("btn-tour-sair").addEventListener("click", encerrarTour);
+        document.getElementById("btn-fechar-fhir").addEventListener("click", fecharModalFhir);
+        document.getElementById("btn-copiar-fhir").addEventListener("click", copiarTextoFhir);
+        document.getElementById("modal-fhir-backdrop").addEventListener("click", function (e) {
+          if (e.target === e.currentTarget) fecharModalFhir();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && state.modalFhirAberto) fecharModalFhir();
+          tratarTabModalFhir(e);
+        });
+      }
+
+      function vincularEventosGlobais() {
+        document.getElementById("tab-btn-apresentacao").addEventListener("click", function () { navegarPrincipal("apresentacao"); });
+        document.getElementById("tab-btn-poc").addEventListener("click", function () { navegarPrincipal("poc"); });
+        document.getElementById("btn-cta-ver-demo").addEventListener("click", function () { navegarPrincipal("poc"); navegarSubTela("quadro"); });
+        document.getElementById("subtab-quadro").addEventListener("click", function () { navegarSubTela("quadro"); });
+        document.getElementById("subtab-detalhe").addEventListener("click", function () { navegarSubTela("detalhe"); });
+        document.getElementById("subtab-paciente").addEventListener("click", function () { navegarSubTela("paciente"); });
+        document.getElementById("select-perfil").addEventListener("change", function (e) {
+          if (!Object.prototype.hasOwnProperty.call(PERFIS_INFO, e.target.value)) return;
+          state.perfil = e.target.value;
+          if (state.perfil === "Paciente") { navegarSubTela("paciente"); return; }
+          if (state.subTelaPoc === "paciente") state.subTelaPoc = "detalhe";
+          renderPocAtiva();
+        });
+        document.getElementById("select-cenario").addEventListener("change", function (e) {
+          if (e.target.value !== "com_sistema" && e.target.value !== "sem_sistema") return;
+          state.cenario = e.target.value;
+          renderPocAtiva();
+        });
+        const anchorLinks = document.querySelectorAll("#apresentacao-anchors .anchor-link");
+        anchorLinks.forEach(function (link) {
+          link.addEventListener("click", function () {
+            anchorLinks.forEach(function (a) { a.classList.remove("is-active"); });
+            link.classList.add("is-active");
+          });
+        });
+        vincularEventosModalETour();
+      }
+
+      aplicarConstantesProduto();
+      vincularEventosGlobais();
+      navegarPrincipal("apresentacao");
+    })();
+  </script>
+</body>
+</html>
