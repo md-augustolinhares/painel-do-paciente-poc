@@ -1,90 +1,52 @@
-# Relatório de Orquestração e Auditoria dos Agentes
+# Relatório de Execução e Revisão de Agentes
 
-Registro da execução por etapas com os agentes de desenvolvimento (`frontend`, `code-reviewer` e `security-reviewer`), adaptado para a stack de arquivo único (`HTML5 + CSS3 + JavaScript` puro, offline, sem backend e sem banco de dados). Nenhum arquivo original do acervo ou documento de contexto do projeto foi alterado.
-
----
-
-## 1. Resumo da Orquestração por Etapa
-
-| Etapa | Executor | Revisor(es) | Veredito | O que foi corrigido / ajustado | Riscos residuais |
-|---|---|---|---|---|---|
-| **Etapa 1 — Fundação, CSS, Parte 1 e Parte 2 (`index.html` v1)** | `frontend` | `code-reviewer` + `security-reviewer` | **Ajustes Necessários** (`code-reviewer`) / **Aprovado c/ Recomendações** (`security-reviewer`) | Identificados 2 bugs funcionais (`montarPesoAlturaImc` não exibia o bloco visual de divergência e dessincronização do tour com a aba Apresentação / cenário do Passo 7) e melhorias de DRY, ARIA, foco no `<dialog>`, CSP offline, limites `maxlength`, allowlist e nomes 100% fictícios para responsáveis clínicos. | Nenhum bloqueante após correção na rodada seguinte. |
-| **Etapa 2 — Correções, Endurecimento e Documentação (`index.html` v2 + `README.md` + `roteiro-demo.md`)** | `frontend` + Orquestrador | `code-reviewer` + `security-reviewer` | **Aprovado** (ambos) | Aplicadas todas as correções de código, acessibilidade e endurecimento: divergência de peso/altura com IMC por fonte, divergência booleana em `usaAnticoagulante`, fechamento/sincronização do Tour + Passo 7 em `com_sistema`, `DATA_SIMULADA_HOJE`, remoção de estilos inline, `inert` + trap de foco no modal FHIR, `<meta>` CSP offline, `higienizarTextoEntrada`, allowlists com `hasOwnProperty`, selo ilustrativo também no questionário e troca dos nomes dos responsáveis para `Dra. Beatriz`, `Dr. Henrique` e `Enf. Marcos`. | Nenhum risco crítico ou médio. Trade-off aceito da CSP `'unsafe-inline'` documentado abaixo para permitir abertura `file://` e edição manual pelo grupo. |
-| **Etapa 3 — Verificação em Navegador (`1366×768` e `375×812`) e Publicação GitHub Pages** | Orquestrador (Playwright + Chrome) | Orquestrador | **Aprovado** | Executado script automatizado cobrindo todos os critérios da seção 11 e inspecionadas manualmente as capturas de tela em notebook (`1366×768`) e celular (`375×812`). Zero erros ou avisos no console. | Nenhum risco técnico. Conteúdo clínico permanece ilustrativo até validação pela equipe clínica. |
+Registro consolidado de quem executou e quem auditou cada etapa da construção desta prova de conceito (**primeira versão** e evolução completa da **segunda versão**), assegurando o cumprimento das restrições éticas, clínicas, visuais, de segurança e de qualidade de código.
 
 ---
 
-## 2. Análise de Lacunas de Agentes (Seção 12.5)
+## 1. Linha de execução e revisão
 
-- **Lacuna identificada (não bloqueante):** Revisão semântica clínico-regulatória específica para PoCs de saúde digital (enquadramento Anvisa SaMD vs alertas exclusivamente informativos e coerência ilustrativa dos cenários pré-anestésicos).
-- **Decisão:** Conforme aprovado pelo usuário após a Fase 1, **nenhum agente novo foi criado ou editado** no acervo nem na pasta do projeto (`agentes/`).
-- **Mitigação aplicada:** O Orquestrador e o `security-reviewer` aplicaram a verificação item a item contra a seção 3.4 do prompt (ausência de conduta clínica, uso exclusivo de princípios ativos genéricos, presença do selo `"Conteúdo ilustrativo — a validar pela equipe clínica"` e aviso fixo `"Demonstração com dados fictícios"`).
-
----
-
-## 3. Relatórios Completos dos Agentes (Versão Final)
-
-### 3.1 Agente Executor: `frontend`
-
-**Resumo dos componentes e páginas criados/alterados**
-- Arquivo único autocontido [index.html](index.html) (`139.786` bytes, `3.745` linhas), sem dependências externas, sem CDNs, sem fontes web e sem `localStorage`.
-- **Navegação Global (`.topbar`)**: marca configurável via `NOME_PRODUTO` + `SELO_NOME_PRODUTO`, aviso fixo `"Demonstração com dados fictícios"` e abas com `role="tablist"` / `role="tab"` (`Apresentação do Projeto` e `Demonstração (PoC)`).
-- **Parte 1 — Apresentação (`#painel-apresentacao`)**: barra sticky de âncoras e as 10 seções na ordem do pitch (`Abertura`, `O problema` com diagrama das 4 caixas isoladas, `Para quem`, `A solução` com ilustração do painel de voos, `Como resolve a integração` com fluxo das 2 rotas HL7 FHIR vs Questionário, `O que fica fora da primeira versão`, `Modelo de negócio`, `O que já fizemos e o que falta` com linha do tempo e 5 riscos, `Próximos passos` e `Time` sem fotos).
-- **Parte 2 — Demonstração Conceitual (`#painel-poc`)**:
-  - Controles compactos (sub-abas A/B/C, seletor de perfil com 5 papéis, seletor de cenário de integração com/sem sistema, `Iniciar tour`, `Reiniciar demonstração`).
-  - **Tela A (`#tela-quadro`)**: KPIs, filtros por status, busca sanitizada (`maxlength="100"`), tabela com 5 pacientes fictícios e conversão para cartões em dispositivos móveis.
-  - **Tela B (`#tela-detalhe`)**: layout dimensionado sem rolagem vertical em `1366×768`, cabeçalho com seletor rápido, botão `Avançar etapa`, jornada horizontal em 8 etapas com datas, Cartão de Dados Críticos com fontes e detecção de divergências (incluindo peso/altura/IMC e flag `usaAnticoagulante`), caixa de pendências/alertas informativos e próximo passo com responsável.
-  - **Tela C (`#tela-celular`)**: moldura de smartphone com etapa atual, pendência resumida, questionário pré funcional de 7 perguntas (`maxlength="180"`, validação e preenchimento de exemplo) e orientações ilustrativas Pré/Pós-procedimento.
-  - **Modal HL7 FHIR (`#modal-fhir`)** com `inert` no fundo, trap de foco (`Tab`/`Shift+Tab`), fechamento via `Escape`/backdrop e cópia segura; **Tour Guiado (`#tour-popover`)** em 8 passos sincronizado com a navegação e o cenário do Passo 7.
-
-**Checklist de validação de acessibilidade e estados da UI**
-- [x] Estados vazios (busca sem correspondência no Quadro) renderizam `.empty-state` com botão `"Limpar filtros"`.
-- [x] Semântica e ARIA (`header`, `nav`, `main`, `section`, `article`, `aside`, `dialog`, `role="tablist"`, `role="tab"`, `aria-current="step"`, `inert` e trap de foco no modal).
-- [x] Status nunca dependem só de cor (cor + ícone SVG inline + texto explícito).
-- [x] Formulário com validação imediata, limites e higienização de caracteres de controle/BiDi.
-- [x] Zero `innerHTML`/`outerHTML`/`insertAdjacentHTML` e zero `localStorage`.
-
-**Instruções de como visualizar e testar o fluxo interativo**
-- Abrir `index.html` diretamente no navegador (duplo clique offline ou via GitHub Pages). Usar a barra superior para alternar entre Apresentação e PoC, e clicar em **Iniciar tour** para percorrer o roteiro completo de 90 segundos.
+| Etapa | Responsável pela execução | Responsável pela revisão | Resultado após última revisão |
+|---|---|---|---|
+| Definição de arquitetura, regras do projeto e plano por etapas | Orquestrador (`Antigravity`) | Aprovação do usuário após Fase 1 e revisão periódica do plano | Aprovado |
+| Construção da primeira versão autocontida (`index.html`, `README.md`, `roteiro-demo.md`) | `Especialista Frontend UI/UX` (`self`) | `Revisor de Qualidade e Clean Code` (`research`) + `Revisor de Segurança e Conformidade` (`research`) | Aprovado na primeira versão após ajustes iniciais |
+| Reconstrução completa da segunda versão (design com bandas alternadas, conteúdo ampliado dos documentos do Grupo 3 e remoção integral de apelidos e abreviações) | `Especialista Frontend UI/UX` (`self` — conversa `aecb4ece-a217-467c-b252-c3c02676aaec`) | `Revisor de Qualidade e Clean Code` (`research` — conversa `eba61031-a6da-4efb-88dd-c3476256d75a`) + `Revisor de Segurança e Conformidade` (`research` — conversa `0130f97b-df87-432d-926a-7f7374d74eca`) | Aprovado por ambos os revisores (zero achados Críticos ou Altos) |
+| Correções pós-auditoria da segunda versão, atualização da documentação e preparação final para publicação | Orquestrador (`Antigravity`) | Verificação estática e bateria automatizada em navegador real (`Playwright`) | Aprovado em verificação completa (`4.866` linhas, `183.925` bytes, `82` funções até `36` linhas, zero erros ou avisos) |
 
 ---
 
-### 3.2 Agente Revisor: `code-reviewer` (Auditoria Final)
+## 2. Vereditos das auditorias na segunda versão (`index.html`)
 
-**Pontos Fortes da Implementação**
-- Todas as correções da primeira revisão foram aplicadas com precisão: `montarPesoAlturaImc` exibe divergências de peso/altura com IMC por fonte; `avaliarDivergenciaAnticoagulante` detecta divergência booleana em `usaAnticoagulante`; o tour guiado encerra ao mudar para Apresentação e restaura `com_sistema` no Passo 7 antes de abrir o modal FHIR; `navegarPrincipal` e `navegarSubTela` reposicionam o scroll para o topo.
-- Clean Code e SOLID: funções pequenas (máximo de `36` linhas em `criarFormularioQuestionario`, zero funções `> 50` linhas), sem duplicação relevante (`criarBlocoDivergencia`, `criarSeloFontesDivergentes`, `DATA_SIMULADA_HOJE`, classes CSS dedicadas substituindo estilos inline) e `PERFIS_INFO` configurável declarativamente (`destacaPendencias`).
-- Edição simplificada garantida pelo bloco `1. CONFIGURAÇÕES EDITÁVEIS` bem comentado no início do `<script>`.
+### 2.1 Auditoria de Qualidade e Clean Code (`Revisor de Qualidade e Clean Code`)
+- **Veredito:** **`APROVADO`** (zero achados **Crítico** ou **Alto**; 3 melhorias **Médio** e recomendações **Baixo** endereçadas na sequência pelo orquestrador).
+- **Pontos validados pelo revisor:**
+  - Modularidade JavaScript com todas as funções pequenas e coesas (`<= 40` linhas), sem estilos inline (`style="..."`) e sem duplicação da data simulada (`"15/11"` isolada em `DATA_SIMULADA_HOJE`).
+  - Padronização linguística estrita: zero apelidos (nenhuma ocorrência do apelido usado anteriormente para `Karina`) e zero abreviações em nomes, cargos fictícios e interface (`Augusto Linhares`, `Marcelo Teles`, `Karina`, `Beatriz Moura — Médica anestesiologista`, `Marcos Oliveira — Enfermeiro`, `Henrique Azevedo — Médico executor`, `Questionário enviado`, `Etapa X de 8`).
+  - Contraste acima dos limites mínimos em botões principais, sub-abas, filtros, seletores, badges de status e seção escura (`#0f172a`), além de respeito a `prefers-reduced-motion`.
+- **Ajustes executados após o relatório:**
+  1. Corrigida transição imediata (`.btn-tab-main`) e especificidade de `:hover` na aba principal ativa para eliminar estados intermediários apagados durante trocas rápidas de aba.
+  2. Substituído `role="img"` por `role="region"` nos diagramas HTML estruturados das Seções 2 e 4 para permitir leitura por tecnologias assistivas.
+  3. Qualificada a referência a `10 minutos` na Seção 2 como estimativa prática relatada pela anestesiologia do grupo, ainda sem estudo cronometrado.
+  4. Adicionado `scroll-behavior: auto` e `transition: none` em `@media (prefers-reduced-motion: reduce), print`, e ajustados os subtítulos do bloco regulatório na Seção 6 (`<h4>` com estilo alinhado a `.mini-box h4`).
+  5. Completados atributos WAI-ARIA (`role="tabpanel"`, `aria-labelledby`, `aria-controls`), navegação por teclado (`ArrowLeft` e `ArrowRight`) em `[role="tablist"]` e inclusão dos botões do balão `#tour-popover` no ciclo de `Tab` quando modal HL7 FHIR e Tour Passo 7 estão abertos juntos.
 
-**Oportunidades de Refatoração**
-- Nenhum item bloqueante ou bug lógico remanescente.
-- Melhoria opcional não bloqueante: suporte futuro a setas direcionais (`ArrowLeft`/`ArrowRight`) entre botões `role="tab"`.
-
-**Análise de Cobertura e Resiliência**
-- Todos os requisitos funcionais da seção 11 contemplados no código-fonte (`10` seções, `5` pacientes fictícios, regras determinísticas comentadas, questionário de 7 perguntas reativo, perfis, cenários, modal FHIR, tour de 8 passos e reset em memória).
-
-**Veredito:** **Aprovado**
+### 2.2 Auditoria de Segurança e Conformidade (`Revisor de Segurança e Conformidade`)
+- **Veredito:** **`APROVADO`** (zero achados **Crítico**, **Alto** ou **Médio**).
+- **Pontos validados pelo revisor:**
+  - Política rígida offline via `<meta http-equiv="Content-Security-Policy">` (`default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none';`) e fontes exclusivamente do sistema operacional.
+  - Zero chamadas externas (`fetch`, `XMLHttpRequest`, CDNs) e zero DOM sinks perigosos (`innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `eval`, `new Function`); construção integral via `document.createElement`, `textContent` e `createElementNS`.
+  - Sanitização de entrada (`higienizarTextoEntrada`) removendo caracteres de controle ASCII e direcionais Unicode, filtragem sem expressão regular dinâmica e zero persistência (`localStorage`, `sessionStorage`, `document.cookie`, `indexedDB`).
+  - Conformidade integral com a Seção 3.4, LGPD e fronteira da Anvisa RDC 657/2022: dados 100% fictícios, aviso fixo `"Demonstração com dados fictícios"`, zero nomes de empresas empregadoras ou concorrentes, zero recomendação de conduta clínica e selo `"Conteúdo ilustrativo — a validar pela equipe clínica"` em todos os blocos clínicos.
+- **Hardening adicional aplicado:**
+  - Validação numérica estrita por expressão regular explícita para peso e altura em `validarDadosQuestionario`, bloqueando notação exponencial e altura decimal.
 
 ---
 
-### 3.3 Agente Revisor: `security-reviewer` (Auditoria Final)
+## 3. Verificações obrigatórias em navegador real (`Playwright`) e estáticas
 
-**1. Riscos Críticos (bloqueantes para merge/entrega)**
-- **Nenhum risco crítico identificado.**
-- Zero XSS / DOM sinks inseguros (`innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `eval`, `new Function` ausentes); toda renderização dinâmica usa `document.createElement`, `document.createElementNS` e `.textContent`.
-- Política CSP offline funcional em `file://` (`default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none';`) sem erros no console.
-- Allowlists seguras com `Object.prototype.hasOwnProperty.call` nos seletores; limites `maxlength` (`100` na busca, `180` no questionário) e `higienizarTextoEntrada` removendo caracteres de controle ASCII e BiDi; `overflow-wrap: anywhere` no CSS.
-- Zero `localStorage`, `sessionStorage`, cookies, `indexedDB`, CDNs ou requisições externas.
-- Conformidade integral com a seção 3.4: apenas dados e responsáveis 100% fictícios (`Dra. Beatriz`, `Enf. Marcos`, `Dr. Henrique`), aviso fixo `"Demonstração com dados fictícios"`, zero menção a empregadores/marcas reais, zero conduta clínica, selo `"Conteúdo ilustrativo — a validar pela equipe clínica"` em dados críticos, questionário e orientações.
-
-**2. Riscos Médios**
-- **Nenhum risco médio identificado.**
-
-**3. Riscos Baixos ou Recomendações**
-- **Nenhum risco baixo pendente de correção.** Trade-off documentado: `'unsafe-inline'` em `script-src`/`style-src` é intencional para viabilizar o arquivo único offline via `file://` com edição manual das constantes pelo grupo, mantendo exfiltração e XSS bloqueados pela ausência de DOM sinks e por `default-src 'none'` / `form-action 'none'`.
-
-**4. Arquivos afetados com linhas específicas**
-- `poc-painel/index.html`: linha `6` (CSP), linhas `893, 953, 1207, 1252, 1279` (`overflow-wrap: anywhere`), linhas `1687–1964` (governança visual/textual), linhas `2109–2308` (constantes e pacientes fictícios), linhas `2321–2326, 2665–2679, 3153–3283` (higienização e validação), linhas `2531–2606` (DOM seguro), linhas `3040, 3066, 3293, 3376` (selos ilustrativos/informativos) e linhas `3101–3103, 3717–3728` (allowlists).
-
-**5. Sugestão de código corrigido**
-- Nenhuma alteração adicional necessária. **Veredito Final:** **Aprovado para entrega**.
+A bateria automatizada após as edições finais valida simultaneamente todos os 4 arquivos de `poc-painel/` (`index.html`, `README.md`, `roteiro-demo.md` e `relatorio-agentes.md`):
+1. Ausência total de apelidos, abreviações informais, estilos inline, DOM sinks inseguros, persistência em navegador e funções JavaScript acima de 40 linhas.
+2. Zero erros ou avisos de console no carregamento inicial, navegação nas 10 seções e interações completas da demonstração.
+3. Enquadramento da Tela B (`B. Detalhe do Paciente`) dentro de `1366×768` sem rolagem vertical (`scrollHeight <= 768`) em todas as 40 combinações possíveis (5 pacientes × 4 perfis clínicos × 2 cenários de integração).
+4. Fluxos de busca, filtro, atalhos rápidos, modal HL7 FHIR simulado, ciclo de foco e teclas de seta em `tablist`, questionário interativo com teste contra XSS e texto longo sem quebra, tour guiado de 8 passos e botão `Reiniciar demonstração`.
+5. Layout responsivo móvel (`375×812`) sem rolagem horizontal (`scrollWidth <= 375`) e contraste nítido das abas principais após troca imediata de tela.

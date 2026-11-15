@@ -1,28 +1,47 @@
-# Roteiro de Demonstração — 90 segundos
+# Roteiro da Demonstração ao Vivo (90 segundos)
 
-Este roteiro acompanha a apresentação ao vivo da prova de conceito (**Painel do Paciente** — *nome provisório*) com dados 100% fictícios. O objetivo da demo é provar uma única tese: **a equipe entende o estado do paciente olhando uma tela só, sem digitar nada a mais.**
+**Objetivo do pitch:** provar em uma tela que a equipe clínica e administrativa entende o estado de prontidão do paciente sem digitar nada a mais e sem trocar o prontuário existente.
 
-> **Dica prática:** Você pode seguir os passos manualmente abaixo ou clicar em **`Iniciar tour`** na barra superior da demonstração para navegar passo a passo com o balão explicativo na tela. Antes de repetir uma apresentação, clique em **`Reiniciar demonstração`**.
-
----
-
-## Sequência cronometrada (8 passos · 90 segundos)
-
-| Tempo | Passo | O que clicar na tela | O que falar |
-|---|---|---|---|
-| **00s – 10s** | **1. Quadro da clínica** | Abra a aba **Demonstração (PoC)** → tela **A. Quadro da Clínica**. | *"Cinco pacientes, três status, uma tela. Como um painel de voos, toda a equipe vê em segundos quem está Pronto, quem está Pendente e quem exige Atenção."* |
-| **10s – 22s** | **2. A dor no Paciente 3** | Clique na paciente 3 (**Marina Ferreira Costa** — status **Atenção**). | *"Abrindo a Marina: a alergia a látex aparece no questionário do paciente, mas não existe no sistema da clínica. Hoje, com cada profissional no seu prontuário, ninguém veria essa divergência."* |
-| **22s – 32s** | **3. Trocar para Anestesista** | No seletor **Perfil**, mude de **Recepção** para **Anestesista**. | *"Cada profissional vê primeiro o que importa para ele. A anestesista bate o olho em alergias, medicações e jejum, sem precisar caçar em outras abas."* |
-| **32s – 52s** | **4. Visão do Paciente 2 ao vivo** | Clique em **C. Visão do Paciente (Celular)**, selecione **Carlos Eduardo Mendes**, clique em **Preencher respostas de exemplo** (ou digite os campos) e clique em **Enviar questionário**. | *"Agora no celular do Carlos, que estava pendente: ele responde o questionário rápido pré-procedimento em casa."* |
-| **52s – 62s** | **5. Retorno ao Quadro** | Clique em **Voltar ao Quadro** (ou na sub-aba **A. Quadro da Clínica**). | *"O painel atualizou sozinho na hora — etapa avançou e as pendências mudaram. Ninguém da equipe digitou nada a mais."* |
-| **62s – 72s** | **6. Cenário sem sistema** | No seletor **Cenário**, troque para **Clínica sem sistema (só questionário)**. | *"E se a clínica pequena não tiver prontuário eletrônico? Funciona mesmo sem sistema: o painel passa a ser alimentado direto pelo questionário do paciente."* |
-| **72s – 82s** | **7. Dado bruto (HL7 FHIR)** | Volte o cenário para **Clínica com sistema (FHIR simulado)**, abra um paciente (ex.: **Marina Ferreira Costa**) e clique em **Ver dado bruto (FHIR)**. | *"Quando a clínica já tem sistema, a integração planejada lê apenas dado estruturado no padrão HL7 FHIR — o padrão nacional adotado pela RNDS."* |
-| **82s – 90s** | **8. Fechamento** | Feche o modal (**Fechar**) e retorne ao **Quadro da Clínica**. | *"Não trocamos o prontuário de ninguém. Apenas mostramos em uma tela só o que toda a equipe precisa ver para o procedimento."* |
+**Preparação antes de falar:**
+1. Abra `index.html` no navegador em resolução de notebook (`1366×768` ou maior) ou utilize a versão publicada no GitHub Pages.
+2. Mantenha o botão **Reiniciar demonstração** pronto caso precise repetir o fluxo com os dados iniciais restaurados.
 
 ---
 
-## Notas rápidas para o apresentador
+## 0 a 15 segundos — Abertura e analogia do aeroporto
+- **Na tela:** aba **Apresentação do Projeto** (Seção 1 `Abertura` e Seção 4 `A solução`).
+- **O que falar:**
+  > "Na jornada pré-procedimento com sedação, cada profissional anota no seu sistema isolado e o paciente acaba repetindo os mesmos dados. Nosso conceito — com nome provisório Painel do Paciente — funciona como o painel de voos do aeroporto: cada companhia continua com o seu sistema, e o painel não substitui nenhum deles; ele só reúne voo, portão e status para toda a clínica enxergar na mesma página."
+- **Ação:** clique em **Ver a demonstração**.
 
-- **Pergunta sobre anticoagulante (bônus):** Se perguntarem sobre medicações de risco, abra o paciente 4 (**Roberto Almeida Nascimento**) com o perfil **Anestesista** para mostrar o destaque informativo de uso de anticoagulante (`Apixabana 5 mg`) e a pendência de acompanhante — reforçando que o painel apenas informa e **não dá conduta clínica**.
-- **Pergunta sobre pós-procedimento:** Na tela **C. Visão do Paciente (Celular)**, selecione a paciente 5 (**Luciana Ribeiro Campos**) para mostrar as orientações ilustrativas de pós-procedimento no celular (marcadas para validação pela equipe clínica).
-- **Pergunta sobre LGPD e Anvisa:** Reforce que a demonstração usa apenas dados fictícios, sem persistência local ou envio para servidores, e que a primeira versão exibe somente alertas informativos (sem recomendação clínica).
+---
+
+## 15 a 35 segundos — Quadro da clínica (A. Quadro da Clínica)
+- **Na tela:** sub-aba **A. Quadro da Clínica** no cenário **Clínica com sistema (FHIR simulado)**.
+- **O que falar:**
+  > "Esta é a tela inicial da clínica. Temos 5 pacientes fictícios com barras de progresso de etapa, fontes ativas e três status em cor e texto: Pronto, Pendente e Atenção. Em segundos, quem coordena o dia sabe onde cada paciente está e o que precisa de conferência antes da sedação."
+- **Ação:** clique no atalho rápido **Marina Ferreira Costa (Atenção)** na barra superior ou clique diretamente no nome da paciente na tabela.
+
+---
+
+## 35 a 55 segundos — Leitura sem rolagem e detecção de divergência (B. Detalhe do Paciente)
+- **Na tela:** **B. Detalhe do Paciente** (tudo visível sem rolar em `1366×768`).
+- **O que falar:**
+  > "No detalhe da Marina, toda a linha do tempo e os dados críticos aparecem juntos na mesma tela. Observe o alerta de Atenção: o questionário aponta Alergia a látex (edema e urticária), enquanto o sistema da clínica registra Sem alergias registradas. O painel não dá conduta clínica nem manda suspender nada — ele apenas sinaliza o dado divergente para decisão humana. Se trocarmos o perfil para Anestesista, o painel destaca automaticamente alergias, medicações em uso e confirmação de jejum."
+- **Ação:** alterne o seletor **Perfil** para **Anestesista** (mostrando a atribuição a `Beatriz Moura — Médica anestesiologista`) e clique em **Ver dado bruto (FHIR)** por alguns segundos, fechando o modal em seguida.
+
+---
+
+## 55 a 75 segundos — Clínica sem sistema e visão do paciente (C. Visão do Paciente (Celular))
+- **Na tela:** alterne o **Cenário** para **Clínica sem sistema (só questionário)** e selecione o atalho **Carlos Eduardo Mendes (Pendente)**, acessando **C. Visão do Paciente (Celular)** (ou escolhendo o perfil **Paciente**).
+- **O que falar:**
+  > "Se a clínica não tiver sistema integrado por padrão HL7 FHIR simulado, entramos pela segunda rota: o próprio paciente preenche o questionário pré-procedimento no celular e lê orientações ilustrativas para validar com a equipe clínica. Ao enviar as respostas, o painel recalcula pendências, índice de massa corporal e alertas de anticoagulante na hora, sem a equipe digitar uma linha a mais."
+- **Ação:** clique em **Preencher com dados de exemplo**, marque o uso de anticoagulante (ou altere o peso), clique em **Enviar questionário e atualizar painel** e clique em **Ver Detalhe do Paciente**.
+
+---
+
+## 75 a 90 segundos — Governança e encerramento
+- **Na tela:** detalhe atualizado em memória e botões **Iniciar tour** / **Reiniciar demonstração**.
+- **O que falar:**
+  > "Toda a demonstração usa dados fictícios, não armazena dados fora da memória do navegador e não emite recomendação clínica — mantendo nosso recorte informativo alinhado às cautelas regulatórias da RDC 657/2022 da Anvisa e da LGPD. Como próximos passos, vamos validar estes dados críticos com a anestesiologia do time — Karina, Marcelo Teles e Augusto Linhares — e testar o protótipo com 3 clínicas e 3 a 5 pessoas. Obrigado."
+- **Ação opcional para perguntas:** caso a banca queira explorar passo a passo após a apresentação, acione **Iniciar tour** para percorrer automaticamente os 8 cenários-chave.

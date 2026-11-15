@@ -4,12 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none';">
-  <title>Painel do Paciente (nome provisório) — Apresentação e PoC</title>
+  <title>Painel do Paciente (nome provisório) — Apresentação e Prova de Conceito</title>
   <style>
     :root {
       --bg-page: #f8fafc;
       --bg-surface: #ffffff;
       --bg-subtle: #f1f5f9;
+      --bg-mint: #f0fdfa;
+      --bg-dark: #0f172a;
+      --bg-dark-surface: #1e293b;
+      --ink-dark: #f8fafc;
+      --ink-dark-muted: #cbd5e1;
+      --ink-dark-accent: #5eead4;
       --text-primary: #0f172a;
       --text-secondary: #334155;
       --text-muted: #475569;
@@ -30,10 +36,12 @@
       --status-atencao-border: #fca5a5;
       --radius-md: 8px;
       --radius-lg: 12px;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --radius-xl: 16px;
+      --font-sans: "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
       --font-mono: "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, Monaco, monospace;
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-      --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.12);
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.12);
+      --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     *, *::before, *::after {
@@ -47,11 +55,24 @@
     body {
       margin: 0;
       font-family: var(--font-sans);
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 14.5px;
+      line-height: 1.55;
       color: var(--text-primary);
       background-color: var(--bg-page);
       -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      text-wrap: balance;
+      color: var(--text-primary);
+    }
+
+    p, li {
+      text-wrap: pretty;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
     }
 
     :focus-visible {
@@ -81,12 +102,15 @@
       flex-shrink: 0;
     }
 
-    /* Barra global fixa no topo */
+    /* =====================================================
+       BARRA GLOBAL FIXA NO TOPO
+       ===================================================== */
     .topbar {
       position: sticky;
       top: 0;
       z-index: 500;
-      background-color: var(--bg-surface);
+      background-color: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-default);
       min-height: 48px;
     }
@@ -126,7 +150,7 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--text-primary);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
     }
 
     .badge-provisorio {
@@ -135,7 +159,7 @@
       color: var(--text-secondary);
       background-color: var(--bg-subtle);
       border: 1px solid var(--border-default);
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 999px;
       white-space: nowrap;
     }
@@ -160,6 +184,9 @@
       gap: 6px;
     }
 
+    /* =====================================================
+       BOTÕES E BUTTON-IN-BUTTON
+       ===================================================== */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -169,19 +196,23 @@
       font-size: 13px;
       font-weight: 600;
       line-height: 1.2;
-      padding: 6px 12px;
+      padding: 7px 13px;
       border-radius: var(--radius-md);
       border: 1px solid var(--border-default);
       background-color: var(--bg-surface);
       color: var(--text-primary);
       cursor: pointer;
       text-decoration: none;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transition: background-color 0.25s var(--ease-out-expo), border-color 0.25s var(--ease-out-expo), transform 0.2s var(--ease-out-expo);
     }
 
     .btn:hover:not(:disabled) {
       background-color: var(--bg-subtle);
       border-color: #94a3b8;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
     }
 
     .btn:disabled {
@@ -219,14 +250,60 @@
       border-color: transparent;
       background-color: transparent;
       color: var(--text-secondary);
+      transition: none;
     }
 
-    .btn-tab-main[aria-selected="true"] {
+    .btn-tab-main[aria-selected="true"],
+    .btn-tab-main[aria-selected="true"]:hover:not(:disabled) {
       background-color: var(--accent);
+      border-color: var(--accent);
       color: #ffffff;
     }
 
-    /* Badges de status e rótulos */
+    .btn-cta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 7px 6px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-dark);
+      background-color: var(--accent);
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.35s var(--ease-out-expo), transform 0.25s var(--ease-out-expo);
+    }
+
+    .btn-cta-pill:hover {
+      background-color: var(--accent-dark);
+    }
+
+    .btn-cta-pill:active {
+      transform: scale(0.98);
+    }
+
+    .btn-icon-orb {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background-color: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s var(--ease-out-expo), background-color 0.35s var(--ease-out-expo);
+    }
+
+    .btn-cta-pill:hover .btn-icon-orb {
+      transform: translateX(2px) scale(1.05);
+      background-color: rgba(255, 255, 255, 0.26);
+    }
+
+    /* =====================================================
+       BADGES DE STATUS E RÓTULOS DE CLASSIFICAÇÃO
+       ===================================================== */
     .badge-status {
       display: inline-flex;
       align-items: center;
@@ -237,6 +314,7 @@
       border-radius: 999px;
       border: 1px solid transparent;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
     .badge-status--pronto {
@@ -267,10 +345,11 @@
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 2px 8px;
+      letter-spacing: 0.05em;
+      padding: 3px 9px;
       border-radius: 6px;
       border: 1px solid var(--border-default);
+      white-space: nowrap;
     }
 
     .tag-tipo--fato {
@@ -297,6 +376,12 @@
       border-color: #fca5a5;
     }
 
+    .tag-tipo--dark {
+      background-color: rgba(94, 234, 212, 0.14);
+      color: #99f6e4;
+      border-color: rgba(94, 234, 212, 0.35);
+    }
+
     .selo-clinico {
       display: inline-flex;
       align-items: center;
@@ -310,8 +395,30 @@
       border-radius: 6px;
     }
 
+    /* Double-Bezel (Doppelrand) */
+    .double-bezel {
+      padding: 5px;
+      background-color: rgba(15, 23, 42, 0.035);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: var(--radius-xl);
+    }
+
+    .double-bezel-core {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 11px;
+      padding: 20px 22px;
+    }
+
+    .double-bezel--dark {
+      padding: 5px;
+      background-color: rgba(248, 250, 252, 0.06);
+      border: 1px solid rgba(248, 250, 252, 0.16);
+      border-radius: var(--radius-xl);
+    }
+
     /* =====================================================
-       PARTE 1: APRESENTAÇÃO DO PROJETO
+       PARTE 1: APRESENTAÇÃO DO PROJETO (10 BANDAS AMPLAS)
        ===================================================== */
     .apresentacao-subnav {
       position: sticky;
@@ -322,7 +429,7 @@
     }
 
     .apresentacao-subnav-inner {
-      max-width: 1120px;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 6px 16px;
       display: flex;
@@ -341,6 +448,7 @@
       border-radius: 6px;
       white-space: nowrap;
       border: 1px solid transparent;
+      transition: background-color 0.2s var(--ease-out-expo), border-color 0.2s var(--ease-out-expo);
     }
 
     .anchor-link:hover {
@@ -355,27 +463,46 @@
       color: var(--accent-dark);
     }
 
-    .apresentacao-container {
-      max-width: 1020px;
-      margin: 0 auto;
-      padding: 20px 16px 64px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    .banda-secao {
+      border-bottom: 1px solid var(--border-soft);
+      scroll-margin-top: 94px;
     }
 
-    .sec-card {
+    .banda-secao--menta {
+      background-color: var(--bg-mint);
+    }
+
+    .banda-secao--branca {
       background-color: var(--bg-surface);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-lg);
-      padding: 22px 24px;
-      box-shadow: var(--shadow-sm);
-      scroll-margin-top: 100px;
     }
 
-    .sec-card--hero {
-      background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
-      border-color: var(--accent-border);
+    .banda-secao--ardosia {
+      background-color: var(--bg-subtle);
+    }
+
+    .banda-secao--suave {
+      background-color: var(--bg-page);
+    }
+
+    .banda-secao--escura {
+      background-color: var(--bg-dark);
+      color: var(--ink-dark);
+      border-bottom-color: #1e293b;
+    }
+
+    .banda-secao--escura h2,
+    .banda-secao--escura h3 {
+      color: var(--ink-dark);
+    }
+
+    .banda-secao--escura p {
+      color: var(--ink-dark-muted);
+    }
+
+    .banda-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(44px, 6vw, 72px) clamp(16px, 3vw, 28px);
     }
 
     .sec-header {
@@ -384,7 +511,7 @@
       justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .sec-header--flush {
@@ -402,189 +529,383 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       background-color: var(--accent-tint);
       border: 1px solid var(--accent-border);
       color: var(--accent-dark);
       font-size: 12px;
       font-weight: 700;
+      font-variant-numeric: tabular-nums;
     }
 
-    .sec-card h2 {
+    .banda-secao--escura .sec-num {
+      background-color: rgba(94, 234, 212, 0.14);
+      border-color: rgba(94, 234, 212, 0.35);
+      color: var(--ink-dark-accent);
+    }
+
+    .banda-inner h2 {
       margin: 0;
-      font-size: 19px;
-      color: var(--text-primary);
+      font-size: clamp(21px, 2.4vw, 26px);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .sec-lead {
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 74ch;
+      margin: 0 0 20px;
+    }
+
+    .banda-secao--escura .sec-lead {
+      color: var(--ink-dark-muted);
+    }
+
+    /* Seção 1: Editorial Split Assimétrico (7 / 5) */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
     }
 
     .hero-title {
-      margin: 8px 0 10px;
-      font-size: 28px;
-      line-height: 1.2;
+      margin: 0 0 14px;
+      font-size: clamp(30px, 3.6vw, 42px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
       color: var(--text-primary);
     }
 
     .hero-lead {
-      font-size: 16px;
-      line-height: 1.5;
+      font-size: 16.5px;
+      line-height: 1.55;
       color: var(--text-secondary);
-      margin: 0 0 14px;
-      max-width: 78ch;
+      margin: 0 0 20px;
+      max-width: 60ch;
     }
 
-    .hero-meta {
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .hero-metric-item {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+
+    .hero-metric-val {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-dark);
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero-metric-lbl {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    .hero-acoes {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
 
-    /* Diagrama Problema: 4 caixas isoladas */
+    .resumo-exec-titulo {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent-dark);
+    }
+
+    .resumo-exec-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .resumo-exec-item {
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .resumo-exec-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .resumo-exec-item strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    /* Seção 2: O problema — 4 caixas isoladas + destaque perda clínica */
+    .callout-clinico {
+      background-color: var(--status-pendente-bg);
+      border: 1px solid var(--status-pendente-border);
+      border-left: 4px solid #b45309;
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 13.5px;
+      color: var(--status-pendente-text);
+      margin-bottom: 18px;
+    }
+
     .diagram-isoladas {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
-      margin-top: 14px;
     }
 
     .caixa-isolada {
-      position: relative;
       background-color: var(--bg-page);
-      border: 2px dashed #94a3b8;
+      border: 1px solid var(--border-default);
+      border-top: 3px dashed #94a3b8;
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .caixa-isolada-titulo {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text-primary);
-      margin: 0 0 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin: 0 0 6px;
     }
 
-    .caixa-isolada-desc {
-      margin: 0;
+    .silo-campo {
+      margin: 0 0 6px;
       font-size: 12.5px;
-      color: var(--text-muted);
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .silo-campo strong {
+      color: var(--text-primary);
     }
 
     .caixa-isolada-sem {
-      margin-top: 8px;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--status-atencao-text);
       background-color: var(--status-atencao-bg);
-      padding: 2px 7px;
-      border-radius: 4px;
-      display: inline-block;
+      border: 1px solid var(--status-atencao-border);
+      padding: 4px 8px;
+      border-radius: 6px;
+      line-height: 1.35;
     }
 
-    /* Diagrama Solução: Aeroporto vs Painel */
+    /* Seção 3: Para quem — Bento Grid */
+    .bento-para-quem {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .bento-wide {
+      grid-column: 1 / -1;
+    }
+
+    .comparativo-2col {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .comp-box {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-soft);
+      background-color: var(--bg-page);
+      font-size: 13px;
+    }
+
+    .comp-box--escolha {
+      background-color: var(--accent-tint);
+      border-color: var(--accent-border);
+    }
+
+    .comp-box h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    /* Seção 4: A solução (banda escura + matriz 5 papéis) */
     .diagram-aeroporto {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 14px;
+      grid-template-columns: 1fr auto 1.15fr;
+      gap: 16px;
       align-items: stretch;
-      margin-top: 14px;
+      margin: 18px 0 22px;
     }
 
     .board-airport {
-      background-color: #0f172a;
-      color: #f8fafc;
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
+      background-color: var(--bg-dark-surface);
+      color: var(--ink-dark);
+      border: 1px solid rgba(248, 250, 252, 0.16);
+      border-radius: var(--radius-lg);
+      padding: 16px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 12.5px;
     }
 
     .board-airport-head {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-weight: 700;
-      color: #5eead4;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 6px;
-      margin-bottom: 8px;
+      color: var(--ink-dark-accent);
+      border-bottom: 1px solid rgba(248, 250, 252, 0.16);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .board-row {
       display: grid;
-      grid-template-columns: 1.2fr 0.7fr 1fr;
-      gap: 6px;
-      padding: 4px 0;
-      border-bottom: 1px dashed #334155;
+      grid-template-columns: 1.2fr 1.05fr 0.75fr;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(248, 250, 252, 0.16);
+      font-variant-numeric: tabular-nums;
     }
 
-    .board-clinical {
-      background-color: var(--accent-tint);
-      border: 1px solid var(--accent-border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      font-size: 12.5px;
+    .board-clinical-card {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border-radius: 11px;
+      padding: 16px;
+      font-size: 13px;
     }
 
     .board-clinical-head {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-weight: 700;
       color: var(--accent-dark);
       border-bottom: 1px solid var(--accent-border);
-      padding-bottom: 6px;
-      margin-bottom: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .board-clinical .board-row {
-      border-bottom-color: #ccfbf1;
+    .board-clinical-card .board-row {
+      border-bottom-color: var(--border-soft);
+      color: var(--text-primary);
     }
 
     .board-connector {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
-      color: var(--accent-dark);
+      color: var(--ink-dark-accent);
       padding: 0 4px;
+      white-space: nowrap;
     }
 
-    /* Diagrama Integração: 2 rotas */
-    .diagram-rotas {
-      display: flex;
-      flex-direction: column;
+    .matriz-papeis {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
       margin-top: 14px;
     }
 
+    .papel-card-dark {
+      background-color: var(--bg-dark-surface);
+      border: 1px solid rgba(248, 250, 252, 0.14);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 12.5px;
+    }
+
+    .papel-card-dark h3 {
+      margin: 0 0 6px;
+      font-size: 13.5px;
+      color: var(--ink-dark-accent);
+    }
+
+    .papel-card-dark p {
+      margin: 0;
+      color: var(--ink-dark-muted);
+      line-height: 1.45;
+    }
+
+    /* Seção 5: Como resolve a integração */
+    .diagram-rotas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 16px 0 18px;
+    }
+
     .rota-flow {
       display: grid;
-      grid-template-columns: 1.1fr auto 1.3fr auto 1fr;
-      align-items: center;
-      gap: 8px;
+      grid-template-columns: 1.05fr auto 1.45fr auto 1.1fr;
+      align-items: stretch;
+      gap: 10px;
       background-color: var(--bg-page);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 12px;
     }
 
     .rota-box {
       background-color: var(--bg-surface);
-      border: 1px solid var(--border-default);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 12.5px;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
     }
 
     .rota-box--dest {
       background-color: var(--accent-tint);
-      border-color: var(--accent);
-      font-weight: 600;
+      border-color: var(--accent-border);
       color: var(--accent-dark);
+      font-weight: 600;
     }
 
     .rota-seta {
@@ -594,38 +915,237 @@
       justify-content: center;
     }
 
-    /* Grids de cards informativos na Apresentação */
-    .grid-3 {
+    .chips-fhir {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .chip-code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .motor-deterministico {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 10px;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    /* Seção 6: Fora da primeira versão + Regulatório */
+    .escopo-split {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 20px;
+      align-items: start;
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-top: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
 
     .mini-box {
-      background-color: var(--bg-page);
-      border: 1px solid var(--border-soft);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 14px;
     }
 
-    .mini-box h3 {
+    .mini-box--subtle {
+      background-color: var(--bg-page);
+      border-color: var(--border-soft);
+    }
+
+    .mini-box h3,
+    .mini-box h4 {
       margin: 0 0 6px;
-      font-size: 14px;
-      color: var(--text-primary);
+      font-size: 14.5px;
     }
 
     .mini-box p {
       margin: 0;
       font-size: 13px;
       color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Seção 7: Indicadores de valor */
+    .indicadores-grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    /* Seção 8: Linha do tempo, 6 pontos e Matriz de Riscos */
+    .timeline-marcos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 12px 0 22px;
+    }
+
+    .marco-card {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-default);
+      border-top: 3px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+
+    .marco-data {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .marco-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .mentoria-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 10px 0 24px;
+    }
+
+    .mentoria-item {
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 11px 13px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .mentoria-item strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .riscos-tabela-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .risco-cabecalho,
+    .risco-linha {
+      display: grid;
+      grid-template-columns: 1.7fr 0.75fr 1.15fr 1.4fr;
+      gap: 12px;
+      align-items: start;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+    }
+
+    .risco-cabecalho {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+    }
+
+    .risco-linha {
+      font-size: 13px;
+      color: var(--text-secondary);
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-soft);
+      overflow-wrap: anywhere;
+    }
+
+    /* Seção 9: Próximos passos + CTA Final */
+    .frentes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .frente-num {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cta-final-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cta-final-banner h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .cta-final-banner p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    /* Seção 10: Time e rodapé */
+    .time-papel-tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent-dark);
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .rodape-apresentacao {
+      margin-top: 26px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      color: var(--text-muted);
     }
 
     .lista-limpa {
@@ -636,52 +1156,38 @@
       gap: 6px;
     }
 
-    .timeline-marcos {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin: 12px 0 18px;
+    /* Animação suave de entrada na rolagem (segura para movimento reduzido) */
+    @media (prefers-reduced-motion: no-preference) {
+      .animacao-ativa .revelar-scroll {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+      }
+
+      .animacao-ativa .revelar-scroll.visivel {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .marco-card {
-      background-color: var(--bg-page);
-      border: 1px solid var(--border-default);
-      border-top: 3px solid var(--accent);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-    }
+    @media (prefers-reduced-motion: reduce), print {
+      html {
+        scroll-behavior: auto;
+      }
 
-    .marco-data {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-dark);
-      margin-bottom: 4px;
-    }
+      .btn {
+        transition: none;
+      }
 
-    .riscos-lista {
-      list-style: none;
-      margin: 10px 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .risco-item {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      background-color: var(--bg-page);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-md);
-      padding: 9px 12px;
-      font-size: 13px;
+      .revelar-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
     }
 
     /* =====================================================
-       PARTE 2: CONTROLES DA DEMO (POC)
+       PARTE 2: CONTROLES DA DEMONSTRAÇÃO (POC)
        ===================================================== */
     .poc-bar {
       position: sticky;
@@ -762,11 +1268,11 @@
     .poc-wrapper {
       max-width: 1360px;
       margin: 0 auto;
-      padding: 14px 16px 32px;
+      padding: 12px 16px 32px;
     }
 
     .poc-wrapper--detalhe {
-      padding: 8px 16px 8px;
+      padding: 6px 16px 6px;
     }
 
     /* =====================================================
@@ -776,14 +1282,14 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .kpi-card {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 10px 14px;
+      padding: 9px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -799,14 +1305,44 @@
       font-size: 22px;
       font-weight: 700;
       color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cenario-atalhos-bar {
+      background-color: var(--accent-tint);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .cenario-resumo-txt {
+      font-size: 12.5px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .atalhos-grupo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
     .filtros-bar {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 10px 12px;
-      margin-bottom: 12px;
+      padding: 9px 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -874,28 +1410,30 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
+      font-variant-numeric: tabular-nums;
     }
 
     .tabela-quadro th {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--text-muted);
       background-color: var(--bg-subtle);
-      padding: 10px 12px;
+      padding: 9px 11px;
       border-bottom: 1px solid var(--border-default);
+      white-space: nowrap;
     }
 
     .tabela-quadro td {
-      padding: 11px 12px;
+      padding: 10px 11px;
       border-bottom: 1px solid var(--border-soft);
-      font-size: 13px;
+      font-size: 12.5px;
       vertical-align: middle;
       overflow-wrap: anywhere;
     }
 
     .tabela-quadro tbody tr {
       cursor: pointer;
-      transition: background-color 0.12s ease;
+      transition: background-color 0.15s ease;
     }
 
     .tabela-quadro tbody tr:hover {
@@ -907,13 +1445,13 @@
     }
 
     .btn-nome-paciente {
-      font-family: inherit;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--accent-dark);
       background: none;
       border: none;
       padding: 0;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-dark);
       cursor: pointer;
       text-align: left;
       text-decoration: underline;
@@ -925,6 +1463,42 @@
       font-size: 11.5px;
       color: var(--text-muted);
       margin-top: 2px;
+    }
+
+    .etapa-progresso-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 145px;
+    }
+
+    .micro-progresso {
+      width: 100%;
+      height: 5px;
+      background-color: var(--border-soft);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .micro-progresso-fill {
+      height: 100%;
+      background-color: var(--accent);
+      border-radius: 999px;
+    }
+
+    .progresso-p1 { width: 12.5%; }
+    .progresso-p2 { width: 25%; }
+    .progresso-p3 { width: 37.5%; }
+    .progresso-p4 { width: 50%; }
+    .progresso-p5 { width: 62.5%; }
+    .progresso-p6 { width: 75%; }
+    .progresso-p7 { width: 87.5%; }
+    .progresso-p8 { width: 100%; }
+
+    .fontes-celula {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
     .cards-mobile-quadro {
@@ -945,6 +1519,7 @@
 
     .mobile-card-etapa {
       font-size: 12.5px;
+      font-variant-numeric: tabular-nums;
     }
 
     .mobile-card-pendencia {
@@ -969,43 +1544,44 @@
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 7px 12px;
-      margin-bottom: 8px;
+      padding: 6px 12px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .detalhe-identidade {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
       min-width: 0;
     }
 
     .detalhe-linha1 {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       flex-wrap: wrap;
     }
 
     .detalhe-nome {
       margin: 0;
-      font-size: 16.5px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-primary);
     }
 
     .detalhe-meta {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
+      font-variant-numeric: tabular-nums;
     }
 
     .detalhe-acoes {
@@ -1019,8 +1595,8 @@
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 6px 12px 7px;
-      margin-bottom: 8px;
+      padding: 5px 12px 6px;
+      margin-bottom: 6px;
     }
 
     .jornada-topo {
@@ -1028,12 +1604,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .jornada-titulo {
       margin: 0;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -1044,6 +1620,7 @@
       font-size: 11.5px;
       font-weight: 700;
       color: var(--accent-dark);
+      font-variant-numeric: tabular-nums;
     }
 
     .timeline-8 {
@@ -1053,6 +1630,7 @@
       list-style: none;
       margin: 0;
       padding: 0;
+      font-variant-numeric: tabular-nums;
     }
 
     .etapa-item {
@@ -1063,7 +1641,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 46px;
+      min-height: 43px;
     }
 
     .etapa-item--concluida {
@@ -1077,7 +1655,7 @@
     }
 
     .etapa-item--destaque {
-      box-shadow: 0 0 0 2px #0f766e33;
+      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.22);
     }
 
     .etapa-topo-row {
@@ -1096,7 +1674,7 @@
     }
 
     .etapa-nome {
-      font-size: 11px;
+      font-size: 10.8px;
       font-weight: 600;
       line-height: 1.15;
       color: var(--text-primary);
@@ -1106,7 +1684,7 @@
     .detalhe-grid {
       display: grid;
       grid-template-columns: 1.55fr 1fr;
-      gap: 10px;
+      gap: 8px;
       align-items: stretch;
     }
 
@@ -1114,7 +1692,7 @@
       background-color: var(--bg-surface);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 9px 12px;
+      padding: 8px 11px;
       display: flex;
       flex-direction: column;
     }
@@ -1129,27 +1707,28 @@
       justify-content: space-between;
       gap: 6px;
       flex-wrap: wrap;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .card-painel-titulo {
       margin: 0;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-primary);
     }
 
     .perfil-subnota {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--accent-dark);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
+      line-height: 1.3;
     }
 
     .criticos-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 7px;
+      gap: 6px;
       flex: 1;
     }
 
@@ -1157,11 +1736,11 @@
       background-color: var(--bg-page);
       border: 1px solid var(--border-soft);
       border-radius: 7px;
-      padding: 7px 9px;
+      padding: 6px 8px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 4px;
+      gap: 3px;
     }
 
     .critico-item--prioritario {
@@ -1183,7 +1762,7 @@
     }
 
     .critico-label {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.03em;
@@ -1200,11 +1779,12 @@
     }
 
     .critico-valor {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-primary);
-      line-height: 1.3;
+      line-height: 1.28;
       overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
     }
 
     .critico-valor--vazio {
@@ -1222,7 +1802,7 @@
 
     .selo-fonte {
       display: inline-block;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 600;
       color: var(--text-secondary);
       background-color: #e2e8f0;
@@ -1234,7 +1814,7 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       color: #78350f;
       background-color: #fef3c7;
@@ -1246,16 +1826,17 @@
     .divergencia-bloco {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      font-size: 12px;
+      gap: 2px;
+      font-size: 11.5px;
       line-height: 1.25;
       overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
     }
 
     .detalhe-lateral {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .alertas-lista {
@@ -1264,17 +1845,17 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .alerta-row {
       display: flex;
       align-items: flex-start;
-      gap: 7px;
-      padding: 6px 8px;
+      gap: 6px;
+      padding: 5px 8px;
       border-radius: 6px;
-      font-size: 12px;
-      line-height: 1.3;
+      font-size: 11.5px;
+      line-height: 1.28;
       border: 1px solid transparent;
       overflow-wrap: anywhere;
     }
@@ -1307,11 +1888,11 @@
       background-color: var(--bg-page);
       border: 1px solid var(--border-soft);
       border-radius: 7px;
-      padding: 8px 10px;
-      font-size: 12.5px;
+      padding: 7px 9px;
+      font-size: 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .card-painel--destaque {
@@ -1323,7 +1904,7 @@
       font-size: 11.5px;
       font-weight: 600;
       color: var(--accent-dark);
-      margin-left: 4px;
+      margin-left: 2px;
     }
 
     /* =====================================================
@@ -1388,6 +1969,7 @@
       font-size: 12.5px;
       color: var(--text-secondary);
       margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
     }
 
     .celular-orient-lista {
@@ -1461,6 +2043,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      margin-bottom: 10px;
     }
 
     .orientacoes-tabs {
@@ -1475,7 +2058,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background-color: rgba(15, 23, 42, 0.45);
+      background-color: rgba(15, 23, 42, 0.5);
       z-index: 800;
       display: flex;
       align-items: center;
@@ -1585,21 +2168,74 @@
       gap: 6px;
     }
 
-    .tour-destaque {
-      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.35);
+    .subtitulo-bloco {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .subtitulo-bloco--espacado {
+      margin-bottom: 10px;
+    }
+
+    .subtitulo-secao {
+      margin: 22px 0 4px;
+      font-size: 16px;
+    }
+
+    .subtitulo-secao--compacto {
+      margin: 22px 0 6px;
+    }
+
+    .subtitulo-secao--topo {
+      margin: 8px 0 4px;
+    }
+
+    .subtitulo-secao--topo-lg {
+      margin: 8px 0 10px;
+    }
+
+    .motor-titulo {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .texto-secundario-sm {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .pilha-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .double-bezel-core--compacto {
+      padding: 12px;
+    }
+
+    .time-bio {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-secondary);
     }
 
     /* =====================================================
-       RESPONSIVIDADE (DESKTOP E MOBILE 375x812)
+       RESPONSIVIDADE (TABLET E MOBILE 375x812)
        ===================================================== */
     @media (max-width: 1024px) {
-      .timeline-8 {
-        grid-template-columns: repeat(4, 1fr);
-      }
-      .detalhe-grid {
+      .hero-split,
+      .comparativo-2col,
+      .escopo-split,
+      .motor-deterministico {
         grid-template-columns: 1fr;
       }
-      .diagram-isoladas {
+      .diagram-isoladas,
+      .timeline-marcos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .matriz-papeis {
         grid-template-columns: repeat(2, 1fr);
       }
       .diagram-aeroporto {
@@ -1614,8 +2250,14 @@
       .rota-seta {
         transform: rotate(90deg);
       }
-      .timeline-marcos {
+      .mentoria-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+      .timeline-8 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .detalhe-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1623,12 +2265,29 @@
       .topbar-inner {
         padding: 8px 12px;
       }
-      .apresentacao-subnav {
-        top: 0;
-        position: static;
-      }
+      .apresentacao-subnav,
       .poc-bar {
         position: static;
+        top: 0;
+      }
+      .hero-metrics,
+      .diagram-isoladas,
+      .bento-para-quem,
+      .grid-3,
+      .grid-2,
+      .indicadores-grid,
+      .timeline-marcos,
+      .mentoria-grid,
+      .frentes-grid,
+      .matriz-papeis {
+        grid-template-columns: 1fr;
+      }
+      .risco-cabecalho {
+        display: none;
+      }
+      .risco-linha {
+        grid-template-columns: 1fr;
+        gap: 6px;
       }
       .kpis-row {
         grid-template-columns: repeat(2, 1fr);
@@ -1639,23 +2298,15 @@
       .cards-mobile-quadro {
         display: flex;
       }
-      .busca-input {
-        min-width: 100%;
-        width: 100%;
-      }
+      .busca-input,
       .busca-wrap {
+        min-width: 100%;
         width: 100%;
       }
       .timeline-8 {
         grid-template-columns: repeat(2, 1fr);
       }
       .criticos-grid {
-        grid-template-columns: 1fr;
-      }
-      .diagram-isoladas,
-      .grid-3,
-      .grid-2,
-      .timeline-marcos {
         grid-template-columns: 1fr;
       }
       .celular-moldura {
@@ -1702,9 +2353,9 @@
 
   <main id="app-main">
     <!-- =====================================================
-         PARTE 1: APRESENTAÇÃO DO PROJETO (10 SEÇÕES)
+         PARTE 1: APRESENTAÇÃO DO PROJETO (10 SEÇÕES EM BANDAS)
          ===================================================== -->
-    <div id="painel-apresentacao">
+    <div id="painel-apresentacao" role="tabpanel" aria-labelledby="tab-btn-apresentacao">
       <nav class="apresentacao-subnav" aria-label="Seções da apresentação">
         <div class="apresentacao-subnav-inner" id="apresentacao-anchors">
           <a class="anchor-link is-active" href="#secao-1">1. Abertura</a>
@@ -1712,7 +2363,7 @@
           <a class="anchor-link" href="#secao-3">3. Para quem</a>
           <a class="anchor-link" href="#secao-4">4. A solução</a>
           <a class="anchor-link" href="#secao-5">5. Integração</a>
-          <a class="anchor-link" href="#secao-6">6. Fora da v1</a>
+          <a class="anchor-link" href="#secao-6">6. Fora da primeira versão</a>
           <a class="anchor-link" href="#secao-7">7. Negócio</a>
           <a class="anchor-link" href="#secao-8">8. Histórico e riscos</a>
           <a class="anchor-link" href="#secao-9">9. Próximos passos</a>
@@ -1720,30 +2371,74 @@
         </div>
       </nav>
 
-      <div class="apresentacao-container">
-        <!-- Seção 1: Abertura -->
-        <section id="secao-1" class="sec-card sec-card--hero">
-          <div class="sec-header">
-            <div class="sec-title-wrap">
+      <!-- Seção 1: Abertura (Editorial Split 7/5) -->
+      <section id="secao-1" class="banda-secao banda-secao--menta">
+        <div class="banda-inner hero-split revelar-scroll">
+          <div>
+            <div class="hero-eyebrow-row">
               <span class="sec-num">1</span>
               <span class="badge-provisorio" id="hero-selo-produto">nome provisório</span>
+              <span class="tag-tipo tag-tipo--fato">Grupo 3 · formação Médicos Híbridos</span>
             </div>
-            <span class="tag-tipo tag-tipo--fato">Grupo 3 · formação Médicos Híbridos</span>
+            <h1 class="hero-title" id="hero-nome-produto">Painel do Paciente</h1>
+            <p class="hero-lead">
+              Um painel executivo único para clínicas de pequeno e médio porte, que reúne em uma única tela a etapa da jornada, o que falta confirmar e os dados críticos que toda a equipe precisa enxergar antes do procedimento — sem substituir nenhum prontuário.
+            </p>
+            <div class="hero-metrics" aria-label="Metas da prova de conceito">
+              <div class="hero-metric-item">
+                <span class="hero-metric-val">1 tela única</span>
+                <span class="hero-metric-lbl">para toda a equipe acompanhar a jornada</span>
+              </div>
+              <div class="hero-metric-item">
+                <span class="hero-metric-val">0 digitação extra</span>
+                <span class="hero-metric-lbl">na rotina diária da equipe clínica</span>
+              </div>
+              <div class="hero-metric-item">
+                <span class="hero-metric-val">Menos de 30</span>
+                <span class="hero-metric-lbl">segundos para ler a prontidão</span>
+              </div>
+            </div>
+            <div class="hero-acoes">
+              <button type="button" class="btn-cta-pill" id="btn-cta-ver-demo">
+                <span>Ver a demonstração</span>
+                <span class="btn-icon-orb" id="cta-hero-orb" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-outline-accent" id="btn-hero-iniciar-tour">
+                Iniciar tour guiado
+              </button>
+              <span class="aviso-ficticio">Prova de conceito de experiência · dados fictícios</span>
+            </div>
           </div>
-          <h1 class="hero-title" id="hero-nome-produto">Painel do Paciente</h1>
-          <p class="hero-lead">
-            Um painel único do paciente para clínicas pequenas, que mostra em uma tela onde ele está na jornada do procedimento, o que falta e os dados críticos que toda a equipe precisa ver, sem trocar o prontuário de ninguém.
-          </p>
-          <div class="hero-meta">
-            <button type="button" class="btn btn-primary" id="btn-cta-ver-demo">
-              Ver a demonstração
-            </button>
-            <span class="aviso-ficticio">Prova de conceito de experiência · dados fictícios</span>
-          </div>
-        </section>
 
-        <!-- Seção 2: O problema -->
-        <section id="secao-2" class="sec-card">
+          <aside class="double-bezel" aria-label="Resumo executivo do projeto">
+            <div class="double-bezel-core">
+              <h2 class="resumo-exec-titulo">Resumo executivo do projeto</h2>
+              <ul class="resumo-exec-lista">
+                <li class="resumo-exec-item">
+                  <strong>Dor central</strong>
+                  Informação fragmentada entre recepção, enfermagem, anestesiologia e médico executor ao longo do pré-procedimento.
+                </li>
+                <li class="resumo-exec-item">
+                  <strong>Recorte inicial</strong>
+                  Clínicas de pequeno e médio porte que realizam procedimentos minimamente invasivos com sedação.
+                </li>
+                <li class="resumo-exec-item">
+                  <strong>Estratégia de dados</strong>
+                  Leitura apenas de dados estruturados no padrão HL7 FHIR onde há sistema, ou preenchimento direto pelo paciente onde não há prontuário integrado.
+                </li>
+                <li class="resumo-exec-item">
+                  <strong>Segurança regulatória</strong>
+                  Alertas exclusivamente informativos, sem recomendação de conduta clínica e com uso apenas de dados fictícios nesta demonstração.
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Seção 2: O problema (4 silos com fluxo de falha) -->
+      <section id="secao-2" class="banda-secao banda-secao--branca">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">2</span>
@@ -1751,35 +2446,55 @@
             </div>
             <span class="tag-tipo tag-tipo--fato">Fato</span>
           </div>
-          <p>
-            A informação do paciente fica fragmentada na jornada pré-procedimento. Cada profissional registra no seu próprio sistema ou formulário e não enxerga o que o outro anotou. O resultado é retrabalho, atraso no dia do procedimento e falha de comunicação.
+          <p class="sec-lead">
+            Na jornada pré-procedimento, o paciente repete as mesmas informações para profissionais diferentes e frequentemente esquece alergias ou medicações de uso contínuo por memória e ansiedade — nunca por má-fé. Enquanto isso, cada equipe anota em sua própria ferramenta sem visibilidade do todo.
           </p>
-          <div class="diagram-isoladas" role="img" aria-label="Diagrama mostrando quatro áreas isoladas sem conexão entre si: Recepção, Enfermagem, Anestesia e Médico executor.">
-            <div class="caixa-isolada">
-              <h3 class="caixa-isolada-titulo">Recepção</h3>
-              <p class="caixa-isolada-desc">Agenda, confirmação de presença e envio do questionário.</p>
-              <span class="caixa-isolada-sem">Sem conexão com a equipe</span>
-            </div>
-            <div class="caixa-isolada">
-              <h3 class="caixa-isolada-titulo">Enfermagem</h3>
-              <p class="caixa-isolada-desc">Confere jejum, acompanhante e medidas na admissão.</p>
-              <span class="caixa-isolada-sem">Sem conexão com o sistema</span>
-            </div>
-            <div class="caixa-isolada">
-              <h3 class="caixa-isolada-titulo">Anestesia</h3>
-              <p class="caixa-isolada-desc">Precisa ver alergias, medicações e jejum antes da sedação.</p>
-              <span class="caixa-isolada-sem">Não vê o questionário pré</span>
-            </div>
-            <div class="caixa-isolada">
-              <h3 class="caixa-isolada-titulo">Médico executor</h3>
-              <p class="caixa-isolada-desc">Checa se o paciente está liberado e com comorbidades mapeadas.</p>
-              <span class="caixa-isolada-sem">Sem visão única do status</span>
-            </div>
+          <div class="callout-clinico">
+            <strong>Perda de tempo clínico relatada pela equipe:</strong> na estimativa prática da anestesiologia do grupo (ainda sem estudo cronometrado), uma consulta pré-anestésica de cerca de <strong>10 minutos</strong> é consumida coletando dados básicos do zero em vez de explicar a sedação, tirar dúvidas e acolher o paciente.
           </div>
-        </section>
+          <div class="diagram-isoladas" role="region" aria-label="Diagrama mostrando quatro áreas isoladas sem conexão entre si: Recepção, Enfermagem, Anestesiologia e Médico executor.">
+            <article class="caixa-isolada">
+              <div>
+                <h3 class="caixa-isolada-titulo">Recepção</h3>
+                <p class="silo-campo"><strong>O que registra:</strong> agendamento, contato, confirmações administrativas e envio do questionário.</p>
+                <p class="silo-campo"><strong>Onde fica preso:</strong> agenda administrativa e trocas isoladas de mensagens.</p>
+              </div>
+              <div class="caixa-isolada-sem">Risco: ausência de acompanhamento de quem respondeu e falta de aviso antecipado sobre acompanhante.</div>
+            </article>
 
-        <!-- Seção 3: Para quem -->
-        <section id="secao-3" class="sec-card">
+            <article class="caixa-isolada">
+              <div>
+                <h3 class="caixa-isolada-titulo">Enfermagem</h3>
+                <p class="silo-campo"><strong>O que registra:</strong> conferência de jejum, acompanhante, peso, altura e sinais na admissão.</p>
+                <p class="silo-campo"><strong>Onde fica preso:</strong> ficha de acolhimento da sala de preparo.</p>
+              </div>
+              <div class="caixa-isolada-sem">Risco: pendência ou divergência identificada tarde demais, já com o paciente dentro da clínica.</div>
+            </article>
+
+            <article class="caixa-isolada">
+              <div>
+                <h3 class="caixa-isolada-titulo">Anestesiologia</h3>
+                <p class="silo-campo"><strong>O que registra:</strong> alergias, medicações em uso (como anticoagulantes), jejum e avaliação para sedação.</p>
+                <p class="silo-campo"><strong>Onde fica preso:</strong> ficha pré-anestésica ou avaliação realizada apenas no momento do atendimento.</p>
+              </div>
+              <div class="caixa-isolada-sem">Risco: tempo curto de consulta (estimado pela equipe em cerca de 10 minutos) gasto investigando histórico do zero ou surpresa crítica de alergia na hora do procedimento.</div>
+            </article>
+
+            <article class="caixa-isolada">
+              <div>
+                <h3 class="caixa-isolada-titulo">Médico executor</h3>
+                <p class="silo-campo"><strong>O que registra:</strong> indicação do procedimento, comorbidades relevantes e liberação final da sala.</p>
+                <p class="silo-campo"><strong>Onde fica preso:</strong> evolução médica individual e comunicação verbal com o time.</p>
+              </div>
+              <div class="caixa-isolada-sem">Risco: falta de visão única da prontidão do paciente antes de iniciar o procedimento.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 3: Para quem (Bento Grid assimétrico) -->
+      <section id="secao-3" class="banda-secao banda-secao--ardosia">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">3</span>
@@ -1787,35 +2502,65 @@
             </div>
             <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
           </div>
-          <div class="grid-3">
-            <div class="mini-box">
-              <h3>Clínicas pequenas e médias</h3>
-              <p>Estruturas enxutas que realizam procedimentos ambulatoriais e sofrem com falhas de comunicação entre turnos.</p>
-            </div>
-            <div class="mini-box">
-              <h3>Procedimentos com sedação</h3>
-              <p>Procedimentos minimamente invasivos com sedação, mantendo a anestesista no centro da validação de segurança.</p>
-            </div>
-            <div class="mini-box">
-              <h3>Pacientes que valorizam cuidado</h3>
-              <p>Pessoas que esperam organização, clareza nas orientações pré/pós e sensação de acompanhamento contínuo.</p>
+          <p class="sec-lead">
+            Após a mentoria de 19/10 apontar amplitude excessiva no escopo inicial, recortamos um público específico para validar utilidade e simplicidade antes de qualquer expansão.
+          </p>
+          <div class="bento-para-quem">
+            <article class="mini-box">
+              <h3>Clínicas de pequeno e médio porte</h3>
+              <p>Estruturas enxutas e em crescimento, especialmente de estética e serviços ambulatoriais, onde a comunicação entre turnos falha com facilidade.</p>
+            </article>
+            <article class="mini-box">
+              <h3>Procedimentos minimamente invasivos com sedação</h3>
+              <p>Procedimentos ambulatoriais sob sedação exigem rigor no preparo (jejum, alergias, medicações e acompanhante) e mantêm a médica anestesiologista no centro da segurança.</p>
+            </article>
+            <article class="mini-box">
+              <h3>Pacientes que valorizam segurança e cuidado coordenado</h3>
+              <p>Pessoas que esperam previsibilidade, orientações claras no pré-procedimento e pós-procedimento e sensação real de acolhimento contínuo.</p>
+            </article>
+
+            <div class="bento-wide double-bezel">
+              <div class="double-bezel-core">
+                <h3 class="subtitulo-bloco">Por que começar em clínicas pequenas em vez de grandes hospitais?</h3>
+                <div class="comparativo-2col">
+                  <div class="comp-box comp-box--escolha">
+                    <h4>Clínicas de pequeno e médio porte (recorte escolhido)</h4>
+                    <ul class="lista-limpa">
+                      <li>Decisão ágil diretamente com sócios médicos ou gestores da clínica.</li>
+                      <li>Evita travar tentando mudar processos rígidos de múltiplos departamentos hospitalares.</li>
+                      <li>Permite operar até sem prontuário eletrônico integrado, via questionário pré-procedimento direto do paciente.</li>
+                    </ul>
+                  </div>
+                  <div class="comp-box">
+                    <h4>Grandes hospitais (fora deste recorte inicial)</h4>
+                    <ul class="lista-limpa">
+                      <li>Ciclo comercial longo e múltiplas camadas de aprovação institucional.</li>
+                      <li>Alta barreira de interoperabilidade entre sistemas legados de bloco cirúrgico, internação e faturamento.</li>
+                      <li>Risco apontado pelas mentoras em 19/10 de exigir mudança profunda de fluxo antes de provar valor.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <!-- Seção 4: A solução -->
-        <section id="secao-4" class="sec-card">
+      <!-- Seção 4: A solução (Banda escura com Painel de Voos + Matriz de 5 Papéis) -->
+      <section id="secao-4" class="banda-secao banda-secao--escura">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">4</span>
               <h2>A solução</h2>
             </div>
-            <span class="tag-tipo tag-tipo--hipotese">Proposta</span>
+            <span class="tag-tipo tag-tipo--dark">Proposta</span>
           </div>
-          <p>
-            Um painel executivo único do paciente que <strong>não substitui nenhum prontuário</strong>. Pense no painel de voos do aeroporto: <em>"Cada companhia aérea tem seu sistema. O painel não substitui nenhum. Ele mostra só voo, portão e status."</em>
+          <p class="sec-lead">
+            Um painel executivo único do paciente que <strong>não substitui nenhum prontuário</strong>. Pense no painel de voos do aeroporto: <em>"Cada companhia aérea tem o seu sistema. O painel não substitui nenhum deles. Ele mostra apenas voo, portão e status."</em>
           </p>
-          <div id="diag-aeroporto" class="diagram-aeroporto" role="img" aria-label="Ilustração comparando um painel de voos do aeroporto com o Painel do Paciente.">
+
+          <div id="diag-aeroporto" class="diagram-aeroporto" role="region" aria-label="Ilustração comparando um painel de voos do aeroporto com o Painel do Paciente.">
             <div class="board-airport">
               <div class="board-airport-head">
                 <span id="diag-plane-icon" aria-hidden="true"></span>
@@ -1829,51 +2574,123 @@
 
             <div class="board-connector" aria-hidden="true">Mesma lógica →</div>
 
-            <div class="board-clinical">
-              <div class="board-clinical-head">
-                <span id="diag-board-icon" aria-hidden="true"></span>
-                <span id="diag-nome-produto">PAINEL DO PACIENTE</span>
+            <div class="double-bezel--dark">
+              <div class="board-clinical-card">
+                <div class="board-clinical-head">
+                  <span id="diag-board-icon" aria-hidden="true"></span>
+                  <span id="diag-nome-produto">PAINEL DO PACIENTE</span>
+                </div>
+                <div class="board-row"><strong>Paciente</strong><strong>Etapa</strong><strong>Prontidão</strong></div>
+                <div class="board-row"><span>Helena Souza Prado</span><span>Liberado</span><span>Pronto</span></div>
+                <div class="board-row"><span>Carlos Eduardo Mendes</span><span>Questionário enviado</span><span>Pendente</span></div>
+                <div class="board-row"><span>Marina Ferreira Costa</span><span>Avaliação de enfermagem</span><span>Atenção</span></div>
               </div>
-              <div class="board-row"><strong>Paciente</strong><strong>Etapa</strong><strong>Prontidão</strong></div>
-              <div class="board-row"><span>Helena Prado</span><span>Liberado</span><span>Pronto</span></div>
-              <div class="board-row"><span>Carlos Mendes</span><span>Quest. enviado</span><span>Pendente</span></div>
-              <div class="board-row"><span>Marina Costa</span><span>Enfermagem</span><span>Atenção</span></div>
             </div>
           </div>
-        </section>
 
-        <!-- Seção 5: Como resolve a integração -->
-        <section id="secao-5" class="sec-card">
+          <h3 class="subtitulo-secao subtitulo-secao--compacto">O que cada papel enxerga prioritariamente na mesma tela</h3>
+          <div class="matriz-papeis">
+            <article class="papel-card-dark">
+              <h3>Recepção</h3>
+              <p>Destaque em acompanhante confirmado, situação do questionário pré-procedimento e pendências administrativas para contato prévio.</p>
+            </article>
+            <article class="papel-card-dark">
+              <h3>Enfermagem</h3>
+              <p>Destaque em peso, altura, índice de massa corporal, jejum, alergias e confirmação de acompanhante na admissão.</p>
+            </article>
+            <article class="papel-card-dark">
+              <h3>Médica anestesiologista</h3>
+              <p>Destaque imediato em alergias, medicações em uso (com selo de anticoagulantes) e confirmação de jejum antes da sedação.</p>
+            </article>
+            <article class="papel-card-dark">
+              <h3>Médico executor</h3>
+              <p>Destaque em comorbidades mapeadas, posição na jornada de 8 etapas e próximo passo com responsável definido.</p>
+            </article>
+            <article class="papel-card-dark">
+              <h3>Paciente</h3>
+              <p>Visão simplificada no celular com etapa atual, pendências que faltam enviar, questionário curto e orientações da clínica.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 5: Como resolve a integração (2 Rotas + Motor Determinístico) -->
+      <section id="secao-5" class="banda-secao banda-secao--branca">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">5</span>
               <h2>Como resolve a integração</h2>
             </div>
-            <span class="tag-tipo tag-tipo--hipotese">Arquitetura da v1</span>
+            <span class="tag-tipo tag-tipo--hipotese">Arquitetura da primeira versão</span>
           </div>
-          <p>
-            Para não travar na falta de padrão entre prontuários nem exigir digitação dupla da equipe, o painel opera por duas rotas complementares:
+          <p class="sec-lead">
+            A interoperabilidade foi apontada na mentoria como o ponto mais sensível. Para não depender de inteligência artificial lendo texto livre nem exigir digitação dupla, o painel opera por duas rotas complementares de entrada.
           </p>
+
           <div class="diagram-rotas">
             <div class="rota-flow">
-              <div class="rota-box"><strong>Rota 1: Clínica com sistema</strong></div>
+              <div class="rota-box">
+                <strong>Rota 1: Clínica com sistema</strong>
+                <span>Prontuário já estruturado envia apenas campos padronizados.</span>
+              </div>
               <span class="rota-seta" id="seta-rota-1" aria-hidden="true">→</span>
-              <div class="rota-box">Lê apenas dado estruturado no padrão <strong>HL7 FHIR</strong> (padrão nacional usado pela RNDS)</div>
+              <div class="rota-box">
+                <strong>Padrão HL7 FHIR (adotado pela RNDS)</strong>
+                <div class="chips-fhir">
+                  <span class="chip-code">Patient</span>
+                  <span class="chip-code">AllergyIntolerance</span>
+                  <span class="chip-code">MedicationStatement</span>
+                  <span class="chip-code">Observation (LOINC)</span>
+                </div>
+              </div>
               <span class="rota-seta" id="seta-rota-2" aria-hidden="true">→</span>
-              <div class="rota-box rota-box--dest">Alimenta o painel sem IA em texto livre</div>
+              <div class="rota-box rota-box--dest">
+                Alimenta o painel sem leitura livre e sem substituir o prontuário
+              </div>
             </div>
+
             <div class="rota-flow">
-              <div class="rota-box"><strong>Rota 2: Clínica sem sistema</strong></div>
+              <div class="rota-box">
+                <strong>Rota 2: Clínica sem sistema</strong>
+                <span>Clínicas pequenas sem prontuário eletrônico integrado.</span>
+              </div>
               <span class="rota-seta" id="seta-rota-3" aria-hidden="true">→</span>
-              <div class="rota-box">O paciente responde ao <strong>questionário pré-procedimento</strong> no celular</div>
+              <div class="rota-box">
+                <strong>Questionário pré-procedimento no celular (7 perguntas)</strong>
+                <span>Alergias, medicações e uso de anticoagulante, peso, altura, comorbidades, acompanhante e jejum.</span>
+              </div>
               <span class="rota-seta" id="seta-rota-4" aria-hidden="true">→</span>
-              <div class="rota-box rota-box--dest">Alimenta o painel sem a equipe digitar nada a mais</div>
+              <div class="rota-box rota-box--dest">
+                O próprio paciente alimenta o painel sem a equipe digitar nada a mais
+              </div>
             </div>
           </div>
-        </section>
 
-        <!-- Seção 6: O que fica fora da primeira versão -->
-        <section id="secao-6" class="sec-card">
+          <div class="double-bezel">
+            <div class="double-bezel-core motor-deterministico">
+              <div>
+                <h3 class="motor-titulo">Motor de reconciliação determinística</h3>
+                <p class="texto-secundario-sm">
+                  Regras transparentes e auditáveis cruzam as fontes ativas campo a campo, preservando sempre o selo de origem de cada informação exibida na tela. Nenhuma inteligência artificial interpreta texto livre clínico.
+                </p>
+              </div>
+              <div class="mini-box mini-box--subtle">
+                <h3>Sinalização de falta (Pendente)</h3>
+                <p>Dispara quando o questionário pré-procedimento não foi respondido ou algum dado crítico obrigatório está vazio.</p>
+              </div>
+              <div class="mini-box mini-box--subtle">
+                <h3>Sinalização de conflito (Atenção)</h3>
+                <p>Dispara quando duas fontes trazem valores diferentes para alergias, medicações, anticoagulante, medidas, jejum ou acompanhante.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 6: O que fica fora da primeira versão + Fronteira Regulatória -->
+      <section id="secao-6" class="banda-secao banda-secao--suave">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">6</span>
@@ -1881,16 +2698,52 @@
             </div>
             <span class="tag-tipo tag-tipo--fora">Fora do escopo</span>
           </div>
-          <ul class="lista-limpa">
-            <li>Integração real em produção com prontuários eletrônicos de mercado.</li>
-            <li>Inteligência artificial lendo evoluções ou texto livre clínico.</li>
-            <li>Módulo de cobrança, faturamento e controle real de login/permissões.</li>
-            <li>Uso com dados reais de pacientes (toda a demonstração usa apenas dados fictícios).</li>
-          </ul>
-        </section>
+          <p class="sec-lead">
+            Limitar o escopo protege o prazo da demonstração e mantém o produto em terreno seguro antes de qualquer integração real.
+          </p>
 
-        <!-- Seção 7: Modelo de negócio -->
-        <section id="secao-7" class="sec-card">
+          <div class="escopo-split">
+            <div class="grid-2">
+              <article class="mini-box">
+                <h3>Integração em produção</h3>
+                <p>Nenhuma conexão direta com prontuários comerciais nesta fase; os dados estruturados exibidos são simulados.</p>
+              </article>
+              <article class="mini-box">
+                <h3>Inteligência artificial em texto livre</h3>
+                <p>Sem processamento automático de evoluções médicas em texto aberto, evitando imprecisão e complexidade regulatória.</p>
+              </article>
+              <article class="mini-box">
+                <h3>Módulo financeiro e TISS</h3>
+                <p>Fora do escopo cobrar consultas, gerar guias de faturamento ou gerenciar permissões reais de contas de usuários.</p>
+              </article>
+              <article class="mini-box">
+                <h3>Dados reais e conduta clínica</h3>
+                <p>Proibido inserir dados reais de pacientes e proibido recomendar condutas médicas, suspensões ou liberações automáticas.</p>
+              </article>
+            </div>
+
+            <aside class="double-bezel" aria-label="Fronteira regulatória e privacidade">
+              <div class="double-bezel-core">
+                <h3 class="subtitulo-bloco subtitulo-bloco--espacado">Fronteira regulatória e privacidade</h3>
+                <div class="pilha-vertical">
+                  <div class="mini-box mini-box--subtle">
+                    <h4>RDC 657/2022 da Anvisa (Software como Dispositivo Médico)</h4>
+                    <p>Classificar risco ou sugerir decisão clínica pode enquadrar o sistema como software médico regulado. Por isso, o painel exibe apenas alertas informativos de falta ou divergência de dados.</p>
+                  </div>
+                  <div class="mini-box mini-box--subtle">
+                    <h4>LGPD (Lei 13.709/2018)</h4>
+                    <p>Dados de saúde são dados pessoais sensíveis. Em ambiente real exigirão consentimento, minimização e controle rígido; nesta prova de conceito rodam apenas dados fictícios em memória.</p>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 7: Modelo de negócio + Indicadores de valor -->
+      <section id="secao-7" class="banda-secao banda-secao--menta">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">7</span>
@@ -1898,24 +2751,45 @@
             </div>
             <span class="tag-tipo tag-tipo--hipotese">Hipótese</span>
           </div>
+          <p class="sec-lead">
+            Estrutura desenhada para o mercado B2B após o feedback da mentoria, deixando a definição de faixa de preço vinculada a entrevistas reais com clínicas.
+          </p>
           <div class="grid-3">
-            <div class="mini-box">
-              <h3>Cliente (B2B)</h3>
-              <p>A clínica é o cliente pagante, não o paciente final.</p>
-            </div>
-            <div class="mini-box">
+            <article class="mini-box">
+              <h3>Cliente pagante (modelo B2B)</h3>
+              <p>A clínica ambulatorial é quem contrata e paga pelo painel — não há cobrança ao paciente final.</p>
+            </article>
+            <article class="mini-box">
               <h3>Posicionamento</h3>
-              <p>Nicho premium: poucos clientes que valorizam segurança e experiência diferenciada.</p>
-            </div>
-            <div class="mini-box">
+              <p>Nicho de alto cuidado: clínicas que vendem segurança, previsibilidade e experiência diferenciada como vantagem competitiva.</p>
+            </article>
+            <article class="mini-box">
               <h3>Formato de receita</h3>
-              <p>Hipótese de assinatura mensal por clínica — <strong>valor a validar em conversas com clínicas</strong>.</p>
-            </div>
+              <p>Assinatura mensal recorrente por clínica — <strong>valor a validar em conversas com clínicas, sem preço fixado nesta etapa</strong>.</p>
+            </article>
           </div>
-        </section>
 
-        <!-- Seção 8: O que já fizemos e o que falta -->
-        <section id="secao-8" class="sec-card">
+          <h3 class="subtitulo-secao">Indicadores de valor a testar</h3>
+          <div class="indicadores-grid">
+            <article class="mini-box mini-box--subtle">
+              <h3>Tempo de leitura clínica</h3>
+              <p>Meta de compreensão completa do estado e pendências do paciente em <strong>menos de 30 segundos</strong>.</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <h3>Esforço operacional zero</h3>
+              <p>Nenhuma etapa da rotina pode exigir redigitação pela equipe para alimentar o painel.</p>
+            </article>
+            <article class="mini-box mini-box--subtle">
+              <h3>Experiência relatada (PREMs)</h3>
+              <p>Avaliar com pacientes a clareza de comunicação e acolhimento percebidos ao longo da jornada.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 8: O que já fizemos, respostas à mentoria e riscos mapeados -->
+      <section id="secao-8" class="banda-secao banda-secao--branca">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">8</span>
@@ -1923,52 +2797,103 @@
             </div>
             <span class="tag-tipo tag-tipo--fato">Fato</span>
           </div>
+
           <div class="timeline-marcos">
-            <div class="marco-card">
+            <article class="marco-card">
               <span class="marco-data">02/10</span>
-              <p>Partida com duas dores iniciais e visão de questionário pré com relatório único.</p>
-            </div>
-            <div class="marco-card">
+              <p>Ponto de partida com as dores iniciais e visão de questionário pré-procedimento gerando um relatório único para a equipe.</p>
+            </article>
+            <article class="marco-card">
               <span class="marco-data">19/10</span>
-              <p>Feedback das mentoras: focar uma dor, definir cliente ideal, interoperabilidade, não mexer em processos e definir modelo de negócio.</p>
-            </div>
-            <div class="marco-card">
+              <p>Plantão de dúvidas da mentoria destacando os 6 pontos de atenção sobre escopo, cliente ideal, integração e negócio.</p>
+            </article>
+            <article class="marco-card">
               <span class="marco-data">26/10</span>
-              <p>Reunião Augusto + Marcelo: foco em painel executivo do paciente para clínicas pequenas.</p>
-            </div>
-            <div class="marco-card">
+              <p>Reunião de Augusto Linhares e Marcelo Teles redirecionando o produto para um painel executivo em clínicas pequenas.</p>
+            </article>
+            <article class="marco-card">
               <span class="marco-data">15/11</span>
-              <p>Proposta de pitch e PoC com recorte em sedação e 2 rotas de integração.</p>
+              <p>Estruturação da proposta de apresentação com recorte em sedação e construção desta prova de conceito navegável.</p>
+            </article>
+          </div>
+
+          <h3 class="subtitulo-secao subtitulo-secao--topo">Como respondemos aos 6 pontos da mentoria (19/10)</h3>
+          <div class="mentoria-grid">
+            <div class="mentoria-item">
+              <strong>1. Escopo amplo demais</strong>
+              Recorte focado apenas na jornada pré-procedimento e pós-procedimento com sedação em clínica pequena.
+            </div>
+            <div class="mentoria-item">
+              <strong>2. Cliente ideal indefinido</strong>
+              Hipótese direcionada a clínicas de pequeno e médio porte em estética e procedimentos minimamente invasivos.
+            </div>
+            <div class="mentoria-item">
+              <strong>3. Interoperabilidade frágil</strong>
+              Restrição a dado estruturado HL7 FHIR na Rota 1 e entrada via questionário do paciente na Rota 2.
+            </div>
+            <div class="mentoria-item">
+              <strong>4. Interferir em processos</strong>
+              O painel não substitui o prontuário existente nem exige digitação adicional de recepção ou equipe clínica.
+            </div>
+            <div class="mentoria-item">
+              <strong>5. Modelo de negócio</strong>
+              Modelo B2B de assinatura mensal pela clínica definido como hipótese; preço aberto para entrevistas em campo.
+            </div>
+            <div class="mentoria-item">
+              <strong>6. Checkpoints tardios</strong>
+              Painel acompanha 8 etapas desde o agendamento, revelando falta de acompanhante ou alergia antes do dia.
             </div>
           </div>
 
-          <h3>Riscos mapeados</h3>
-          <ul class="riscos-lista">
-            <li class="risco-item">
-              <span><strong>1.</strong> Integração real com prontuários ainda não testada.</span>
-              <span class="tag-tipo tag-tipo--fato">Fato</span>
-            </li>
-            <li class="risco-item">
-              <span><strong>2.</strong> Disposição da clínica a pagar pelo painel ainda não validada.</span>
-              <span class="tag-tipo tag-tipo--fato">Fato</span>
-            </li>
-            <li class="risco-item">
-              <span><strong>3.</strong> Painel com alertas clínicos pode ser enquadrado como software médico pela Anvisa (por isso a v1 só exibe alertas de informação).</span>
-              <span class="tag-tipo tag-tipo--naoverificado">Não verificado</span>
-            </li>
-            <li class="risco-item">
-              <span><strong>4.</strong> Sistemas de gestão de clínica podem já cobrir parte da jornada.</span>
-              <span class="tag-tipo tag-tipo--naoverificado">Não verificado</span>
-            </li>
-            <li class="risco-item">
-              <span><strong>5.</strong> Dados de saúde são dados sensíveis na LGPD (a demo usa só dados fictícios).</span>
-              <span class="tag-tipo tag-tipo--fato">Fato</span>
-            </li>
-          </ul>
-        </section>
+          <h3 class="subtitulo-secao subtitulo-secao--topo-lg">Matriz dos 5 riscos mapeados</h3>
+          <div class="double-bezel">
+            <div class="double-bezel-core double-bezel-core--compacto">
+              <div class="riscos-tabela-wrap" role="table" aria-label="Matriz dos cinco riscos mapeados">
+                <div class="risco-cabecalho" role="row">
+                  <span role="columnheader">Risco</span>
+                  <span role="columnheader">Status</span>
+                  <span role="columnheader">Impacto</span>
+                  <span role="columnheader">Mitigação adotada</span>
+                </div>
+                <div class="risco-linha" role="row">
+                  <span role="cell"><strong>1.</strong> Integração real com prontuários de mercado ainda não testada.</span>
+                  <span role="cell"><span class="tag-tipo tag-tipo--fato">Fato</span></span>
+                  <span role="cell">Rota 1 pode enfrentar formatos variados entre fornecedores.</span>
+                  <span role="cell">Começar por padrão HL7 FHIR e oferecer Rota 2 via questionário do paciente.</span>
+                </div>
+                <div class="risco-linha" role="row">
+                  <span role="cell"><strong>2.</strong> Disposição da clínica a pagar pelo painel não validada.</span>
+                  <span role="cell"><span class="tag-tipo tag-tipo--fato">Fato</span></span>
+                  <span role="cell">Hipótese B2B e valor mensal seguem sem comprovação comercial.</span>
+                  <span role="cell">Não fixar preço agora e realizar 3 entrevistas exploratórias com gestores.</span>
+                </div>
+                <div class="risco-linha" role="row">
+                  <span role="cell"><strong>3.</strong> Painel com alertas clínicos pode ser enquadrado como software médico pela Anvisa.</span>
+                  <span role="cell"><span class="tag-tipo tag-tipo--naoverificado">Não verificado</span></span>
+                  <span role="cell">Exigiria adequação regulatória específica conforme RDC 657/2022.</span>
+                  <span role="cell">A primeira versão exibe apenas alertas informativos, sem conduta clínica.</span>
+                </div>
+                <div class="risco-linha" role="row">
+                  <span role="cell"><strong>4.</strong> Sistemas de gestão de clínica podem já cobrir parte da jornada.</span>
+                  <span role="cell"><span class="tag-tipo tag-tipo--naoverificado">Não verificado</span></span>
+                  <span role="cell">Sobreposição de funcionalidades pode reduzir percepção de valor.</span>
+                  <span role="cell">Mapear sistemas usados hoje durante as entrevistas iniciais com clínicas.</span>
+                </div>
+                <div class="risco-linha" role="row">
+                  <span role="cell"><strong>5.</strong> Dados de saúde são dados pessoais sensíveis na LGPD (Lei 13.709/2018).</span>
+                  <span role="cell"><span class="tag-tipo tag-tipo--fato">Fato</span></span>
+                  <span role="cell">Demanda governança estrita, consentimento e rastreabilidade em uso real.</span>
+                  <span role="cell">A demonstração utiliza exclusivamente dados fictícios em memória local.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <!-- Seção 9: Próximos passos -->
-        <section id="secao-9" class="sec-card">
+      <!-- Seção 9: Próximos passos (3 Frentes + CTA Final) -->
+      <section id="secao-9" class="banda-secao banda-secao--ardosia">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">9</span>
@@ -1976,15 +2901,42 @@
             </div>
             <span class="tag-tipo tag-tipo--hipotese">Plano imediato</span>
           </div>
-          <ol class="lista-limpa">
-            <li>Validar recorte de sedação e lista final de dados críticos com a anestesista.</li>
-            <li>Conversar com 3 clínicas pequenas/médias para validar dor, fluxo e disposição a pagar.</li>
-            <li>Testar esta demonstração com 3 a 5 pessoas e medir o tempo para entender o estado do paciente.</li>
-          </ol>
-        </section>
+          <div class="frentes-grid">
+            <article class="mini-box">
+              <span class="frente-num">FRENTE 01</span>
+              <h3>Validação clínica com Karina</h3>
+              <p>Confirmar a lista final dos 6 dados críticos, as 7 perguntas do questionário e o texto das orientações ilustrativas de pré-procedimento e pós-procedimento.</p>
+            </article>
+            <article class="mini-box">
+              <span class="frente-num">FRENTE 02</span>
+              <h3>Entrevistas com 3 clínicas</h3>
+              <p>Conversar com gestores de 3 clínicas de pequeno e médio porte sobre o fluxo atual de informações, ferramentas usadas e modelo de assinatura B2B.</p>
+            </article>
+            <article class="mini-box">
+              <span class="frente-num">FRENTE 03</span>
+              <h3>Teste prático com 3 a 5 pessoas</h3>
+              <p>Aplicar esta demonstração interativa medindo objetivamente o tempo de compreensão da prontidão do paciente (meta abaixo de 30 segundos).</p>
+            </article>
+          </div>
 
-        <!-- Seção 10: Time -->
-        <section id="secao-10" class="sec-card">
+          <div class="double-bezel">
+            <div class="double-bezel-core cta-final-banner">
+              <div>
+                <h3>Pronto para explorar a demonstração interativa?</h3>
+                <p>Navegue pelo Quadro da Clínica, detalhe do paciente sem rolagem vertical e envio ao vivo do questionário no celular.</p>
+              </div>
+              <button type="button" class="btn-cta-pill" id="btn-cta-final-demo">
+                <span>Ver a demonstração</span>
+                <span class="btn-icon-orb" id="cta-final-orb" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção 10: Time (Grupo 3) -->
+      <section id="secao-10" class="banda-secao banda-secao--branca">
+        <div class="banda-inner revelar-scroll">
           <div class="sec-header">
             <div class="sec-title-wrap">
               <span class="sec-num">10</span>
@@ -1993,34 +2945,53 @@
             <span class="tag-tipo tag-tipo--fato">Grupo 3</span>
           </div>
           <div class="grid-3">
-            <article class="mini-box">
-              <h3>Augusto</h3>
-              <p>Médico generalista, faz pós em IA e ciência de dados. Leva a parte técnica e de dados.</p>
+            <article class="double-bezel">
+              <div class="double-bezel-core">
+                <span class="time-papel-tag">Arquitetura técnica e dados</span>
+                <h3>Augusto Linhares</h3>
+                <p class="time-bio">
+                  Médico generalista, pós-graduando em inteligência artificial e ciência de dados. Conduz a modelagem dos dados estruturados, regras determinísticas de prontidão e construção da prova de conceito.
+                </p>
+              </div>
             </article>
-            <article class="mini-box">
-              <h3>Marcelo</h3>
-              <p>Médico do trabalho e gestor em saúde, com visão corporativa de produto. Conduz e fecha decisões.</p>
+            <article class="double-bezel">
+              <div class="double-bezel-core">
+                <span class="time-papel-tag">Visão de produto e decisões</span>
+                <h3>Marcelo Teles</h3>
+                <p class="time-bio">
+                  Médico do trabalho e gestor em saúde, com experiência em produtos corporativos baseados em dados. Conduz a estratégia de recorte, a tese B2B e o fechamento das decisões do grupo.
+                </p>
+              </div>
             </article>
-            <article class="mini-box">
-              <h3>Karina (Ká)</h3>
-              <p>Anestesista. Traz a dor real do pré-operatório e da sedação.</p>
+            <article class="double-bezel">
+              <div class="double-bezel-core">
+                <span class="time-papel-tag">Segurança clínica e anestesia</span>
+                <h3>Karina</h3>
+                <p class="time-bio">
+                  Médica anestesiologista atuante no acompanhamento pré-operatório, transoperatório e pós-operatório. Traz a vivência prática da sedação e lidera a validação dos dados críticos de segurança.
+                </p>
+              </div>
             </article>
           </div>
-        </section>
-      </div>
+
+          <footer class="rodape-apresentacao">
+            <span>Grupo 3 · formação Médicos Híbridos · Prova de conceito de experiência</span>
+            <span>Todos os pacientes, profissionais fictícios e registros clínicos são ilustrativos.</span>
+          </footer>
+        </div>
+      </section>
     </div>
 
     <!-- =====================================================
          PARTE 2: DEMONSTRAÇÃO CONCEITUAL (POC)
          ===================================================== -->
-    <div id="painel-poc" hidden>
-      <!-- Barra compacta de controles da PoC -->
+    <div id="painel-poc" role="tabpanel" aria-labelledby="tab-btn-poc" hidden>
       <div class="poc-bar" role="region" aria-label="Controles da demonstração">
         <div class="poc-bar-inner">
           <div class="poc-subtabs" role="tablist" aria-label="Telas da demonstração">
-            <button type="button" class="btn-subtab" id="subtab-quadro" role="tab" aria-selected="true">A. Quadro da Clínica</button>
-            <button type="button" class="btn-subtab" id="subtab-detalhe" role="tab" aria-selected="false">B. Detalhe do Paciente</button>
-            <button type="button" class="btn-subtab" id="subtab-paciente" role="tab" aria-selected="false">C. Visão do Paciente (Celular)</button>
+            <button type="button" class="btn-subtab" id="subtab-quadro" role="tab" aria-selected="true" aria-controls="tela-quadro">A. Quadro da Clínica</button>
+            <button type="button" class="btn-subtab" id="subtab-detalhe" role="tab" aria-selected="false" aria-controls="tela-detalhe">B. Detalhe do Paciente</button>
+            <button type="button" class="btn-subtab" id="subtab-paciente" role="tab" aria-selected="false" aria-controls="tela-celular">C. Visão do Paciente (Celular)</button>
           </div>
 
           <div class="poc-controls">
@@ -2054,14 +3025,9 @@
       </div>
 
       <div class="poc-wrapper" id="poc-wrapper">
-        <!-- Tela A: Quadro da Clínica -->
-        <section id="tela-quadro" aria-label="Quadro da clínica"></section>
-
-        <!-- Tela B: Detalhe do Paciente -->
-        <section id="tela-detalhe" aria-label="Detalhe do paciente" hidden></section>
-
-        <!-- Tela C: Visão do Paciente (Celular) -->
-        <section id="tela-celular" aria-label="Visão do paciente no celular" hidden></section>
+        <section id="tela-quadro" role="tabpanel" aria-labelledby="subtab-quadro" aria-label="Quadro da clínica"></section>
+        <section id="tela-detalhe" role="tabpanel" aria-labelledby="subtab-detalhe" aria-label="Detalhe do paciente" hidden></section>
+        <section id="tela-celular" role="tabpanel" aria-labelledby="subtab-paciente" aria-label="Visão do paciente no celular" hidden></section>
       </div>
     </div>
   </main>
@@ -2089,7 +3055,7 @@
     </div>
     <p class="tour-texto" id="tour-texto"></p>
     <div class="tour-acoes">
-      <span class="badge-provisorio" id="tour-contador">1 / 8</span>
+      <span class="badge-provisorio tabular-nums" id="tour-contador">1 / 8</span>
       <div class="tour-nav-btns">
         <button type="button" class="btn btn-sm" id="btn-tour-voltar">Voltar</button>
         <button type="button" class="btn btn-sm btn-primary" id="btn-tour-proximo">Próximo</button>
@@ -2149,7 +3115,7 @@
       // Lista inicial de 5 pacientes fictícios.
       // - etapaAtual: índice de 0 a 7 em ETAPAS_JORNADA ("Agendado" até "Pós-procedimento").
       // - datasEtapas: rótulos de data exibidos na linha do tempo de cada etapa já alcançada.
-      // - usaAnticoagulante: booleano (true/false) indicando uso de anticoagulante/antiagregante.
+      // - usaAnticoagulante: booleano (true/false) indicando uso de anticoagulante ou antiagregante.
       // - questionario / enfermagem = null significa que essa fonte ainda não enviou ou registrou dados.
       const PACIENTES_INICIAIS = [
         {
@@ -2159,12 +3125,12 @@
           dataNascimento: "1982-05-14",
           procedimento: "Blefaroplastia ambulatorial com sedação",
           dataHora: "Hoje, 08:30",
-          responsavel: "Dra. Beatriz (Anestesia)",
+          responsavel: "Beatriz Moura — Médica anestesiologista",
           etapaAtual: 5,
           datasEtapas: ["10/11", "11/11", "12/11", "13/11", "14/11", DATA_SIMULADA_HOJE],
           sistema: {
             alergias: "Nenhuma alergia conhecida",
-            medicacoes: "Levotiroxina 50 mcg/dia",
+            medicacoes: "Levotiroxina 50 microgramas ao dia",
             usaAnticoagulante: false,
             pesoKg: 64,
             alturaCm: 165,
@@ -2172,7 +3138,7 @@
           },
           questionario: {
             alergias: "Nenhuma alergia conhecida",
-            medicacoes: "Levotiroxina 50 mcg/dia",
+            medicacoes: "Levotiroxina 50 microgramas ao dia",
             usaAnticoagulante: false,
             pesoKg: 64,
             alturaCm: 165,
@@ -2192,12 +3158,12 @@
           dataNascimento: "1975-08-22",
           procedimento: "Colonoscopia diagnóstica com sedação",
           dataHora: "Hoje, 10:00",
-          responsavel: "Enf. Marcos (Enfermagem)",
+          responsavel: "Marcos Oliveira — Enfermeiro",
           etapaAtual: 1,
           datasEtapas: ["12/11", "13/11"],
           sistema: {
             alergias: "Nenhuma registrada",
-            medicacoes: "Losartana 50 mg/dia",
+            medicacoes: "Losartana 50 miligramas ao dia",
             usaAnticoagulante: false,
             pesoKg: 82,
             alturaCm: 175,
@@ -2213,7 +3179,7 @@
           dataNascimento: "1990-02-11",
           procedimento: "Blefaroplastia ambulatorial com sedação",
           dataHora: "Hoje, 11:30",
-          responsavel: "Dra. Beatriz (Anestesia)",
+          responsavel: "Beatriz Moura — Médica anestesiologista",
           etapaAtual: 3,
           datasEtapas: ["11/11", "12/11", "13/11", DATA_SIMULADA_HOJE],
           sistema: {
@@ -2246,12 +3212,12 @@
           dataNascimento: "1959-11-03",
           procedimento: "Endoscopia digestiva alta com sedação",
           dataHora: "Amanhã, 08:00",
-          responsavel: "Dra. Beatriz (Anestesia)",
+          responsavel: "Beatriz Moura — Médica anestesiologista",
           etapaAtual: 4,
           datasEtapas: ["10/11", "11/11", "12/11", "13/11", "14/11"],
           sistema: {
             alergias: "Dipirona (urticária leve)",
-            medicacoes: "Apixabana 5 mg (12/12h) — anticoagulante oral; Atorvastatina 20 mg/dia",
+            medicacoes: "Apixabana 5 miligramas (12 em 12 horas) — anticoagulante oral; Atorvastatina 20 miligramas ao dia",
             usaAnticoagulante: true,
             pesoKg: 79,
             alturaCm: 170,
@@ -2259,7 +3225,7 @@
           },
           questionario: {
             alergias: "Dipirona (urticária leve)",
-            medicacoes: "Apixabana 5 mg (12/12h) — anticoagulante oral; Atorvastatina 20 mg/dia",
+            medicacoes: "Apixabana 5 miligramas (12 em 12 horas) — anticoagulante oral; Atorvastatina 20 miligramas ao dia",
             usaAnticoagulante: true,
             pesoKg: 79,
             alturaCm: 170,
@@ -2279,7 +3245,7 @@
           dataNascimento: "1997-04-19",
           procedimento: "Endoscopia digestiva alta com sedação",
           dataHora: "Hoje, 07:00",
-          responsavel: "Dr. Henrique (Médico executor)",
+          responsavel: "Henrique Azevedo — Médico executor",
           etapaAtual: 7,
           datasEtapas: ["09/11", "10/11", "11/11", "12/11", "13/11", "14/11", DATA_SIMULADA_HOJE, DATA_SIMULADA_HOJE],
           sistema: {
@@ -2325,6 +3291,14 @@
         return limpo.slice(0, lim);
       }
 
+      // Formata data ISO YYYY-MM-DD para DD/MM/AAAA
+      function formatarDataNascimentoPtBr(iso) {
+        if (!iso || typeof iso !== "string") return "";
+        const partes = iso.split("-");
+        if (partes.length !== 3) return iso;
+        return partes[2] + "/" + partes[1] + "/" + partes[0];
+      }
+
       // Regra ilustrativa. Não é recomendação clínica.
       function calcularImc(pesoKg, alturaCm) {
         if (!pesoKg || !alturaCm || pesoKg <= 0 || alturaCm <= 0) return null;
@@ -2343,6 +3317,15 @@
           entradas.push({ fonte: FONTES.questionario, valor: paciente.questionario[campo] });
         }
         return entradas;
+      }
+
+      // Regra ilustrativa. Não é recomendação clínica.
+      function obterFontesAtivasPaciente(paciente, cenario) {
+        const fontes = [];
+        if (cenario === "com_sistema" && paciente.sistema) fontes.push("Sistema (HL7 FHIR)");
+        if (paciente.questionario) fontes.push("Questionário do paciente");
+        if (paciente.enfermagem) fontes.push("Avaliação de enfermagem");
+        return fontes;
       }
 
       // Regra ilustrativa. Não é recomendação clínica.
@@ -2421,7 +3404,7 @@
         const textoAval = avaliarCamposTexto(paciente, cenario, divergencias);
         avaliarDivergenciaAnticoagulante(paciente, cenario, textoAval.camposResolvidos.medicacoes, divergencias);
 
-        if (!paciente.questionario) pendencias.push("Questionário pré ainda não respondido.");
+        if (!paciente.questionario) pendencias.push("Questionário pré-procedimento ainda não respondido.");
         if (cenario === "sem_sistema" && textoAval.faltamDados) {
           pendencias.push("Dados críticos aguardando resposta no questionário.");
         }
@@ -2477,13 +3460,13 @@
 
       function obterProximoPasso(paciente) {
         const mapa = [
-          { acao: "Enviar link do questionário pré ao paciente.", resp: "Recepção" },
-          { acao: "Aguardar envio do questionário pré pelo paciente.", resp: "Paciente / Recepção" },
+          { acao: "Enviar link do questionário pré-procedimento ao paciente.", resp: "Recepção" },
+          { acao: "Aguardar envio do questionário pré-procedimento pelo paciente.", resp: "Paciente / Recepção" },
           { acao: "Realizar conferência inicial pela enfermagem.", resp: "Enfermagem" },
-          { acao: "Encaminhar dados para avaliação pré-anestésica.", resp: "Enfermagem / Anestesia" },
-          { acao: "Concluir checagem de prontidão para liberação.", resp: "Anestesista" },
+          { acao: "Encaminhar dados para avaliação pré-anestésica.", resp: "Enfermagem / Anestesiologia" },
+          { acao: "Concluir checagem de prontidão para liberação.", resp: "Médica anestesiologista" },
           { acao: "Acolher paciente para início do procedimento.", resp: "Equipe do procedimento" },
-          { acao: "Registrar término e liberar orientações pós.", resp: "Médico executor / Enfermagem" },
+          { acao: "Registrar término e liberar orientações de pós-procedimento.", resp: "Médico executor / Enfermagem" },
           { acao: "Paciente em pós-procedimento com orientações disponíveis.", resp: "Paciente / Recepção" }
         ];
         return mapa[paciente.etapaAtual] || mapa[0];
@@ -2517,11 +3500,46 @@
       };
 
       const PERFIS_INFO = {
-        Recepcao: { rotulo: "Recepção", campos: ["acompanhante"], destacaJornada: true, destacaLateral: false, destacaPendencias: true },
-        Enfermagem: { rotulo: "Enfermagem", campos: ["pesoAlturaImc", "jejum", "alergias", "acompanhante"], destacaJornada: false, destacaLateral: false, destacaPendencias: false },
-        Anestesista: { rotulo: "Anestesista", campos: ["alergias", "medicacoes", "jejum"], destacaJornada: false, destacaLateral: false, destacaPendencias: false },
-        MedicoExecutor: { rotulo: "Médico executor", campos: ["comorbidades"], destacaJornada: true, destacaLateral: true, destacaPendencias: false },
-        Paciente: { rotulo: "Paciente", campos: [], destacaJornada: false, destacaLateral: false, destacaPendencias: false }
+        Recepcao: {
+          rotulo: "Recepção",
+          descricao: "Recepção — prioriza acompanhante confirmado, situação do questionário pré-procedimento e etapa de chegada.",
+          campos: ["acompanhante"],
+          destacaJornada: true,
+          destacaLateral: false,
+          destacaPendencias: true
+        },
+        Enfermagem: {
+          rotulo: "Enfermagem",
+          descricao: "Enfermagem — prioriza peso, altura, índice de massa corporal, jejum, alergias e acompanhante na admissão.",
+          campos: ["pesoAlturaImc", "jejum", "alergias", "acompanhante"],
+          destacaJornada: false,
+          destacaLateral: false,
+          destacaPendencias: false
+        },
+        Anestesista: {
+          rotulo: "Anestesista",
+          descricao: "Anestesista — prioriza alergias, medicações em uso (com destaque para anticoagulantes) e confirmação de jejum.",
+          campos: ["alergias", "medicacoes", "jejum"],
+          destacaJornada: false,
+          destacaLateral: false,
+          destacaPendencias: false
+        },
+        MedicoExecutor: {
+          rotulo: "Médico executor",
+          descricao: "Médico executor — prioriza comorbidades, posição na jornada de 8 etapas e próximo passo com responsável.",
+          campos: ["comorbidades"],
+          destacaJornada: true,
+          destacaLateral: true,
+          destacaPendencias: false
+        },
+        Paciente: {
+          rotulo: "Paciente",
+          descricao: "Paciente — visão simplificada de etapa atual, questionário curto e orientações da clínica.",
+          campos: [],
+          destacaJornada: false,
+          destacaLateral: false,
+          destacaPendencias: false
+        }
       };
 
       /* =======================================================================
@@ -2661,6 +3679,27 @@
         }));
       }
 
+      function criarFaixaCenarioEAtalhos() {
+        const ehComSistema = state.cenario === "com_sistema";
+        const rotuloCenario = ehComSistema ? "Clínica com sistema (FHIR simulado)" : "Clínica sem sistema (só questionário)";
+        const resumoTxt = ehComSistema
+          ? "Dados estruturados do sistema são cruzados com o questionário e a enfermagem."
+          : "Sem prontuário integrado: apenas o questionário e a enfermagem alimentam o painel.";
+
+        return el("div", { className: "cenario-atalhos-bar", role: "region", "aria-label": "Cenário ativo e atalhos rápidos" }, [
+          el("div", { className: "cenario-resumo-txt" }, [
+            criarSvgIcon("info", 14),
+            el("strong", { text: "Cenário ativo: " + rotuloCenario + "." }),
+            el("span", { text: resumoTxt })
+          ]),
+          el("div", { className: "atalhos-grupo" }, [
+            el("button", { type: "button", className: "btn btn-sm btn-outline-accent", id: "atalho-marina", text: "Caso de divergência: Marina Ferreira Costa", onClick: function () { state.cenario = "com_sistema"; abrirDetalhePaciente("p3"); } }),
+            el("button", { type: "button", className: "btn btn-sm btn-outline-accent", id: "atalho-carlos", text: "Simular celular: Carlos Eduardo Mendes", onClick: function () { state.pacienteSelecionadoId = "p2"; state.mensagemErroForm = ""; navegarSubTela("paciente"); } }),
+            el("button", { type: "button", className: "btn btn-sm btn-outline-accent", id: "atalho-roberto", text: "Anticoagulante: Roberto Almeida Nascimento", onClick: function () { abrirDetalhePaciente("p4"); } })
+          ])
+        ]);
+      }
+
       function criarCampoBuscaQuadro(avaliados) {
         const inputBusca = el("input", {
           type: "search",
@@ -2718,12 +3757,33 @@
         return aval.totalPendencias + " " + sufixo + " — " + primeiro;
       }
 
+      function criarCelulaProgressoEtapa(etapaAtual) {
+        const num = etapaAtual + 1;
+        return el("div", { className: "etapa-progresso-wrap" }, [
+          el("span", { text: "Etapa " + num + " de 8 · " + ETAPAS_JORNADA[etapaAtual] }),
+          el("div", { className: "micro-progresso", role: "progressbar", "aria-label": "Progresso na jornada", "aria-valuemin": "1", "aria-valuemax": "8", "aria-valuenow": String(num) }, [
+            el("div", { className: "micro-progresso-fill progresso-p" + num })
+          ])
+        ]);
+      }
+
+      function criarSelosFontesAtivas(paciente) {
+        const fontes = obterFontesAtivasPaciente(paciente, state.cenario);
+        if (fontes.length === 0) {
+          return el("span", { className: "selo-fonte", text: "Aguardando fontes" });
+        }
+        return el("div", { className: "fontes-celula" }, fontes.map(function (f) {
+          return el("span", { className: "selo-fonte", text: f });
+        }));
+      }
+
       function criarTabelaQuadro(filtrados) {
         const thead = el("thead", null, el("tr", null, [
           el("th", { text: "Paciente" }),
           el("th", { text: "Procedimento" }),
           el("th", { text: "Data e hora" }),
           el("th", { text: "Etapa atual" }),
+          el("th", { text: "Fontes ativas" }),
           el("th", { text: "Status de prontidão" }),
           el("th", { text: "Pendências / Alertas" })
         ]));
@@ -2741,7 +3801,8 @@
             ]),
             el("td", { text: p.procedimento }),
             el("td", { text: p.dataHora }),
-            el("td", { text: (p.etapaAtual + 1) + "/8 · " + ETAPAS_JORNADA[p.etapaAtual] }),
+            el("td", null, criarCelulaProgressoEtapa(p.etapaAtual)),
+            el("td", null, criarSelosFontesAtivas(p)),
             el("td", null, criarBadgeStatus(item.aval)),
             el("td", { text: formatarResumoPendencia(item.aval) })
           ]);
@@ -2758,7 +3819,8 @@
               criarBadgeStatus(item.aval)
             ]),
             el("div", { className: "subinfo-celula", text: p.procedimento + " · " + p.dataHora }),
-            el("div", { className: "mobile-card-etapa", text: "Etapa: " + ETAPAS_JORNADA[p.etapaAtual] }),
+            el("div", { className: "mobile-card-etapa", text: "Etapa " + (p.etapaAtual + 1) + " de 8: " + ETAPAS_JORNADA[p.etapaAtual] }),
+            criarSelosFontesAtivas(p),
             el("div", { className: "mobile-card-pendencia", text: formatarResumoPendencia(item.aval) }),
             el("button", { type: "button", className: "btn btn-sm btn-outline-accent", text: "Abrir detalhe do paciente", onClick: function () { abrirDetalhePaciente(p.id); } })
           ]);
@@ -2796,6 +3858,7 @@
         });
 
         sec.appendChild(criarKpisQuadro(avaliados));
+        sec.appendChild(criarFaixaCenarioEAtalhos());
         sec.appendChild(criarBarraFiltrosQuadro(avaliados));
         sec.appendChild(el("div", { id: "quadro-lista-slot" }));
         renderListaQuadro(avaliados);
@@ -2855,10 +3918,11 @@
           onClick: function () { navegarSubTela("quadro"); }
         }, [criarSvgIcon("arrowLeft", 13), el("span", { text: "Quadro" })]);
 
+        const dataNascPtBr = formatarDataNascimentoPtBr(paciente.dataNascimento);
         const identidade = el("div", { className: "detalhe-identidade" }, [
           el("div", { className: "detalhe-linha1" }, [btnVoltar, criarSeletorPacienteDetalhe(paciente), el("h1", { className: "detalhe-nome", text: paciente.nome }), criarBadgeStatus(aval)]),
           el("div", { className: "detalhe-meta" }, [
-            el("span", { text: paciente.idade + " anos (nasc. " + paciente.dataNascimento + ")" }),
+            el("span", { text: paciente.idade + " anos (nascimento em " + dataNascPtBr + ")" }),
             el("span", { text: "·" }),
             el("span", { text: paciente.procedimento }),
             el("span", { text: "·" }),
@@ -2876,7 +3940,7 @@
           el("h2", { className: "jornada-titulo", text: "Jornada do procedimento (8 etapas)" }),
           el("span", {
             className: "jornada-etapa-texto",
-            text: "Etapa atual: " + (paciente.etapaAtual + 1) + "/8 — " + ETAPAS_JORNADA[paciente.etapaAtual]
+            text: "Etapa " + (paciente.etapaAtual + 1) + " de 8 — " + ETAPAS_JORNADA[paciente.etapaAtual]
           })
         ]);
 
@@ -2943,10 +4007,7 @@
           if (campoAval.notaAnticoag) {
             linhas.push(el("div", null, el("strong", { text: campoAval.notaAnticoag })));
           }
-          return {
-            conteudo: criarBlocoDivergencia(linhas),
-            selos: [criarSeloFontesDivergentes()]
-          };
+          return { conteudo: criarBlocoDivergencia(linhas), selos: [criarSeloFontesDivergentes()] };
         }
         const fontesUnicas = Array.from(new Set(campoAval.entradas.map(function (e) { return e.fonte; })));
         return {
@@ -3039,7 +4100,7 @@
             el("h2", { className: "card-painel-titulo", text: "Cartão de dados críticos" }),
             el("span", { className: "selo-clinico", text: "Conteúdo ilustrativo — a validar pela equipe clínica" })
           ]),
-          el("div", { className: "perfil-subnota", text: "Perfil ativo: " + perfilCfg.rotulo + " · Campos prioritários destacados em verde-azulado" }),
+          el("div", { className: "perfil-subnota", text: perfilCfg.descricao }),
           grid
         ]);
       }
@@ -3059,7 +4120,7 @@
           itensAlerta.push(el("li", { className: "alerta-row alerta-row--ok" }, [criarSvgIcon("check", 14), el("span", { text: "Nenhuma pendência ou divergência registrada. Dados conferidos." })]));
         }
         const destacaPend = Boolean(perfilCfg && perfilCfg.destacaPendencias);
-        const questStatus = paciente.questionario ? "Questionário pré: Respondido" : "Questionário pré: Aguardando resposta";
+        const questStatus = paciente.questionario ? "Questionário pré-procedimento: Respondido" : "Questionário pré-procedimento: Aguardando resposta";
         return el("article", { className: "card-painel card-painel--grow" + (destacaPend ? " card-painel--destaque" : "") }, [
           el("div", { className: "card-painel-head" }, [
             el("h2", { className: "card-painel-titulo", text: "Pendências e alertas de informação" }),
@@ -3115,7 +4176,7 @@
         if (!paciente || paciente.etapaAtual >= ETAPAS_JORNADA.length - 1) return;
         paciente.etapaAtual += 1;
         paciente.datasEtapas[paciente.etapaAtual] = DATA_SIMULADA_HOJE;
-        state.mensagemDetalhe = "Etapa avançada para: " + ETAPAS_JORNADA[paciente.etapaAtual] + ".";
+        state.mensagemDetalhe = "Etapa avançada: " + ETAPAS_JORNADA[paciente.etapaAtual] + ".";
         renderPocAtiva();
       }
 
@@ -3152,12 +4213,12 @@
 
       function criarControlesFormulario(q) {
         return {
-          alergias: el("input", { type: "text", id: "q-alergias", className: "form-input", maxlength: "180", value: q.alergias || "", placeholder: "Ex.: Dipirona, látex ou Nenhuma" }),
-          medicacoes: el("input", { type: "text", id: "q-medicacoes", className: "form-input", maxlength: "180", value: q.medicacoes || "", placeholder: "Ex.: Losartana 50 mg/dia ou Nenhuma" }),
+          alergias: el("input", { type: "text", id: "q-alergias", className: "form-input", maxlength: "180", value: q.alergias || "", placeholder: "Por exemplo: Dipirona, látex ou Nenhuma" }),
+          medicacoes: el("input", { type: "text", id: "q-medicacoes", className: "form-input", maxlength: "180", value: q.medicacoes || "", placeholder: "Por exemplo: Losartana 50 miligramas ao dia ou Nenhuma" }),
           anticoag: el("input", { type: "checkbox", id: "q-anticoag", checked: Boolean(q.usaAnticoagulante) }),
           peso: el("input", { type: "number", id: "q-peso", className: "form-input", min: "20", max: "300", step: "0.1", value: q.pesoKg || "" }),
           altura: el("input", { type: "number", id: "q-altura", className: "form-input", min: "80", max: "240", step: "1", value: q.alturaCm || "" }),
-          comorbidades: el("input", { type: "text", id: "q-comorbidades", className: "form-input", maxlength: "180", value: q.comorbidades || "", placeholder: "Ex.: Hipertensão ou Nenhuma" }),
+          comorbidades: el("input", { type: "text", id: "q-comorbidades", className: "form-input", maxlength: "180", value: q.comorbidades || "", placeholder: "Por exemplo: Hipertensão ou Nenhuma" }),
           acompSim: el("input", { type: "radio", name: "q-acompanhante", value: "sim", checked: q.acompanhanteConfirmado === true }),
           acompNao: el("input", { type: "radio", name: "q-acompanhante", value: "nao", checked: q.acompanhanteConfirmado === false }),
           jejumSim: el("input", { type: "radio", name: "q-jejum", value: "sim", checked: q.jejumConfirmado === true }),
@@ -3229,8 +4290,10 @@
       }
 
       function validarDadosQuestionario(dados) {
-        const pesoNum = Number(dados.pesoKg);
-        const altNum = Number(dados.alturaCm);
+        const pesoTexto = String(dados.pesoKg || "").trim().replace(",", ".");
+        const altTexto = String(dados.alturaCm || "").trim();
+        const pesoNum = Number(pesoTexto);
+        const altNum = Number(altTexto);
         const alergiasBruto = String(dados.alergias || "").trim();
         const medsBruto = String(dados.medicacoes || "").trim();
         const comorbBruto = String(dados.comorbidades || "").trim();
@@ -3243,11 +4306,11 @@
         if (!alergias || !medicacoes || !comorbidades) {
           return "Preencha alergias, medicações e condições de saúde (informe 'Nenhuma' se não houver).";
         }
-        if (!Number.isFinite(pesoNum) || pesoNum < 20 || pesoNum > 300) {
-          return "Informe um peso válido entre 20 e 300 kg.";
+        if (!/^\d{2,3}(\.\d)?$/.test(pesoTexto) || !Number.isFinite(pesoNum) || pesoNum < 20 || pesoNum > 300) {
+          return "Informe um peso válido entre 20 e 300 quilogramas.";
         }
-        if (!Number.isFinite(altNum) || altNum < 80 || altNum > 240) {
-          return "Informe uma altura válida entre 80 e 240 cm.";
+        if (!/^\d{2,3}$/.test(altTexto) || !Number.isFinite(altNum) || altNum < 80 || altNum > 240) {
+          return "Informe uma altura válida inteira entre 80 e 240 centímetros.";
         }
         if (dados.acompRadio === null || dados.jejumRadio === null) {
           return "Responda às perguntas de acompanhante e jejum (Sim ou Não).";
@@ -3262,12 +4325,14 @@
           renderTelaCelular();
           return;
         }
+        const pesoNorm = Number(String(dados.pesoKg || "").trim().replace(",", "."));
+        const altNorm = Number(String(dados.alturaCm || "").trim());
         paciente.questionario = {
           alergias: higienizarTextoEntrada(dados.alergias, 180).trim(),
           medicacoes: higienizarTextoEntrada(dados.medicacoes, 180).trim(),
           usaAnticoagulante: Boolean(dados.usaAnticoagulante),
-          pesoKg: Math.round(Number(dados.pesoKg) * 10) / 10,
-          alturaCm: Math.round(Number(dados.alturaCm)),
+          pesoKg: Math.round(pesoNorm * 10) / 10,
+          alturaCm: Math.round(altNorm),
           comorbidades: higienizarTextoEntrada(dados.comorbidades, 180).trim(),
           acompanhanteConfirmado: dados.acompRadio,
           jejumConfirmado: dados.jejumRadio
@@ -3282,6 +4347,24 @@
         renderTelaCelular();
       }
 
+      function criarAbaOrientacao(chave, rotulo, abaAtiva) {
+        return el("button", {
+          type: "button",
+          id: "tab-orient-" + chave,
+          className: "btn-subtab",
+          role: "tab",
+          "aria-selected": abaAtiva === chave ? "true" : "false",
+          "aria-controls": "painel-orientacoes-cel",
+          text: rotulo,
+          onClick: function () {
+            state.abaOrientacaoCelular = chave;
+            renderTelaCelular();
+            const btn = document.getElementById("tab-orient-" + chave);
+            if (btn) btn.focus();
+          }
+        });
+      }
+
       function criarCardOrientacoes(paciente) {
         const abaPadrao = paciente.etapaAtual >= 6 ? "pos" : "pre";
         const abaAtiva = state.abaOrientacaoCelular || abaPadrao;
@@ -3293,24 +4376,15 @@
             el("span", { className: "selo-clinico", text: "Conteúdo ilustrativo — a validar pela equipe clínica" })
           ]),
           el("div", { className: "orientacoes-tabs", role: "tablist", "aria-label": "Tipo de orientação" }, [
-            el("button", {
-              type: "button",
-              className: "btn-subtab",
-              role: "tab",
-              "aria-selected": abaAtiva === "pre" ? "true" : "false",
-              text: "Pré-procedimento",
-              onClick: function () { state.abaOrientacaoCelular = "pre"; renderTelaCelular(); }
-            }),
-            el("button", {
-              type: "button",
-              className: "btn-subtab",
-              role: "tab",
-              "aria-selected": abaAtiva === "pos" ? "true" : "false",
-              text: "Pós-procedimento",
-              onClick: function () { state.abaOrientacaoCelular = "pos"; renderTelaCelular(); }
-            })
+            criarAbaOrientacao("pre", "Pré-procedimento", abaAtiva),
+            criarAbaOrientacao("pos", "Pós-procedimento", abaAtiva)
           ]),
-          el("ul", { className: "lista-limpa celular-orient-lista" }, itens.map(function (txt) {
+          el("ul", {
+            id: "painel-orientacoes-cel",
+            className: "lista-limpa celular-orient-lista",
+            role: "tabpanel",
+            "aria-labelledby": abaAtiva === "pos" ? "tab-orient-pos" : "tab-orient-pre"
+          }, itens.map(function (txt) {
             return el("li", { text: txt });
           }))
         ]);
@@ -3434,7 +4508,7 @@
       const PASSOS_TOUR = [
         {
           titulo: "Passo 1 — Quadro da clínica",
-          texto: "Cinco pacientes fictícios, três status de prontidão (Pronto, Pendente e Atenção) em uma única tela, como um painel de voos.",
+          texto: "Cinco pacientes fictícios, três status de prontidão (Pronto, Pendente e Atenção) e fontes ativas em uma única tela, como um painel de voos.",
           executar: function () {
             fecharModalFhir();
             state.cenario = "com_sistema";
@@ -3446,7 +4520,7 @@
         },
         {
           titulo: "Passo 2 — A dor da informação fragmentada",
-          texto: "Abrimos a paciente 3 (Marina): a alergia a látex foi informada no questionário do paciente, mas não consta no sistema da clínica. Hoje ninguém veria isso.",
+          texto: "Abrimos a paciente Marina Ferreira Costa: a alergia a látex foi informada no questionário pré-procedimento, mas não consta no sistema da clínica.",
           executar: function () {
             fecharModalFhir();
             state.cenario = "com_sistema";
@@ -3457,7 +4531,7 @@
         },
         {
           titulo: "Passo 3 — Destaque por perfil (Anestesista)",
-          texto: "Ao trocar para o perfil Anestesista, o painel continua o mesmo, mas destaca imediatamente alergias, medicações e jejum.",
+          texto: "Ao trocar para o perfil Anestesista, o painel continua idêntico, mas destaca imediatamente alergias, medicações e jejum.",
           executar: function () {
             fecharModalFhir();
             state.cenario = "com_sistema";
@@ -3467,8 +4541,8 @@
           }
         },
         {
-          titulo: "Passo 4 — Visão do paciente (Carlos)",
-          texto: "No celular do paciente 2 (Carlos), você pode clicar em 'Preencher respostas de exemplo' e 'Enviar questionário' ao vivo antes de seguir.",
+          titulo: "Passo 4 — Visão do paciente (Carlos Eduardo Mendes)",
+          texto: "No celular do paciente 2 (Carlos Eduardo Mendes), clique em 'Preencher respostas de exemplo' e 'Enviar questionário' ao vivo antes de seguir.",
           executar: function () {
             fecharModalFhir();
             state.pacienteSelecionadoId = "p2";
@@ -3478,7 +4552,7 @@
         },
         {
           titulo: "Passo 5 — Painel atualizado sozinho",
-          texto: "De volta ao Quadro: após o envio do questionário, etapa e pendências atualizam na hora, sem ninguém da equipe digitar nada a mais.",
+          texto: "De volta ao Quadro: após o envio do questionário, etapa, fontes ativas e pendências atualizam na hora, sem digitação extra da equipe.",
           executar: function () {
             fecharModalFhir();
             state.perfil = "Recepcao";
@@ -3487,7 +4561,7 @@
         },
         {
           titulo: "Passo 6 — Clínica sem sistema",
-          texto: "No cenário 'Clínica sem sistema (só questionário)', não há dependência de prontuário eletrônico: o questionário pré alimenta todo o painel.",
+          texto: "No cenário 'Clínica sem sistema (só questionário)', não há dependência de prontuário eletrônico: o questionário pré-procedimento alimenta todo o painel.",
           executar: function () {
             fecharModalFhir();
             state.cenario = "sem_sistema";
@@ -3497,7 +4571,7 @@
         },
         {
           titulo: "Passo 7 — Padrão nacional HL7 FHIR",
-          texto: "Quando a clínica tem sistema, integramos apenas dados estruturados no padrão HL7 FHIR (usado pela RNDS), como neste exemplo bruto.",
+          texto: "Quando a clínica possui sistema, integramos apenas dados estruturados no padrão HL7 FHIR (usado pela RNDS), como neste exemplo simulado.",
           executar: function () {
             state.cenario = "com_sistema";
             state.pacienteSelecionadoId = "p3";
@@ -3561,7 +4635,7 @@
       }
 
       /* =======================================================================
-         9. NAVEGAÇÃO, SINCRONIZAÇÃO DE CONTROLES E INICIALIZAÇÃO
+         9. NAVEGAÇÃO, OBSERVADOR DE ROLAGEM E INICIALIZAÇÃO
          ======================================================================= */
 
       function sincronizarControlesPoc() {
@@ -3605,7 +4679,7 @@
         if (!ehApresentacao) {
           renderPocAtiva();
         }
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       }
 
       function navegarSubTela(subTela) {
@@ -3617,7 +4691,7 @@
           state.perfil = "Recepcao";
         }
         renderPocAtiva();
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       }
 
       function reiniciarDemonstracao() {
@@ -3636,7 +4710,7 @@
       }
 
       function aplicarConstantesProduto() {
-        document.title = NOME_PRODUTO + " (" + SELO_NOME_PRODUTO + ") — Apresentação e PoC";
+        document.title = NOME_PRODUTO + " (" + SELO_NOME_PRODUTO + ") — Apresentação e Prova de Conceito";
         document.getElementById("topbar-nome-produto").textContent = NOME_PRODUTO;
         document.getElementById("topbar-selo-produto").textContent = SELO_NOME_PRODUTO;
         document.getElementById("hero-nome-produto").textContent = NOME_PRODUTO;
@@ -3648,6 +4722,8 @@
         document.getElementById("aviso-icon").appendChild(criarSvgIcon("info", 13));
         document.getElementById("diag-plane-icon").appendChild(criarSvgIcon("plane", 14));
         document.getElementById("diag-board-icon").appendChild(criarSvgIcon("board", 14));
+        document.getElementById("cta-hero-orb").appendChild(criarSvgIcon("arrowRight", 15));
+        document.getElementById("cta-final-orb").appendChild(criarSvgIcon("arrowRight", 15));
 
         ["seta-rota-1", "seta-rota-2", "seta-rota-3", "seta-rota-4"].forEach(function (id) {
           const span = document.getElementById(id);
@@ -3671,27 +4747,67 @@
         });
       }
 
+      function obterFocaveisModalOuTour() {
+        const seletores = "button:not([disabled]), [tabindex]:not([tabindex='-1'])";
+        const lista = Array.from(document.getElementById("modal-fhir").querySelectorAll(seletores));
+        const tour = document.getElementById("tour-popover");
+        if (state.tourAtivo && tour && !tour.hidden) {
+          return lista.concat(Array.from(tour.querySelectorAll(seletores)));
+        }
+        return lista;
+      }
+
       function tratarTabModalFhir(e) {
         if (e.key !== "Tab" || !state.modalFhirAberto) return;
-        const dialog = document.getElementById("modal-fhir");
-        const focaveis = Array.from(dialog.querySelectorAll("button:not([disabled]), [tabindex]:not([tabindex='-1'])"));
+        const focaveis = obterFocaveisModalOuTour();
         if (focaveis.length === 0) return;
-        const primeiro = focaveis[0];
-        const ultimo = focaveis[focaveis.length - 1];
-        if (!dialog.contains(document.activeElement)) {
-          e.preventDefault();
-          primeiro.focus();
-        } else if (e.shiftKey && document.activeElement === primeiro) {
-          e.preventDefault();
-          ultimo.focus();
-        } else if (!e.shiftKey && document.activeElement === ultimo) {
-          e.preventDefault();
-          primeiro.focus();
+        e.preventDefault();
+        const idx = focaveis.indexOf(document.activeElement);
+        const proxIdx = idx === -1
+          ? (e.shiftKey ? focaveis.length - 1 : 0)
+          : (idx + (e.shiftKey ? -1 : 1) + focaveis.length) % focaveis.length;
+        focaveis[proxIdx].focus();
+      }
+
+      function tratarSetasTablist(e) {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        const tab = e.target && e.target.closest ? e.target.closest("[role='tab']") : null;
+        if (!tab) return;
+        const tablist = tab.closest("[role='tablist']");
+        if (!tablist) return;
+        const tabs = Array.from(tablist.querySelectorAll("[role='tab']:not([disabled])"));
+        const idx = tabs.indexOf(tab);
+        if (idx === -1 || tabs.length < 2) return;
+        e.preventDefault();
+        const prox = tabs[(idx + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+        prox.focus();
+        prox.click();
+      }
+
+      function inicializarObservadorApresentacao() {
+        const blocos = document.querySelectorAll(".revelar-scroll");
+        if (typeof IntersectionObserver !== "function") {
+          blocos.forEach(function (b) { b.classList.add("visivel"); });
+          return;
         }
+        document.documentElement.classList.add("animacao-ativa");
+        const observador = new IntersectionObserver(function (entradas, obs) {
+          entradas.forEach(function (entrada) {
+            if (!entrada.isIntersecting) return;
+            entrada.target.classList.add("visivel");
+            obs.unobserve(entrada.target);
+          });
+        }, { threshold: 0.05, rootMargin: "0px 0px -16px 0px" });
+
+        blocos.forEach(function (bloco, idx) {
+          if (idx === 0) bloco.classList.add("visivel");
+          else observador.observe(bloco);
+        });
       }
 
       function vincularEventosModalETour() {
         document.getElementById("btn-iniciar-tour").addEventListener("click", iniciarTour);
+        document.getElementById("btn-hero-iniciar-tour").addEventListener("click", iniciarTour);
         document.getElementById("btn-reiniciar-demo").addEventListener("click", reiniciarDemonstracao);
         document.getElementById("btn-tour-voltar").addEventListener("click", function () { avancarTour(-1); });
         document.getElementById("btn-tour-proximo").addEventListener("click", function () { avancarTour(1); });
@@ -3704,6 +4820,7 @@
         document.addEventListener("keydown", function (e) {
           if (e.key === "Escape" && state.modalFhirAberto) fecharModalFhir();
           tratarTabModalFhir(e);
+          tratarSetasTablist(e);
         });
       }
 
@@ -3711,6 +4828,7 @@
         document.getElementById("tab-btn-apresentacao").addEventListener("click", function () { navegarPrincipal("apresentacao"); });
         document.getElementById("tab-btn-poc").addEventListener("click", function () { navegarPrincipal("poc"); });
         document.getElementById("btn-cta-ver-demo").addEventListener("click", function () { navegarPrincipal("poc"); navegarSubTela("quadro"); });
+        document.getElementById("btn-cta-final-demo").addEventListener("click", function () { navegarPrincipal("poc"); navegarSubTela("quadro"); });
         document.getElementById("subtab-quadro").addEventListener("click", function () { navegarSubTela("quadro"); });
         document.getElementById("subtab-detalhe").addEventListener("click", function () { navegarSubTela("detalhe"); });
         document.getElementById("subtab-paciente").addEventListener("click", function () { navegarSubTela("paciente"); });
@@ -3731,12 +4849,15 @@
           link.addEventListener("click", function () {
             anchorLinks.forEach(function (a) { a.classList.remove("is-active"); });
             link.classList.add("is-active");
+            const alvo = document.querySelector(link.getAttribute("href"));
+            if (alvo) alvo.querySelectorAll(".revelar-scroll").forEach(function (r) { r.classList.add("visivel"); });
           });
         });
         vincularEventosModalETour();
       }
 
       aplicarConstantesProduto();
+      inicializarObservadorApresentacao();
       vincularEventosGlobais();
       navegarPrincipal("apresentacao");
     })();

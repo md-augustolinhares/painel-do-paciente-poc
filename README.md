@@ -1,61 +1,61 @@
-# Painel do Paciente *(nome provisório)* — Apresentação e Prova de Conceito (PoC)
+# Painel do Paciente — Apresentação e Prova de Conceito (nome provisório)
 
-Aplicação web estática e autocontida do **Grupo 3** (formação **Médicos Híbridos**), reunindo em um único arquivo HTML a apresentação de apoio ao pitch e uma prova de conceito (PoC) navegável de painel pré-procedimento para clínicas de pequeno e médio porte.
+Aplicação web estática e autocontida de demonstração (**segunda versão**) desenvolvida para o pitch do **Grupo 3** da formação **Médicos Híbridos**.
 
-> **Aviso obrigatório:** Demonstração com **dados 100% fictícios**. Nenhum dado real de paciente, empresa empregadora, hospital ou marca comercial é utilizado. Todo conteúdo clínico exibido é ilustrativo e deve ser validado pela equipe clínica.
+O arquivo único reúne duas frentes na mesma página, sem servidor, sem frameworks externos e com operação completa offline:
 
----
-
-## Como acessar
-
-### 1. Online (GitHub Pages)
-- **Demonstração publicada:** `https://md-augustolinhares.github.io/painel-do-paciente-poc/`
-- **Repositório público:** `https://github.com/md-augustolinhares/painel-do-paciente-poc`
-
-### 2. Offline (duplo clique)
-1. Baixe ou clone este diretório.
-2. Abra o arquivo `index.html` com um duplo clique em qualquer navegador moderno (Chrome, Edge, Firefox ou Safari).
-3. Não exige internet, servidor, build, Node.js, CDN ou instalação de dependências.
-4. Todo o estado da demonstração fica apenas em memória (sem `localStorage` ou cookies). Clique em **Reiniciar demonstração** a qualquer momento para voltar ao estado inicial.
+1. **Apresentação do projeto (10 seções):** narrativa estruturada em bandas visuais alternadas e menu fixo de âncoras cobrindo abertura executiva, fragmentação da jornada pré-procedimento, público-alvo inicial (marcado como hipótese), proposta do painel único com analogia ao painel de voos do aeroporto, arquitetura de integração em duas rotas (HL7 FHIR simulado e questionário do paciente), escopo fora da primeira versão (incluindo fronteira regulatória Anvisa RDC 657/2022 e LGPD), hipótese de modelo de negócio B2B sem preço fixado, histórico com os 6 pontos de mentoria e matriz de riscos, próximos passos de validação e composição do time (**Augusto Linhares**, **Marcelo Teles** e **Karina**).
+2. **Demonstração conceitual (PoC):** protótipo navegável que comprova a leitura imediata do estado do paciente em uma única tela, mantendo o estado apenas em memória.
 
 ---
 
-## O que existe neste diretório
+## Arquivos desta pasta
 
-| Arquivo | Função |
+| Arquivo | Descrição |
 |---|---|
-| `index.html` | Aplicação completa (HTML5, CSS3 e JavaScript puro) com **Parte 1: Apresentação do Projeto (10 seções)** e **Parte 2: Demonstração Conceitual (Telas A, B e C, regras determinísticas, JSON FHIR simulado e Tour Guiado)**. |
-| `README.md` | Este guia de uso, edição dos dados e regras de governança. |
-| `roteiro-demo.md` | Roteiro cronometrado de 90 segundos (8 passos) para apresentar a demonstração ao vivo. |
-| `relatorio-agentes.md` | Registro da execução, revisões de qualidade e segurança e análise de lacunas da construção com os agentes do acervo. |
+| `index.html` | Aplicação web completa (HTML, CSS e JavaScript puro no mesmo arquivo, com 4.866 linhas e 183.925 bytes). |
+| `README.md` | Guia de abertura, edição dos dados fictícios e resumo da estrutura. |
+| `roteiro-demo.md` | Roteiro cronometrado de 90 segundos para conduzir a demonstração ao vivo. |
+| `relatorio-agentes.md` | Registro das etapas executadas, auditorias técnicas e correções aplicadas. |
 
 ---
 
-## Como editar o nome do produto e os dados fictícios (sem saber programar)
+## Como abrir
 
-1. Faça uma cópia de segurança do arquivo `index.html`.
-2. Abra `index.html` em um editor de texto simples (Bloco de Notas, VS Code ou Notepad++).
-3. Procure por **`1. CONFIGURAÇÕES EDITÁVEIS`** dentro da tag `<script>` (por volta da linha 2105):
-   - **Mudar o nome do produto:** altere o texto entre aspas na linha:
-     ```javascript
-     const NOME_PRODUTO = "Painel do Paciente";
-     const SELO_NOME_PRODUTO = "nome provisório";
-     ```
-   - **Mudar orientações ilustrativas:** edite os textos dentro de `ORIENTACOES_ILUSTRATIVAS` (`pre` e `pos`).
-   - **Mudar pacientes, procedimentos ou dados clínicos fictícios:** edite o bloco `PACIENTES_INICIAIS` (5 pacientes: `p1` a `p5`). Cada paciente possui:
-     - `nome`, `idade`, `dataNascimento`, `procedimento`, `dataHora`, `responsavel`;
-     - `etapaAtual`: número de `0` a `7` correspondente às 8 posições de `ETAPAS_JORNADA` (`0 = Agendado` até `7 = Pós-procedimento`);
-     - `datasEtapas`: lista de datas curtas exibidas nas etapas concluídas;
-     - `sistema`, `questionario` e `enfermagem`: dados por fonte (`null` indica que aquela fonte ainda não enviou respostas);
-     - `usaAnticoagulante`: `true` ou `false`.
-4. Salve o arquivo e recarregue `index.html` no navegador.
-5. **Atenção:** mantenha todas as aspas (`"..."`) e vírgulas exatamente nos mesmos lugares ao editar.
+1. Abra o arquivo `index.html` diretamente no navegador (duplo clique no arquivo local).
+2. Não é necessária conexão com a internet, compilação ou servidor local: todas as regras visuais, ícones vetoriais e dados fictícios estão incorporados no próprio arquivo com fontes padrão do sistema operacional.
+3. A demonstração também é publicada via GitHub Pages a partir do repositório espelho `D:\Repositorios\painel-do-paciente-poc`.
 
 ---
 
-## O que é fictício e limites desta PoC
+## Como editar os dados fictícios sem programar
 
-- **Dados fictícios:** todos os nomes de pacientes, datas, idades, procedimentos, alergias, medicações, comorbidades e identificadores no JSON HL7 FHIR são sintéticos e ilustrativos.
-- **Regras ilustrativas (sem IA e sem conduta clínica):** a classificação em **Pronto**, **Pendente** ou **Atenção** usa regras determinísticas simples. O painel exibe apenas alertas informativos (completude e divergência entre fontes) e **nunca** sugere conduta médica ou decisão clínica.
-- **Conteúdo a validar:** os dados críticos e as orientações pré e pós-procedimento são provisórios e carregam a marca **Conteúdo ilustrativo — a validar pela equipe clínica**.
-- **Fora do escopo desta v1:** integração real com prontuários eletrônicos em produção, leitura de texto livre com IA, controle real de acesso/autenticação e módulo financeiro/cobrança.
+Todo o bloco editável fica isolado no topo do `<script>`, na seção **`1. CONFIGURAÇÕES EDITÁVEIS (ALTERE AQUI SEM PRECISAR PROGRAMAR)`**, a partir da **linha 3071** de `index.html`.
+
+Principais constantes disponíveis para ajuste rápido:
+
+- **`NOME_PRODUTO`** e **`SELO_NOME_PRODUTO`**: alteram de forma centralizada o título provisório (`"Painel do Paciente"`) e o selo (`"nome provisório"`) em toda a interface, inclusive no diagrama da apresentação e no título da aba do navegador.
+- **`DATA_SIMULADA_HOJE`**: data de referência exibida nos quadros, nas etapas avançadas em memória e no conjunto HL7 FHIR simulado (`"15/11"`).
+- **`ETAPAS_JORNADA`**: os 8 marcos fixos da jornada (`"Agendado"` até `"Pós-procedimento"`).
+- **`FONTES`**: rótulos das três fontes de origem dos dados (`"Sistema da clínica (FHIR simulado)"`, `"Questionário do paciente"` e `"Avaliação de enfermagem"`).
+- **`ORIENTACOES_ILUSTRATIVAS`**: listas de exemplo para pré-procedimento e pós-procedimento, exibidas sempre com o selo `"Conteúdo ilustrativo — a validar pela equipe clínica"`.
+- **`PACIENTES_INICIAIS`**: vetor com os 5 pacientes fictícios, seus dados simulados do sistema e respostas de questionário, utilizando os profissionais fictícios com título completo (`Beatriz Moura — Médica anestesiologista`, `Marcos Oliveira — Enfermeiro`, `Henrique Azevedo — Médico executor`).
+
+---
+
+## Recursos da demonstração interativa
+
+- **A. Quadro da Clínica:** visão geral com 5 pacientes fictícios, cartões de resumo por status (`Pronto`, `Pendente`, `Atenção`), barra de progresso (`Etapa X de 8`), selos de `Fontes ativas`, busca por nome, filtros por prontidão, alternador de cenário (`Clínica com sistema (FHIR simulado)` contra `Clínica sem sistema (só questionário)`) e faixa de atalhos rápidos (`Marina Ferreira Costa`, `Carlos Eduardo Mendes` e `Roberto Almeida Nascimento`).
+- **B. Detalhe do Paciente:** painel executivo desenhado para leitura integral sem rolagem vertical na resolução `1366×768`, combinando cabeçalho de status, linha do tempo de 8 etapas, cartão de dados críticos com origem por campo, índice de massa corporal calculado em português do Brasil, alertas estritamente informativos (divergências e campos pendentes), botão `Avançar etapa` e visualizador `Ver dado bruto (FHIR)`.
+- **C. Visão do Paciente (Celular):** interface responsiva com orientações ilustrativas (abas de pré-procedimento e pós-procedimento) e questionário pré-procedimento interativo de 7 perguntas que atualiza pendências e divergências em tempo real na memória.
+- **Cinco perfis de leitura:** seletor entre `Recepção`, `Enfermagem`, `Anestesista`, `Médico executor` e `Paciente`, destacando automaticamente os campos prioritários de cada papel sem ocultar informações críticas.
+- **Tour guiado e reinício:** percurso de 8 passos sincronizado com cenários e modais, além do botão `Reiniciar demonstração` para restaurar imediatamente o estado inicial em memória sem usar `localStorage`.
+
+---
+
+## Governança e avisos obrigatórios
+
+- **Somente dados fictícios:** todos os nomes de pacientes, datas de nascimento, procedimentos e profissionais assistenciais são fictícios, sinalizados pelo aviso fixo `"Demonstração com dados fictícios"`.
+- **Nenhuma conduta clínica:** alertas e contadores verificam exclusivamente presença ou divergência factual de informação, nunca recomendando suspensão, liberação ou escore de risco clínico (fidelidade à fronteira da Anvisa RDC 657/2022).
+- **Conteúdo clínico ilustrativo:** dados críticos e orientações carregam o selo `"Conteúdo ilustrativo — a validar pela equipe clínica"`.
+- **Sem nomes de empregadores, concorrentes ou marcas reais:** não há menções a empresas empregadoras de integrantes, sistemas concorrentes nem logotipos de terceiros.
