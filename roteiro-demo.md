@@ -11,7 +11,7 @@
 ## 0 a 15 segundos — Abertura, analogia do aeroporto e mercado
 - **Na tela:** aba **Apresentação do Projeto** (Seção 1 `Abertura`, Seção 4 `A solução` e Seção 7 `Modelo de negócio, mercado e crescimento`).
 - **O que falar:**
-  > "Na jornada pré-procedimento com sedação, cada profissional anota no seu sistema isolado e o paciente acaba repetindo os mesmos dados. Nosso conceito — com nome provisório Painel do Paciente — funciona como o painel de voos do aeroporto: cada companhia continua com o seu sistema, e o painel reúne voo, portão e status para toda a equipe enxergar na mesma tela. No Brasil, são cerca de 109 mil estabelecimentos ambulatoriais especializados no CNES e 25 mil clínicas privadas de procedimentos no nosso mercado endereçável, mirando 1.250 clínicas (5%) em nossa hipótese de escala."
+  > "Na jornada pré-procedimento com sedação, cada profissional anota no seu sistema isolado e o paciente acaba repetindo os mesmos dados. Nosso conceito — com nome provisório Painel do Paciente — funciona como o painel de voos do aeroporto: cada companhia continua com o seu sistema, e o painel reúne voo, portão e status para toda a equipe enxergar na mesma tela. No Brasil, são cerca de 108,5 mil estabelecimentos ambulatoriais especializados no CNES e 25 mil clínicas privadas de procedimentos no nosso mercado endereçável, mirando 1.250 clínicas (5%) em nossa hipótese de escala."
 - **Ação:** mostre o cartão do TAM, SAM e SOM na Seção 7 e clique em **Ver a demonstração**.
 
 ---
@@ -28,7 +28,7 @@
 - **Na tela:** **B. Detalhe do Paciente** (tudo visível sem rolar em `1366×768`).
 - **O que falar:**
   > "No detalhe da Marina, toda a linha do tempo e os dados críticos aparecem juntos sem rolagem vertical. O painel sinaliza o alerta informativo de alergia a látex no questionário ausente no sistema. Ao selecionar Enfermagem ou Anestesista, o bloco Painel do perfil mostra quem está acionado e abre o formulário rápido para aferir peso e altura ou conciliar a divergência na própria tela, sem emitir conduta automática."
-- **Ação:** alterne o seletor **Perfil** para **Anestesista**, clique em **Registrar / Editar (Anestesista)**, escolha o registro do questionário para **Alergia a látex**, clique em **Salvar registro no painel** (observando o status atualizar para **Pronto**) e clique brevemente em **Ver dado bruto (FHIR)**.
+- **Ação:** alterne o seletor **Perfil** para **Anestesista**, clique em **Registrar / Editar (Anestesista)**, responda **Sim, alergia confirmada** na pergunta da segunda conversa com o paciente, clique em **Salvar registro no painel** (o alerta de látex continua visível, agora marcado como confirmado; para cancelá-lo seria preciso informar o que o paciente disse na segunda conversa) e clique brevemente em **Ver dado bruto (FHIR)**.
 
 ---
 
